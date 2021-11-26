@@ -1,9 +1,9 @@
-import 'package:customer_client/info.dart';
+import 'package:vaccert/info.dart';
 import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
 
-import 'package:customer_client/certificate.dart';
-import 'package:customer_client/qr_code.dart';
+import 'package:vaccert/certificate.dart';
+import 'package:vaccert/qr_code.dart';
 
 void main() => runApp(const MyApp());
 

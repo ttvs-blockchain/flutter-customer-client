@@ -1,0 +1,90 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:2646085520246708451",
+      "lastPropertyId": "10:2291716881864004207",
+      "name": "User",
+      "properties": [
+        {
+          "id": "1:6887992049439609797",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:3513656569435801954",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:2932788598821775084",
+          "name": "countryCode",
+          "type": 6
+        },
+        {
+          "id": "4:2760853907308527208",
+          "name": "countryID",
+          "type": 9
+        },
+        {
+          "id": "5:4701123415752674357",
+          "name": "gender",
+          "type": 1
+        },
+        {
+          "id": "9:5550188255663160995",
+          "name": "dateOfBirth",
+          "type": 10
+        },
+        {
+          "id": "10:2291716881864004207",
+          "name": "otherInfo",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:8712893154994919789",
+      "lastPropertyId": "3:8205960989758986779",
+      "name": "Certificate",
+      "properties": [
+        {
+          "id": "1:200636520719827684",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:4152768145488683993",
+          "name": "info",
+          "type": 9
+        },
+        {
+          "id": "3:8205960989758986779",
+          "name": "issueDate",
+          "type": 10
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "2:8712893154994919789",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [
+    3089025725881703,
+    8394862488912187424,
+    7737014800492087671
+  ],
+  "retiredRelationUids": [],
+  "version": 1
+}
