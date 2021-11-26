@@ -15,7 +15,7 @@ class QRCodeScene extends StatelessWidget {
             alignment: MainAxisAlignment.center,
             children: <Widget>[
               ElevatedButton(
-                child: Text('Scan QR Code'),
+                child: const Text('Scan QR Code'),
                 onPressed: () {
                   Navigator.pop(context);
                 },
