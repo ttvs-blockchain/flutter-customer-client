@@ -1,9 +1,9 @@
-import 'package:vaccert/info.dart';
+import 'package:vaccert/screens/info.dart';
 import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
 
-import 'package:vaccert/certificate.dart';
-import 'package:vaccert/qr_code.dart';
+import 'package:vaccert/screens/certificate.dart';
+import 'package:vaccert/screens/qr_code.dart';
 
 void main() => runApp(const MyApp());
 
@@ -11,7 +11,7 @@ void main() => runApp(const MyApp());
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  static const String _title = 'Flutter Code Sample';
+  static const String _title = 'VACCERT';
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = <Widget>[
     QRCodeScene(),
-    const CertificateScene(),
+    CertificateScene(),
     ProfilePage(),
     SettingsList(
       sections: [
@@ -70,7 +70,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('COVID-19 Certificates'),
+        title: const Text('VACCERT'),
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
