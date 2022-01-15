@@ -6,6 +6,7 @@ import 'package:objectbox/objectbox.dart';
 class UserData {
   // Annotate with @Id() if name isn't "id" (case insensitive).
   int id = 0;
+  String? systemID;
   String? name;
   int? countryCode;
   String? countryID;
@@ -18,11 +19,17 @@ class UserData {
       {this.otherInfo});
 
   String get dateFormat => DateFormat('dd.MM.yyyy').format(dateOfBirth);
+
+  @override
+  String toString() {
+    return 'UserData($id, $name, $countryCode, $countryID)';
+  }
 }
 
 @Entity()
 class CertificateData {
   int id = 0;
+  String? systemID;
   String? title;
   String? info;
   DateTime issueDate;

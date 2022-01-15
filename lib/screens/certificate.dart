@@ -49,6 +49,8 @@ class CertificateItem extends StatelessWidget {
 }
 
 class CertificateScene extends StatelessWidget {
+  const CertificateScene({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

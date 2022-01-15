@@ -1,3 +1,5 @@
+import 'package:vaccert/models/models.dart';
+import 'package:vaccert/objectbox.dart';
 import 'package:vaccert/screens/info.dart';
 import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -5,7 +7,20 @@ import 'package:settings_ui/settings_ui.dart';
 import 'package:vaccert/screens/certificate.dart';
 import 'package:vaccert/screens/qr_code.dart';
 
-void main() => runApp(const MyApp());
+import 'objectbox.g.dart';
+
+// provides access to the ObjectBox Store throughout the app
+late ObjectBox objectBox;
+
+Future<void> main() async {
+  // this is required so ObjectBox can get the application directory
+  // to store the database in.
+  WidgetsFlutterBinding.ensureInitialized();
+
+  objectBox = await ObjectBox.create();
+
+  final userDataBox = objectBox.store.box<UserData>();
+}
 
 /// This is the main application widget.
 class MyApp extends StatelessWidget {
@@ -35,7 +50,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = <Widget>[
     QRCodeScene(),
-    CertificateScene(),
+    const CertificateScene(),
     ProfilePage(),
     SettingsList(
       sections: [
