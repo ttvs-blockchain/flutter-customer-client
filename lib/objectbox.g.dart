@@ -15,74 +15,84 @@ export 'package:objectbox/objectbox.dart'; // so that callers only have to impor
 
 final _entities = <ModelEntity>[
   ModelEntity(
-      id: const IdUid(3, 3674108589893178163),
-      name: 'CertificateData',
-      lastPropertyId: const IdUid(4, 4017322226922491066),
+      id: const IdUid(5, 4411164528988902566),
+      name: 'CertificateModel',
+      lastPropertyId: const IdUid(5, 4152391929604504699),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 4049148177805120468),
+            id: const IdUid(1, 5814480612886014576),
             name: 'id',
             type: 6,
             flags: 1),
         ModelProperty(
-            id: const IdUid(2, 2900664357796267651),
-            name: 'title',
+            id: const IdUid(2, 7597554401621556937),
+            name: 'systemID',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 4879233691191538919),
-            name: 'info',
+            id: const IdUid(3, 1077691859559048461),
+            name: 'name',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 4017322226922491066),
+            id: const IdUid(4, 1795246115933045041),
             name: 'issueDate',
             type: 10,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 4152391929604504699),
+            name: 'payload',
+            type: 23,
             flags: 0)
       ],
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(4, 2681017754855805294),
-      name: 'UserData',
-      lastPropertyId: const IdUid(7, 1766486300622527347),
+      id: const IdUid(6, 7367438525054002819),
+      name: 'UserModel',
+      lastPropertyId: const IdUid(8, 4619424469462703763),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 5902291689279068055),
+            id: const IdUid(1, 6593315900129188779),
             name: 'id',
             type: 6,
             flags: 1),
         ModelProperty(
-            id: const IdUid(2, 2451050465916018140),
+            id: const IdUid(2, 8587800012359924075),
+            name: 'systemID',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 478801455058555738),
             name: 'name',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 766594321599444416),
+            id: const IdUid(4, 1659716911066355340),
             name: 'countryCode',
             type: 6,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 911036110356113363),
+            id: const IdUid(5, 2006221175005786938),
             name: 'countryID',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(5, 7211873253173754214),
+            id: const IdUid(6, 246213264137237459),
             name: 'gender',
-            type: 1,
+            type: 6,
             flags: 0),
         ModelProperty(
-            id: const IdUid(6, 7662497243827549388),
+            id: const IdUid(7, 471942948572488206),
             name: 'dateOfBirth',
             type: 10,
             flags: 0),
         ModelProperty(
-            id: const IdUid(7, 1766486300622527347),
-            name: 'otherInfo',
-            type: 9,
+            id: const IdUid(8, 4619424469462703763),
+            name: 'payload',
+            type: 23,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -109,11 +119,16 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(4, 2681017754855805294),
+      lastEntityId: const IdUid(6, 7367438525054002819),
       lastIndexId: const IdUid(0, 0),
       lastRelationId: const IdUid(0, 0),
       lastSequenceId: const IdUid(0, 0),
-      retiredEntityUids: const [2646085520246708451, 8712893154994919789],
+      retiredEntityUids: const [
+        2646085520246708451,
+        8712893154994919789,
+        3674108589893178163,
+        2681017754855805294
+      ],
       retiredIndexUids: const [],
       retiredPropertyUids: const [
         3089025725881703,
@@ -128,7 +143,20 @@ ModelDefinition getObjectBoxModel() {
         2291716881864004207,
         200636520719827684,
         4152768145488683993,
-        8205960989758986779
+        8205960989758986779,
+        4049148177805120468,
+        2900664357796267651,
+        4879233691191538919,
+        4017322226922491066,
+        8386395776448327247,
+        5902291689279068055,
+        2451050465916018140,
+        766594321599444416,
+        911036110356113363,
+        7211873253173754214,
+        7662497243827549388,
+        1766486300622527347,
+        1371822362206017588
       ],
       retiredRelationUids: const [],
       modelVersion: 5,
@@ -136,83 +164,90 @@ ModelDefinition getObjectBoxModel() {
       version: 1);
 
   final bindings = <Type, EntityDefinition>{
-    CertificateData: EntityDefinition<CertificateData>(
+    CertificateModel: EntityDefinition<CertificateModel>(
         model: _entities[0],
-        toOneRelations: (CertificateData object) => [],
-        toManyRelations: (CertificateData object) => {},
-        getId: (CertificateData object) => object.id,
-        setId: (CertificateData object, int id) {
+        toOneRelations: (CertificateModel object) => [],
+        toManyRelations: (CertificateModel object) => {},
+        getId: (CertificateModel object) => object.id,
+        setId: (CertificateModel object, int id) {
           object.id = id;
         },
-        objectToFB: (CertificateData object, fb.Builder fbb) {
-          final titleOffset =
-              object.title == null ? null : fbb.writeString(object.title!);
-          final infoOffset =
-              object.info == null ? null : fbb.writeString(object.info!);
-          fbb.startTable(5);
+        objectToFB: (CertificateModel object, fb.Builder fbb) {
+          final systemIDOffset = fbb.writeString(object.systemID);
+          final nameOffset = fbb.writeString(object.name);
+          final payloadOffset = object.payload == null
+              ? null
+              : fbb.writeListInt8(object.payload!);
+          fbb.startTable(6);
           fbb.addInt64(0, object.id);
-          fbb.addOffset(1, titleOffset);
-          fbb.addOffset(2, infoOffset);
+          fbb.addOffset(1, systemIDOffset);
+          fbb.addOffset(2, nameOffset);
           fbb.addInt64(3, object.issueDate.millisecondsSinceEpoch);
+          fbb.addOffset(4, payloadOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
         objectFromFB: (Store store, ByteData fbData) {
           final buffer = fb.BufferContext(fbData);
           final rootOffset = buffer.derefObject(0);
-
-          final object = CertificateData(
+          final payloadValue = const fb.ListReader<int>(fb.Int8Reader())
+              .vTableGetNullable(buffer, rootOffset, 12);
+          final object = CertificateModel(
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
-              const fb.StringReader().vTableGetNullable(buffer, rootOffset, 8),
+              const fb.StringReader().vTableGet(buffer, rootOffset, 6, ''),
+              const fb.StringReader().vTableGet(buffer, rootOffset, 8, ''),
               DateTime.fromMillisecondsSinceEpoch(
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0)))
-            ..title = const fb.StringReader()
-                .vTableGetNullable(buffer, rootOffset, 6);
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0)),
+              payload: payloadValue == null
+                  ? null
+                  : Uint8List.fromList(payloadValue));
 
           return object;
         }),
-    UserData: EntityDefinition<UserData>(
+    UserModel: EntityDefinition<UserModel>(
         model: _entities[1],
-        toOneRelations: (UserData object) => [],
-        toManyRelations: (UserData object) => {},
-        getId: (UserData object) => object.id,
-        setId: (UserData object, int id) {
+        toOneRelations: (UserModel object) => [],
+        toManyRelations: (UserModel object) => {},
+        getId: (UserModel object) => object.id,
+        setId: (UserModel object, int id) {
           object.id = id;
         },
-        objectToFB: (UserData object, fb.Builder fbb) {
-          final nameOffset =
-              object.name == null ? null : fbb.writeString(object.name!);
-          final countryIDOffset = object.countryID == null
+        objectToFB: (UserModel object, fb.Builder fbb) {
+          final systemIDOffset = fbb.writeString(object.systemID);
+          final nameOffset = fbb.writeString(object.name);
+          final countryIDOffset = fbb.writeString(object.countryID);
+          final payloadOffset = object.payload == null
               ? null
-              : fbb.writeString(object.countryID!);
-          final otherInfoOffset = object.otherInfo == null
-              ? null
-              : fbb.writeString(object.otherInfo!);
-          fbb.startTable(8);
+              : fbb.writeListInt8(object.payload!);
+          fbb.startTable(9);
           fbb.addInt64(0, object.id);
-          fbb.addOffset(1, nameOffset);
-          fbb.addInt64(2, object.countryCode);
-          fbb.addOffset(3, countryIDOffset);
-          fbb.addBool(4, object.gender);
-          fbb.addInt64(5, object.dateOfBirth.millisecondsSinceEpoch);
-          fbb.addOffset(6, otherInfoOffset);
+          fbb.addOffset(1, systemIDOffset);
+          fbb.addOffset(2, nameOffset);
+          fbb.addInt64(3, object.countryCode);
+          fbb.addOffset(4, countryIDOffset);
+          fbb.addInt64(5, object.gender);
+          fbb.addInt64(6, object.dateOfBirth.millisecondsSinceEpoch);
+          fbb.addOffset(7, payloadOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
         objectFromFB: (Store store, ByteData fbData) {
           final buffer = fb.BufferContext(fbData);
           final rootOffset = buffer.derefObject(0);
-
-          final object = UserData(
+          final payloadValue = const fb.ListReader<int>(fb.Int8Reader())
+              .vTableGetNullable(buffer, rootOffset, 18);
+          final object = UserModel(
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
-              const fb.StringReader().vTableGetNullable(buffer, rootOffset, 6),
-              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 8),
-              const fb.StringReader().vTableGetNullable(buffer, rootOffset, 10),
-              const fb.BoolReader().vTableGetNullable(buffer, rootOffset, 12),
+              const fb.StringReader().vTableGet(buffer, rootOffset, 6, ''),
+              const fb.StringReader().vTableGet(buffer, rootOffset, 8, ''),
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0),
+              const fb.StringReader().vTableGet(buffer, rootOffset, 12, ''),
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 14, 0),
               DateTime.fromMillisecondsSinceEpoch(
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 14, 0)),
-              otherInfo: const fb.StringReader()
-                  .vTableGetNullable(buffer, rootOffset, 16));
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 16, 0)),
+              payload: payloadValue == null
+                  ? null
+                  : Uint8List.fromList(payloadValue));
 
           return object;
         })
@@ -221,50 +256,59 @@ ModelDefinition getObjectBoxModel() {
   return ModelDefinition(model, bindings);
 }
 
-/// [CertificateData] entity fields to define ObjectBox queries.
-class CertificateData_ {
-  /// see [CertificateData.id]
+/// [CertificateModel] entity fields to define ObjectBox queries.
+class CertificateModel_ {
+  /// see [CertificateModel.id]
   static final id =
-      QueryIntegerProperty<CertificateData>(_entities[0].properties[0]);
+      QueryIntegerProperty<CertificateModel>(_entities[0].properties[0]);
 
-  /// see [CertificateData.title]
-  static final title =
-      QueryStringProperty<CertificateData>(_entities[0].properties[1]);
+  /// see [CertificateModel.systemID]
+  static final systemID =
+      QueryStringProperty<CertificateModel>(_entities[0].properties[1]);
 
-  /// see [CertificateData.info]
-  static final info =
-      QueryStringProperty<CertificateData>(_entities[0].properties[2]);
+  /// see [CertificateModel.name]
+  static final name =
+      QueryStringProperty<CertificateModel>(_entities[0].properties[2]);
 
-  /// see [CertificateData.issueDate]
+  /// see [CertificateModel.issueDate]
   static final issueDate =
-      QueryIntegerProperty<CertificateData>(_entities[0].properties[3]);
+      QueryIntegerProperty<CertificateModel>(_entities[0].properties[3]);
+
+  /// see [CertificateModel.payload]
+  static final payload =
+      QueryByteVectorProperty<CertificateModel>(_entities[0].properties[4]);
 }
 
-/// [UserData] entity fields to define ObjectBox queries.
-class UserData_ {
-  /// see [UserData.id]
-  static final id = QueryIntegerProperty<UserData>(_entities[1].properties[0]);
+/// [UserModel] entity fields to define ObjectBox queries.
+class UserModel_ {
+  /// see [UserModel.id]
+  static final id = QueryIntegerProperty<UserModel>(_entities[1].properties[0]);
 
-  /// see [UserData.name]
-  static final name = QueryStringProperty<UserData>(_entities[1].properties[1]);
+  /// see [UserModel.systemID]
+  static final systemID =
+      QueryStringProperty<UserModel>(_entities[1].properties[1]);
 
-  /// see [UserData.countryCode]
+  /// see [UserModel.name]
+  static final name =
+      QueryStringProperty<UserModel>(_entities[1].properties[2]);
+
+  /// see [UserModel.countryCode]
   static final countryCode =
-      QueryIntegerProperty<UserData>(_entities[1].properties[2]);
+      QueryIntegerProperty<UserModel>(_entities[1].properties[3]);
 
-  /// see [UserData.countryID]
+  /// see [UserModel.countryID]
   static final countryID =
-      QueryStringProperty<UserData>(_entities[1].properties[3]);
+      QueryStringProperty<UserModel>(_entities[1].properties[4]);
 
-  /// see [UserData.gender]
+  /// see [UserModel.gender]
   static final gender =
-      QueryBooleanProperty<UserData>(_entities[1].properties[4]);
+      QueryIntegerProperty<UserModel>(_entities[1].properties[5]);
 
-  /// see [UserData.dateOfBirth]
+  /// see [UserModel.dateOfBirth]
   static final dateOfBirth =
-      QueryIntegerProperty<UserData>(_entities[1].properties[5]);
+      QueryIntegerProperty<UserModel>(_entities[1].properties[6]);
 
-  /// see [UserData.otherInfo]
-  static final otherInfo =
-      QueryStringProperty<UserData>(_entities[1].properties[6]);
+  /// see [UserModel.payload]
+  static final payload =
+      QueryByteVectorProperty<UserModel>(_entities[1].properties[7]);
 }

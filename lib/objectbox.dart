@@ -1,5 +1,4 @@
-import 'package:vaccert/models/models.dart';
-import 'package:vaccert/objectbox.g.dart';
+import 'package:vacpass/objectbox.g.dart';
 
 class ObjectBox {
   late final Store store;

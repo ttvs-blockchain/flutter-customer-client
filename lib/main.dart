@@ -1,11 +1,11 @@
-import 'package:vaccert/models/models.dart';
-import 'package:vaccert/objectbox.dart';
-import 'package:vaccert/screens/info.dart';
+import 'package:vacpass/models/models.dart';
+import 'package:vacpass/objectbox.dart';
+import 'package:vacpass/screens/info.dart';
 import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
 
-import 'package:vaccert/screens/certificate.dart';
-import 'package:vaccert/screens/qr_code.dart';
+import 'package:vacpass/screens/certificate.dart';
+import 'package:vacpass/screens/qr_code.dart';
 
 import 'objectbox.g.dart';
 
@@ -19,20 +19,28 @@ Future<void> main() async {
 
   objectBox = await ObjectBox.create();
 
-  final userDataBox = objectBox.store.box<UserData>();
+  final userModelBox = objectBox.store.box<UserModel>();
+  print("object box initialized");
+
+  runApp(const MyApp());
 }
 
 /// This is the main application widget.
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  static const String _title = 'VACCERT';
+  static const String _title = 'VacPass';
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: _title,
-      home: MyStatefulWidget(),
+      home: const MyStatefulWidget(),
+      theme: ThemeData(
+        brightness: Brightness.light,
+        primaryColor: Colors.lightBlue[800],
+        // fontFamily: 'Georgia',
+      ),
     );
   }
 }
@@ -85,7 +93,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('VACCERT'),
+        title: const Text('VacPass'),
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -95,22 +103,22 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           BottomNavigationBarItem(
             icon: Icon(Icons.qr_code_2_rounded),
             label: 'Code',
-            backgroundColor: Colors.red,
+            backgroundColor: Colors.blue,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.library_books),
             label: 'Certificate',
-            backgroundColor: Colors.green,
+            backgroundColor: Colors.blue,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Info',
-            backgroundColor: Colors.purple,
+            backgroundColor: Colors.blue,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: 'Settings',
-            backgroundColor: Colors.pink,
+            backgroundColor: Colors.blue,
           ),
         ],
         currentIndex: _selectedIndex,
