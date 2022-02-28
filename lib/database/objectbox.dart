@@ -14,4 +14,3 @@ class ObjectBox {
     return ObjectBox._create(store);
   }
 }
-

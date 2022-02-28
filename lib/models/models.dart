@@ -5,8 +5,10 @@ import 'package:objectbox/objectbox.dart';
 
 @Entity()
 class UserModel {
-  // Annotate with @Id() if name isn't "id" (case insensitive).
+  // ObjectBox required
   int id = 0;
+
+  // user basic info
   String systemID;
   String name;
   int countryCode;
@@ -40,13 +42,40 @@ class UserModel {
 
 @Entity()
 class CertificateModel {
+  // ObjectBox required
   int id = 0;
+
+  // certificate basic info
   String systemID;
   String name;
   DateTime issueDate;
+  int status;
   Uint8List? payload;
 
-  CertificateModel(this.id, this.systemID, this.name, this.issueDate,
+  // global chain info
+  String globalChainTxHash;
+  int globalChainBlockNum;
+  DateTime globalChainTimeStamp;
+
+  // local chain info
+  String localChainID;
+  String localChainTxHash;
+  int localChainBlockNum;
+  DateTime localChainTimeStamp;
+
+  CertificateModel(
+      this.id,
+      this.systemID,
+      this.name,
+      this.issueDate,
+      this.status,
+      this.globalChainTxHash,
+      this.globalChainBlockNum,
+      this.globalChainTimeStamp,
+      this.localChainID,
+      this.localChainTxHash,
+      this.localChainBlockNum,
+      this.localChainTimeStamp,
       {this.payload});
 
   String get dateFormat => DateFormat('dd.MM.yyyy hh:mm:ss').format(issueDate);
@@ -59,7 +88,18 @@ class CertificateModel {
     \tsystemID: $systemID,
     \tname: $name,
     \tissueDate: $issueDate,
+    \tstatus: $status,
     \tpayload: $payload,
+    \t***global_chain_info***
+    \tglobalChainTxHash: $globalChainTxHash,
+    \tglobalChainBlockNum: $globalChainBlockNum,
+    \tglobalChainTimeStamp: $globalChainTimeStamp,
+    \t***local_chain_info***
+    \tlocalChainID: $localChainID,
+    \tlocalChainTxHash: $localChainTxHash,
+    \tlocalChainBlockNum: $localChainBlockNum,
+    \tlocalChainTimeStamp: $localChainTimeStamp,
+    )
     ''';
   }
 }
@@ -67,15 +107,43 @@ class CertificateModel {
 class VaccineCertificateModel extends CertificateModel {
   int? dose;
 
-  VaccineCertificateModel(id, systemID, name, issueDate, this.dose, {payload})
-      : super(id, systemID, name, issueDate, payload: payload);
+  VaccineCertificateModel(
+      id,
+      systemID,
+      name,
+      issueDate,
+      status,
+      globalChainTxHash,
+      globalChainBlockNum,
+      globalChainTimeStamp,
+      localChainID,
+      localChainTxHash,
+      localChainBlockNum,
+      localChainTimeStamp,
+      this.dose,
+      {payload})
+      : super(
+            id,
+            systemID,
+            name,
+            issueDate,
+            status,
+            globalChainTxHash,
+            globalChainBlockNum,
+            globalChainTimeStamp,
+            localChainID,
+            localChainTxHash,
+            localChainBlockNum,
+            localChainTimeStamp,
+            payload: payload);
 
   @override
   String toString() {
-    String vacCertificate = '''
-    VaccineCertificateModel (
-    \tdose: $dose
-    ''';
+    String vacCertificate = super.toString() +
+        '''
+        VaccineCertificateModel (
+        \tdose: $dose
+        ''';
     return vacCertificate + super.toString();
   }
 }

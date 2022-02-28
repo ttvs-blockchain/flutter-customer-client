@@ -1,5 +1,5 @@
 import 'package:vacpass/models/models.dart';
-import 'package:vacpass/objectbox.dart';
+import 'package:vacpass/database/objectbox.dart';
 import 'package:vacpass/screens/info.dart';
 import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -25,7 +25,7 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-/// This is the main application widget.
+// main application widget
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -41,11 +41,12 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.lightBlue[800],
         // fontFamily: 'Georgia',
       ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
 
-/// This is the stateful widget that the main application instantiates.
+// stateful widget that the main application instantiates
 class MyStatefulWidget extends StatefulWidget {
   const MyStatefulWidget({Key? key}) : super(key: key);
 
@@ -53,7 +54,7 @@ class MyStatefulWidget extends StatefulWidget {
   State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
 }
 
-/// This is the private State class that goes with MyStatefulWidget.
+// private State class that goes with MyStatefulWidget
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = <Widget>[
