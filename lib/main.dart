@@ -1,4 +1,5 @@
-import 'package:vacpass/models/models.dart';
+import 'dart:async';
+
 import 'package:vacpass/database/objectbox.dart';
 import 'package:vacpass/screens/info.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +7,6 @@ import 'package:settings_ui/settings_ui.dart';
 
 import 'package:vacpass/screens/certificate.dart';
 import 'package:vacpass/screens/qr_code.dart';
-
-import 'objectbox.g.dart';
 
 // provides access to the ObjectBox Store throughout the app
 late ObjectBox objectBox;
@@ -18,9 +17,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   objectBox = await ObjectBox.create();
-
-  final userModelBox = objectBox.store.box<UserModel>();
-  print("object box initialized");
 
   runApp(const MyApp());
 }
@@ -38,7 +34,7 @@ class MyApp extends StatelessWidget {
       home: const MyStatefulWidget(),
       theme: ThemeData(
         brightness: Brightness.light,
-        primaryColor: Colors.lightBlue[800],
+        primaryColor: const Color.fromARGB(255, 23, 159, 238),
         // fontFamily: 'Georgia',
       ),
       debugShowCheckedModeBanner: false,
@@ -58,9 +54,9 @@ class MyStatefulWidget extends StatefulWidget {
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = <Widget>[
-    QRCodeScene(),
-    const CertificateScene(),
-    ProfilePage(),
+    new QRCodeScene(),
+    new CertificateScene(),
+    new ProfilePage(),
     SettingsList(
       sections: [
         SettingsSection(
@@ -123,7 +119,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: const Color.fromARGB(255, 2, 80, 133),
         onTap: _onItemTapped,
       ),
     );
