@@ -1,4 +1,4 @@
-# customer_client
+# VaxPass Client
 
 A new Flutter project.
 

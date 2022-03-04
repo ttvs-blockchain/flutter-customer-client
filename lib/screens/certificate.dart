@@ -2,11 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:rxdart/rxdart.dart';
-
-import 'package:vacpass/main.dart';
-import 'package:vacpass/models/models.dart';
-import 'package:vacpass/utils/route.dart';
+import 'package:path_provider/path_provider.dart';
+import '../models/models.dart';
+import '../objectbox.g.dart';
+import '../utils/route.dart';
 
 class CertificateScene extends StatefulWidget {
   const CertificateScene({Key? key}) : super(key: key);
@@ -15,26 +14,69 @@ class CertificateScene extends StatefulWidget {
   _CertificateSceneState createState() => _CertificateSceneState();
 }
 
-class _CertificateSceneState extends State<CertificateScene> {
-  // final StreamController<List<CertificateModel>> _listController =
-  //     BehaviorSubject();
-  final _listController = BehaviorSubject<List<CertificateModel>>();
+class _CertificateSceneState extends State<CertificateScene>
+    with AutomaticKeepAliveClientMixin<CertificateScene> {
+  Store? _store;
+  Box<CertificateModel>? certificateBox;
+  Stream? stream;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
     super.initState();
+    getApplicationDocumentsDirectory().then((dir) {
+      openStore(directory: dir.path).then((Store store) {
+        setState(() {
+          _store = store;
+        });
 
-    setState(() {});
+        certificateBox = store.box<CertificateModel>();
+        stream = _store?.watch<CertificateModel>();
 
-    _listController
-        .addStream(objectBox.certificateModelStream.map((q) => q.find()));
+        // TODO: clear all the previous records
+        certificateBox?.removeAll();
+      });
+    });
   }
 
   @override
   void dispose() {
-    _listController.drain();
-    _listController.close();
     super.dispose();
+    _store?.close();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return Center(
+      child: StreamBuilder<void>(
+          stream: stream,
+          builder: (context, AsyncSnapshot<void> snapshot) {
+            List<CertificateModel>? certificates =
+                certificateBox?.getAll().reversed.toList() ?? [];
+
+            if (certificates.isEmpty) {
+              // TODO: dummy data to be removed
+              _putDummyCertificateData();
+              return const CircularProgressIndicator();
+            }
+
+            if (snapshot.hasError) {
+              return Text(snapshot.error.toString());
+            }
+
+            return ListView.separated(
+              itemBuilder: _itemBuilder(certificates),
+              separatorBuilder: (BuildContext context, int index) =>
+                  const Divider(
+                height: 5,
+              ),
+              itemCount: certificates.length,
+            );
+          }),
+    );
   }
 
   GestureDetector Function(BuildContext, int) _itemBuilder(
@@ -49,6 +91,9 @@ class _CertificateSceneState extends State<CertificateScene> {
             );
           },
           child: Card(
+            color: certificates[index].status == 0
+                ? const Color.fromARGB(138, 255, 56, 30)
+                : const Color.fromARGB(139, 152, 255, 233),
             child: Padding(
               padding: const EdgeInsets.fromLTRB(15, 20, 15, 20),
               child: Column(
@@ -79,7 +124,7 @@ class _CertificateSceneState extends State<CertificateScene> {
                       ),
                       const Icon(
                         Icons.qr_code_rounded,
-                        color: Colors.blueAccent,
+                        color: Colors.indigoAccent,
                         size: 40,
                       ),
                     ],
@@ -99,18 +144,66 @@ class _CertificateSceneState extends State<CertificateScene> {
             ),
           ));
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(children: <Widget>[
-      Expanded(
-          child: StreamBuilder<List<CertificateModel>>(
-              stream: _listController.stream,
-              builder: (context, snapshot) => ListView.builder(
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  itemCount: snapshot.data?.length ?? 0,
-                  itemBuilder: _itemBuilder(snapshot.data ?? []))))
-    ]);
+  void _putDummyCertificateData() {
+    final certificates = [
+      CertificateModel(
+        "001", // systemID
+        "Certificate 1", // name
+        DateTime(2021, 6, 6, 10, 30), // issueDate
+        1, // status
+        0, // type
+        "0x0001", // globalChainTxHash
+        0, // globalChainBlockNum
+        DateTime.now(), // globalChainTimeStamp
+        "001", // localChainID
+        "0x0001", // localChainTxHash
+        0, // localChainBlockNum
+        DateTime.now(), // localChainTimeStamp
+      ),
+      CertificateModel(
+        "002", // systemID
+        "Certificate 2", // name
+        DateTime(2021, 6, 27, 13, 20), // issueDate
+        1, // status
+        0, // type
+        "0x0002", // globalChainTxHash
+        0, // globalChainBlockNum
+        DateTime.now(), // globalChainTimeStamp
+        "001", // localChainID
+        "0x0002", // localChainTxHash
+        0, // localChainBlockNum
+        DateTime.now(), // localChainTimeStamp
+      ),
+      CertificateModel(
+        "003", // systemID
+        "Certificate 3", // name
+        DateTime(2022, 2, 26, 14, 05), // issueDate
+        1, // status
+        0, // type
+        "0x0003", // globalChainTxHash
+        0, // globalChainBlockNum
+        DateTime.now(), // globalChainTimeStamp
+        "001", // localChainID
+        "0x0003", // localChainTxHash
+        0, // localChainBlockNum
+        DateTime.now(), // localChainTimeStamp
+      ),
+      CertificateModel(
+        "004", // systemID
+        "Certificate 4", // name
+        DateTime.now(), // issueDate
+        0, // status
+        0, // type
+        "0x0004", // globalChainTxHash
+        0, // globalChainBlockNum
+        DateTime.now(), // globalChainTimeStamp
+        "001", // localChainID
+        "0x0004", // localChainTxHash
+        0, // localChainBlockNum
+        DateTime.now(), // localChainTimeStamp
+      ),
+    ];
+    certificateBox?.putMany(certificates);
   }
 }
 
