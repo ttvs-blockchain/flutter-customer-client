@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+class ProfileScene extends StatefulWidget {
+  const ProfileScene({Key? key}) : super(key: key);
 
   @override
-  MapScreenState createState() => MapScreenState();
+  _ProfileSceneState createState() => _ProfileSceneState();
 }
 
-class MapScreenState extends State<ProfilePage>
+class _ProfileSceneState extends State<ProfileScene>
     with SingleTickerProviderStateMixin {
   bool _status = true;
   final FocusNode myFocusNode = FocusNode();

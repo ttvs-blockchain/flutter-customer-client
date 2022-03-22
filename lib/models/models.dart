@@ -33,7 +33,7 @@ class UserModel {
     \tcountryCode: $countryCode,
     \tcountryID: $countryID,
     \tgender: $gender,
-    \tDateOfBirth: $dateOfBirth
+    \tDateOfBirth: $dateOfBirth,
     \tpayload: $payload,
     )
     ''';

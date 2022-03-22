@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
+
 import '../models/models.dart';
 import '../objectbox.g.dart';
 import '../utils/route.dart';
@@ -35,7 +36,7 @@ class _CertificateSceneState extends State<CertificateScene>
         certificateBox = store.box<CertificateModel>();
         stream = _store?.watch<CertificateModel>();
 
-        // TODO: clear all the previous records
+        // TODO: clearing all the previous records to be removed
         certificateBox?.removeAll();
       });
     });
@@ -91,7 +92,7 @@ class _CertificateSceneState extends State<CertificateScene>
             );
           },
           child: Card(
-            color: certificates[index].status == 0
+            color: certificates[index].status != 0
                 ? const Color.fromARGB(138, 255, 56, 30)
                 : const Color.fromARGB(139, 152, 255, 233),
             child: Padding(
@@ -108,9 +109,11 @@ class _CertificateSceneState extends State<CertificateScene>
                             certificates[index].name,
                             style: Theme.of(context).textTheme.headline6,
                           ),
-                          const Text(
-                            "Label 0",
-                            style: TextStyle(
+                          Text(
+                            certificates[index].status != 0
+                                ? 'Pending'
+                                : 'Validated',
+                            style: const TextStyle(
                               fontSize: 15,
                               color: Colors.grey,
                             ),
@@ -134,7 +137,7 @@ class _CertificateSceneState extends State<CertificateScene>
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "This is the summary of the certificate",
+                        "This is the summary of the certificate ",
                         style: Theme.of(context).textTheme.bodyText2,
                       ),
                     ),
@@ -147,59 +150,103 @@ class _CertificateSceneState extends State<CertificateScene>
   void _putDummyCertificateData() {
     final certificates = [
       CertificateModel(
-        "001", // systemID
-        "Certificate 1", // name
-        DateTime(2021, 6, 6, 10, 30), // issueDate
-        1, // status
-        0, // type
-        "0x0001", // globalChainTxHash
-        0, // globalChainBlockNum
-        DateTime.now(), // globalChainTimeStamp
-        "001", // localChainID
-        "0x0001", // localChainTxHash
-        0, // localChainBlockNum
+        "001",
+        // systemID
+        "Certificate 1",
+        // name
+        DateTime(2021, 6, 6, 10, 30),
+        // issueDate
+        0,
+        // status
+        0,
+        // type
+        "0x0001",
+        // globalChainTxHash
+        0,
+        // globalChainBlockNum
+        DateTime.now(),
+        // globalChainTimeStamp
+        "001",
+        // localChainID
+        "0x0001",
+        // localChainTxHash
+        0,
+        // localChainBlockNum
         DateTime.now(), // localChainTimeStamp
       ),
       CertificateModel(
-        "002", // systemID
-        "Certificate 2", // name
-        DateTime(2021, 6, 27, 13, 20), // issueDate
-        1, // status
-        0, // type
-        "0x0002", // globalChainTxHash
-        0, // globalChainBlockNum
-        DateTime.now(), // globalChainTimeStamp
-        "001", // localChainID
-        "0x0002", // localChainTxHash
-        0, // localChainBlockNum
+        "002",
+        // systemID
+        "Certificate 2",
+        // name
+        DateTime(2021, 6, 27, 13, 20),
+        // issueDate
+        0,
+        // status
+        0,
+        // type
+        "0x0002",
+        // globalChainTxHash
+        0,
+        // globalChainBlockNum
+        DateTime.now(),
+        // globalChainTimeStamp
+        "001",
+        // localChainID
+        "0x0002",
+        // localChainTxHash
+        0,
+        // localChainBlockNum
         DateTime.now(), // localChainTimeStamp
       ),
       CertificateModel(
-        "003", // systemID
-        "Certificate 3", // name
-        DateTime(2022, 2, 26, 14, 05), // issueDate
-        1, // status
-        0, // type
-        "0x0003", // globalChainTxHash
-        0, // globalChainBlockNum
-        DateTime.now(), // globalChainTimeStamp
-        "001", // localChainID
-        "0x0003", // localChainTxHash
-        0, // localChainBlockNum
+        "003",
+        // systemID
+        "Certificate 3",
+        // name
+        DateTime(2022, 2, 26, 14, 05),
+        // issueDate
+        0,
+        // status
+        0,
+        // type
+        "0x0003",
+        // globalChainTxHash
+        0,
+        // globalChainBlockNum
+        DateTime.now(),
+        // globalChainTimeStamp
+        "001",
+        // localChainID
+        "0x0003",
+        // localChainTxHash
+        0,
+        // localChainBlockNum
         DateTime.now(), // localChainTimeStamp
       ),
       CertificateModel(
-        "004", // systemID
-        "Certificate 4", // name
-        DateTime.now(), // issueDate
-        0, // status
-        0, // type
-        "0x0004", // globalChainTxHash
-        0, // globalChainBlockNum
-        DateTime.now(), // globalChainTimeStamp
-        "001", // localChainID
-        "0x0004", // localChainTxHash
-        0, // localChainBlockNum
+        "004",
+        // systemID
+        "Certificate 4",
+        // name
+        DateTime.now(),
+        // issueDate
+        1,
+        // status
+        0,
+        // type
+        "0x0004",
+        // globalChainTxHash
+        0,
+        // globalChainBlockNum
+        DateTime.now(),
+        // globalChainTimeStamp
+        "001",
+        // localChainID
+        "0x0004",
+        // localChainTxHash
+        0,
+        // localChainBlockNum
         DateTime.now(), // localChainTimeStamp
       ),
     ];

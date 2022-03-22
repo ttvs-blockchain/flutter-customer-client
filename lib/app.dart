@@ -19,7 +19,7 @@ class _VaxPassState extends State<VaxPass> {
   final List<Widget> _widgetOptions = <Widget>[
     const QRCodeScene(),
     CertificateScene(),
-    const ProfilePage(),
+    const ProfileScene(),
   ];
 
   void _onItemTapped(int index) {
