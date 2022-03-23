@@ -18,24 +18,32 @@ class _ErrorPageState extends State<ErrorPage> {
       appBar: AppBar(
         title: const Text('Error'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'An error occurred',
-              style: TextStyle(fontSize: 20),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          const Text(
+            'An error occurred',
+            style: TextStyle(fontSize: 20),
+          ),
+          Expanded(
+            child: ListView(
+              children: <Widget>[
+                Text(
+                  widget.errorMessage,
+                  style: const TextStyle(fontSize: 15),
+                ),
+                Text(
+                  widget.errorDetails.exceptionAsString(),
+                  style: const TextStyle(fontSize: 15),
+                ),
+                Text(
+                  widget.errorDetails.stack.toString(),
+                  style: const TextStyle(fontSize: 15),
+                ),
+              ],
             ),
-            Text(
-              widget.errorMessage,
-              style: const TextStyle(fontSize: 20),
-            ),
-            Text(
-              widget.errorDetails.toString(),
-              style: const TextStyle(fontSize: 20),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

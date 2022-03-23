@@ -42,6 +42,7 @@ dependencies:
   cupertino_icons: ^1.0.4
   settings_ui: ^2.0.2
   rxdart: ^0.27.3
+  firebase_auth: ^3.3.11
 
 dev_dependencies:
   flutter_test:

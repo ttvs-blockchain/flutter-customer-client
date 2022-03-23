@@ -50,6 +50,7 @@ class CertificateModel {
   DateTime issueDate;
   int status;
   int type;
+  // String issuerID;
   Uint8List? payload;
 
   // global chain info

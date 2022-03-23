@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'app.dart';
 import 'screens/error_page.dart';
+import 'dart:developer' show log;
 
 Future<void> main() async {
   GestureBinding.instance?.resamplingEnabled = true;
@@ -15,6 +15,7 @@ Future<void> main() async {
           details.exception.toString() + "\n " + details.stack.toString(),
           details);
     };
+    WidgetsFlutterBinding.ensureInitialized();
     runApp(const VaxPass());
   }, (Object obj, StackTrace stack) {
     log(obj.toString() + "\n" + stack.toString());
