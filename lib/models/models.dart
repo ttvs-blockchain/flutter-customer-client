@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:intl/intl.dart';
 import 'package:objectbox/objectbox.dart';
 

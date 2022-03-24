@@ -1,8 +1,9 @@
-import 'dart:developer' show log;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import '../constants/routes.dart';
 import '../firebase_options.dart';
+import '../utils/error_dialog.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -74,13 +75,44 @@ class _LoginViewState extends State<LoginView> {
                             email: email,
                             password: password,
                           );
+                          final user = FirebaseAuth.instance.currentUser;
+                          if (user?.emailVerified ?? false) {
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                              mainViewRoute,
+                              (route) => false,
+                            );
+                          } else {
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                              registerViewRoute,
+                              (route) => false,
+                            );
+                          }
                           Navigator.of(context).pushNamedAndRemoveUntil(
-                            '/mainView/',
+                            mainViewRoute,
                             (route) => false,
                           );
                         } on FirebaseException catch (e) {
-                          print(e.code);
-                          print(e);
+                          if (e.code == 'user-not-found') {
+                            await showErrorDialog(
+                              context,
+                              'User not found',
+                            );
+                          } else if (e.code == 'wrong-password') {
+                            await showErrorDialog(
+                              context,
+                              'Wrong credentials',
+                            );
+                          } else {
+                            await showErrorDialog(
+                              context,
+                              'Error: ${e.code} - ${e.message}',
+                            );
+                          }
+                        } catch (e) {
+                          await showErrorDialog(
+                            context,
+                            e.toString(),
+                          );
                         }
                       },
                       child: const Text('Login'),
@@ -88,7 +120,7 @@ class _LoginViewState extends State<LoginView> {
                     TextButton(
                       onPressed: () {
                         Navigator.of(context).pushNamedAndRemoveUntil(
-                          '/register/',
+                          registerViewRoute,
                           (route) => false,
                         );
                       },

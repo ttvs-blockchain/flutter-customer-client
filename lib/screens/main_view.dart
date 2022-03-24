@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
+import '../constants/routes.dart';
 import 'qr_code.dart';
 import '../models/models.dart';
 import 'certificate.dart';
@@ -40,7 +41,7 @@ class _MainViewState extends State<MainView> {
                 if (shouldLogout) {
                   await FirebaseAuth.instance.signOut();
                   Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/login/',
+                    loginViewRoute,
                     (_) => false,
                   );
                 }

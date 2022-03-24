@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
+import 'constants/routes.dart';
 import 'screens/main_view.dart';
 import 'models/models.dart';
 import 'screens/certificate.dart';
@@ -8,6 +9,7 @@ import 'screens/login_view.dart';
 import 'screens/qr_code.dart';
 import 'screens/register_view.dart';
 import 'screens/router_page.dart';
+import 'screens/verify_email_view.dart';
 
 class VaxPass extends StatefulWidget {
   const VaxPass({Key? key}) : super(key: key);
@@ -35,49 +37,16 @@ class _VaxPassState extends State<VaxPass> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'VaxPass',
-      // home: Scaffold(
-      //   appBar: AppBar(
-      //     centerTitle: true,
-      //     title: const Text('VaxPass'),
-      //     actions: <Widget>[
-      //       IconButton(
-      //         icon: const Icon(Icons.more_vert),
-      //         onPressed: () {},
-      //       ),
-      //     ],
-      //   ),
-      //   body: Center(
-      //     child: _widgetOptions.elementAt(_selectedIndex),
-      //   ),
-      //   bottomNavigationBar: BottomNavigationBar(
-      //     items: const <BottomNavigationBarItem>[
-      //       BottomNavigationBarItem(
-      //         icon: Icon(Icons.qr_code_2_rounded),
-      //         label: 'Code',
-      //       ),
-      //       BottomNavigationBarItem(
-      //         icon: Icon(Icons.library_books),
-      //         label: 'Certificate',
-      //       ),
-      //       BottomNavigationBarItem(
-      //         icon: Icon(Icons.person),
-      //         label: 'Info',
-      //       ),
-      //     ],
-      //     currentIndex: _selectedIndex,
-      //     selectedItemColor: const Color.fromARGB(255, 5, 14, 136),
-      //     onTap: _onItemTapped,
-      //   ),
-      // ),
       home: const RouterPage(),
       theme: ThemeData(
         primarySwatch: Colors.indigo,
       ),
       debugShowCheckedModeBanner: false,
       routes: {
-        '/login/': (context) => const LoginView(),
-        '/register/': (context) => const RegisterView(),
-        '/mainView/': (context) => MainView(),
+        loginViewRoute: (context) => const LoginView(),
+        registerViewRoute: (context) => const RegisterView(),
+        mainViewRoute: (context) => MainView(),
+        verifyEmailRoute: (context) => const VerifyEmailView(),
       },
     );
   }

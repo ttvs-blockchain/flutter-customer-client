@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:vaxpass/constants/routes.dart';
 
 class VerifyEmailView extends StatefulWidget {
   const VerifyEmailView({Key? key}) : super(key: key);
@@ -19,7 +20,10 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
       body: Center(
         child: Column(
           children: <Widget>[
-            const Text('Please verify your email address'),
+            const Text(
+                'Verification email sent, please open it to verify your account'),
+            const Text(
+                "If you haven't received an email, press the button to send again"),
             TextButton(
               child: const Text('Send email verification'),
               onPressed: () async {
@@ -27,6 +31,16 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
                 await user?.sendEmailVerification();
               },
             ),
+            TextButton(
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  registerViewRoute,
+                  (route) => false,
+                );
+              },
+              child: const Text('Go back to registration'),
+            )
           ],
         ),
       ),
