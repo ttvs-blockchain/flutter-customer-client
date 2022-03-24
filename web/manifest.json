@@ -1,6 +1,6 @@
 {
-    "name": "customer_client",
-    "short_name": "customer_client",
+    "name": "flutter_customer_client",
+    "short_name": "flutter_customer_client",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

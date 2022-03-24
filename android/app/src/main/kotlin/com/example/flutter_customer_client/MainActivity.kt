@@ -1,4 +1,4 @@
-package com.example.customer_client
+package ttommy.tech.vaxpassclient
 
 import io.flutter.embedding.android.FlutterActivity
 
