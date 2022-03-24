@@ -1,13 +1,17 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:vaxpass/services/auth/auth_service.dart';
+
 import '../constants/routes.dart';
-import 'qr_code.dart';
+import '../enums/menu_action.dart';
 import '../models/models.dart';
 import 'certificate.dart';
 import 'info.dart';
+import 'qr_code.dart';
 
 class MainView extends StatefulWidget {
+  const MainView({Key? key}) : super(key: key);
+
   @override
   State<MainView> createState() => _MainViewState();
 }
@@ -17,7 +21,7 @@ class _MainViewState extends State<MainView> {
   final listController = BehaviorSubject<List<CertificateModel>>(sync: true);
   final List<Widget> _widgetOptions = <Widget>[
     const QRCodeScene(),
-    CertificateScene(),
+    const CertificateScene(),
     const ProfileScene(),
   ];
 
@@ -39,7 +43,7 @@ class _MainViewState extends State<MainView> {
               case MenuAction.logout:
                 final shouldLogout = await showLogOutDialog(context);
                 if (shouldLogout) {
-                  await FirebaseAuth.instance.signOut();
+                  await AuthService.fireBase().logOut();
                   Navigator.of(context).pushNamedAndRemoveUntil(
                     loginViewRoute,
                     (_) => false,
@@ -82,8 +86,6 @@ class _MainViewState extends State<MainView> {
     );
   }
 }
-
-enum MenuAction { logout }
 
 Future<bool> showLogOutDialog(BuildContext context) {
   return showDialog<bool>(

@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:developer' show log;
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+
 import 'app.dart';
 import 'screens/error_page.dart';
-import 'dart:developer' show log;
 
 Future<void> main() async {
   GestureBinding.instance?.resamplingEnabled = true;
