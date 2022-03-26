@@ -15,22 +15,7 @@ class MainView extends StatefulWidget {
   @override
   State<MainView> createState() => _MainViewState();
 }
-
 class _MainViewState extends State<MainView> {
-  int _selectedIndex = 0;
-  final listController = BehaviorSubject<List<CertificateModel>>(sync: true);
-  final List<Widget> _widgetOptions = <Widget>[
-    const QRCodeScene(),
-    const CertificateScene(),
-    const ProfileScene(),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +31,7 @@ class _MainViewState extends State<MainView> {
                   await AuthService.fireBase().logOut();
                   Navigator.of(context).pushNamedAndRemoveUntil(
                     loginViewRoute,
-                    (_) => false,
+                        (_) => false,
                   );
                 }
                 break;
@@ -61,31 +46,82 @@ class _MainViewState extends State<MainView> {
           }),
         ],
       ),
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.qr_code_2_rounded),
-            label: 'Code',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.library_books),
-            label: 'Certificate',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Info',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: const Color.fromARGB(255, 5, 14, 136),
-        onTap: _onItemTapped,
+      body: const Center(
+        child: Text('Hello World'),
       ),
     );
   }
 }
+// class _MainViewState extends State<MainView> {
+//   int _selectedIndex = 0;
+//   final listController = BehaviorSubject<List<CertificateModel>>(sync: true);
+//   final List<Widget> _widgetOptions = <Widget>[
+//     const QRCodeScene(),
+//     const CertificateScene(),
+//     const ProfileScene(),
+//   ];
+//
+//   void _onItemTapped(int index) {
+//     setState(() {
+//       _selectedIndex = index;
+//     });
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         centerTitle: true,
+//         title: const Text('VaxPass'),
+//         actions: <Widget>[
+//           PopupMenuButton<MenuAction>(onSelected: (value) async {
+//             switch (value) {
+//               case MenuAction.logout:
+//                 final shouldLogout = await showLogOutDialog(context);
+//                 if (shouldLogout) {
+//                   await AuthService.fireBase().logOut();
+//                   Navigator.of(context).pushNamedAndRemoveUntil(
+//                     loginViewRoute,
+//                     (_) => false,
+//                   );
+//                 }
+//                 break;
+//             }
+//           }, itemBuilder: (context) {
+//             return const [
+//               PopupMenuItem<MenuAction>(
+//                 value: MenuAction.logout,
+//                 child: Text('Logout'),
+//               ),
+//             ];
+//           }),
+//         ],
+//       ),
+//       body: Center(
+//         child: _widgetOptions.elementAt(_selectedIndex),
+//       ),
+//       bottomNavigationBar: BottomNavigationBar(
+//         items: const <BottomNavigationBarItem>[
+//           BottomNavigationBarItem(
+//             icon: Icon(Icons.qr_code_2_rounded),
+//             label: 'Code',
+//           ),
+//           BottomNavigationBarItem(
+//             icon: Icon(Icons.library_books),
+//             label: 'Certificate',
+//           ),
+//           BottomNavigationBarItem(
+//             icon: Icon(Icons.person),
+//             label: 'Info',
+//           ),
+//         ],
+//         currentIndex: _selectedIndex,
+//         selectedItemColor: const Color.fromARGB(255, 5, 14, 136),
+//         onTap: _onItemTapped,
+//       ),
+//     );
+//   }
+// }
 
 Future<bool> showLogOutDialog(BuildContext context) {
   return showDialog<bool>(

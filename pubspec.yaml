@@ -43,6 +43,7 @@ dependencies:
   settings_ui: ^2.0.2
   rxdart: ^0.27.3
   firebase_auth: ^3.3.11
+  sqflite: ^2.0.2
 
 dev_dependencies:
   flutter_test:
