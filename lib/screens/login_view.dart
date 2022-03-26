@@ -83,7 +83,7 @@ class _LoginViewState extends State<LoginView> {
                     mainViewRoute,
                     (route) => false,
                   );
-                } on UserNotFoundException {
+                } on UserNotFoundAuthException {
                   await showErrorDialog(
                     context,
                     'User not found',
