@@ -12,8 +12,14 @@ class CertificateService {
 
   List<DatabaseCertificate> _certificates = [];
 
+  static final CertificateService _shared = CertificateService._sharedInstance();
+  CertificateService._sharedInstance();
+  factory CertificateService() => _shared;
+
   final _certificateStreamController =
       StreamController<List<DatabaseCertificate>>.broadcast();
+
+  Stream<List<DatabaseCertificate>> get allCertificates => _certificateStreamController.stream;
 
   Future<void> _cacheCertificates() async {
     final allCertificates = await getAllCertificates();
@@ -52,6 +58,14 @@ class CertificateService {
     }
   }
 
+  Future<void> _ensureIDIsOpen() async {
+    try {
+      await open();
+    } on DatabaseAlreadyOpenException {
+      // empty
+    }
+  }
+
   Database _getDatabaseOrThrow() {
     final db = _db;
     if (db == null) {
@@ -61,6 +75,7 @@ class CertificateService {
   }
 
   Future<DatabaseUser> createUser({required String email}) async {
+    await _ensureIDIsOpen();
     final db = _getDatabaseOrThrow();
     final results = await db.query(
       userTableName,
@@ -83,6 +98,7 @@ class CertificateService {
   }
 
   Future<void> deleteUser({required String email}) async {
+    await _ensureIDIsOpen();
     final db = _getDatabaseOrThrow();
     final deleteCount = await db.delete(
       userTableName,
@@ -95,6 +111,7 @@ class CertificateService {
   }
 
   Future<DatabaseUser> getUser({required String email}) async {
+    await _ensureIDIsOpen();
     final db = _getDatabaseOrThrow();
 
     final result = await db.query(
@@ -125,6 +142,7 @@ class CertificateService {
 
   Future<DatabaseCertificate> createCertificate(
       {required DatabaseUser owner}) async {
+    await _ensureIDIsOpen();
     final db = _getDatabaseOrThrow();
 
     // make sure the owner exists in the database with the correct id
@@ -155,6 +173,7 @@ class CertificateService {
   }
 
   Future<void> deleteCertificate({required int id}) async {
+    await _ensureIDIsOpen();
     final db = _getDatabaseOrThrow();
     final deleteCount = await db.delete(
       certificateTableName,
@@ -169,6 +188,7 @@ class CertificateService {
   }
 
   Future<int> deleteAllCertificates() async {
+    await _ensureIDIsOpen();
     final db = _getDatabaseOrThrow();
     final deleteCount = await db.delete(certificateTableName);
     _certificates = [];
@@ -177,6 +197,7 @@ class CertificateService {
   }
 
   Future<DatabaseCertificate> getCertificate({required int id}) async {
+    await _ensureIDIsOpen();
     final db = _getDatabaseOrThrow();
     final certificates = await db.query(
       certificateTableName,
@@ -196,6 +217,7 @@ class CertificateService {
   }
 
   Future<Iterable<DatabaseCertificate>> getAllCertificates() async {
+    await _ensureIDIsOpen();
     final db = _getDatabaseOrThrow();
     final certificates = await db.query(certificateTableName);
 
@@ -207,6 +229,7 @@ class CertificateService {
     required DatabaseCertificate certificate,
     required String text,
   }) async {
+    await _ensureIDIsOpen();
     final db = _getDatabaseOrThrow();
 
     // make sure the certificate exists
@@ -293,9 +316,9 @@ const userIDColumn = 'user_id';
 const textColumn = 'text';
 const isSyncedWithCloudColumn = 'is_synced_with_cloud';
 const createUserTable = '''CREATE TABLE IF NOT EXISTS "user" (
-        "id" INTEGER NOT NULL,
-        "email" TEXT NOT NULL UNIQUE,
-        "PRIMARY" KEY("id" AUTOINCREMENT)
+        "id"	INTEGER NOT NULL,
+        "email"	TEXT NOT NULL UNIQUE,
+        PRIMARY KEY("id" AUTOINCREMENT)
       );''';
 const createCertificateTable = '''CREATE TABLE IF NOT EXISTS "certificate" (
         "id" INTEGER NOT NULL,

@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:vaxpass/services/auth/auth_service.dart';
+import 'package:vaxpass/services/crud/certificate_service.dart';
 
 import '../constants/routes.dart';
 import '../enums/menu_action.dart';
-import '../models/models.dart';
-import 'certificate.dart';
-import 'info.dart';
-import 'qr_code.dart';
 
 class MainView extends StatefulWidget {
   const MainView({Key? key}) : super(key: key);
@@ -15,7 +11,25 @@ class MainView extends StatefulWidget {
   @override
   State<MainView> createState() => _MainViewState();
 }
+
 class _MainViewState extends State<MainView> {
+  late final CertificateService _certificateService;
+
+  String get userEmail => AuthService.fireBase().currentUser!.email!;
+
+  @override
+  void initState() {
+    _certificateService = CertificateService();
+    _certificateService.open();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _certificateService.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +45,7 @@ class _MainViewState extends State<MainView> {
                   await AuthService.fireBase().logOut();
                   Navigator.of(context).pushNamedAndRemoveUntil(
                     loginViewRoute,
-                        (_) => false,
+                    (_) => false,
                   );
                 }
                 break;
@@ -46,9 +60,26 @@ class _MainViewState extends State<MainView> {
           }),
         ],
       ),
-      body: const Center(
-        child: Text('Hello World'),
-      ),
+      body: FutureBuilder(
+          future: _certificateService.getOrCreateUser(email: userEmail),
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.done:
+                return StreamBuilder(
+                  stream: _certificateService.allCertificates,
+                  builder: (context, snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.waiting:
+                        return const Text('Waiting for all certificates...');
+                      default:
+                        return const CircularProgressIndicator();
+                    }
+                  }
+                );
+              default:
+                return const CircularProgressIndicator();
+            }
+          }),
     );
   }
 }
