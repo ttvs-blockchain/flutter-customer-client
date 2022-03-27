@@ -12,14 +12,23 @@ class CertificateService {
 
   List<DatabaseCertificate> _certificates = [];
 
-  static final CertificateService _shared = CertificateService._sharedInstance();
-  CertificateService._sharedInstance();
+  static final CertificateService _shared =
+      CertificateService._sharedInstance();
+  CertificateService._sharedInstance() {
+    _certificateStreamController =
+        StreamController<List<DatabaseCertificate>>.broadcast(
+      onListen: () {
+        _certificateStreamController.sink.add(_certificates);
+      },
+    );
+  }
   factory CertificateService() => _shared;
 
-  final _certificateStreamController =
-      StreamController<List<DatabaseCertificate>>.broadcast();
+  late final StreamController<List<DatabaseCertificate>>
+      _certificateStreamController;
 
-  Stream<List<DatabaseCertificate>> get allCertificates => _certificateStreamController.stream;
+  Stream<List<DatabaseCertificate>> get allCertificates =>
+      _certificateStreamController.stream;
 
   Future<void> _cacheCertificates() async {
     final allCertificates = await getAllCertificates();

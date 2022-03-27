@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:vaxpass/models/models.dart';
 import 'package:vaxpass/objectbox.g.dart';
-import 'package:vaxpass/utils/routes.dart';
+import 'package:vaxpass/utils/routes/routes.dart';
 
 class CertificateScene extends StatefulWidget {
   const CertificateScene({Key? key}) : super(key: key);

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:vaxpass/constants/routes.dart';
 import 'package:vaxpass/enums/menu_action.dart';
+import 'package:vaxpass/screens/certificate_list_view.dart';
 import 'package:vaxpass/services/auth/auth_service.dart';
 import 'package:vaxpass/services/crud/certificate_service.dart';
+import 'package:vaxpass/utils/dialogs/logout_dialog.dart';
 
 class MainView extends StatefulWidget {
   const MainView({Key? key}) : super(key: key);
@@ -76,7 +78,18 @@ class _MainViewState extends State<MainView> {
                       switch (snapshot.connectionState) {
                         case ConnectionState.waiting:
                         case ConnectionState.active:
-                          return const Text('Waiting for all certificates...');
+                          if (snapshot.hasData) {
+                            final allCertificates =
+                                snapshot.data as List<DatabaseCertificate>;
+                            return CertificateListView(
+                              certificates: allCertificates,
+                              onDeleteCertificate: (certificate) async {
+                                await _certificateService.deleteCertificate(
+                                    id: certificate.id);
+                              },
+                            );
+                          }
+                          return const CircularProgressIndicator();
                         default:
                           return const CircularProgressIndicator();
                       }
@@ -158,29 +171,3 @@ class _MainViewState extends State<MainView> {
 //     );
 //   }
 // }
-
-Future<bool> showLogOutDialog(BuildContext context) {
-  return showDialog<bool>(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: const Text('Sign out'),
-        content: const Text('Are you sure you want to sign out?'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(false);
-            },
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(true);
-            },
-            child: const Text('Log out'),
-          ),
-        ],
-      );
-    },
-  ).then((value) => value ?? false);
-}
