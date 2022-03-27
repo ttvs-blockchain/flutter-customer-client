@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vaxpass/constants/routes.dart';
 import 'package:vaxpass/services/auth/auth_service.dart';
-
-import '../constants/routes.dart';
 
 class VerifyEmailView extends StatefulWidget {
   const VerifyEmailView({Key? key}) : super(key: key);

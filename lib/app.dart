@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:vaxpass/constants/routes.dart';
+import 'package:vaxpass/models/models.dart';
+import 'package:vaxpass/screens/certificate.dart';
+import 'package:vaxpass/screens/info.dart';
+import 'package:vaxpass/screens/login_view.dart';
+import 'package:vaxpass/screens/main_view.dart';
 import 'package:vaxpass/screens/new_certificate_view.dart';
-
-import 'constants/routes.dart';
-import 'models/models.dart';
-import 'screens/certificate.dart';
-import 'screens/info.dart';
-import 'screens/login_view.dart';
-import 'screens/main_view.dart';
-import 'screens/qr_code.dart';
-import 'screens/register_view.dart';
-import 'screens/router_page.dart';
-import 'screens/verify_email_view.dart';
+import 'package:vaxpass/screens/qr_code.dart';
+import 'package:vaxpass/screens/register_view.dart';
+import 'package:vaxpass/screens/router_page.dart';
+import 'package:vaxpass/screens/verify_email_view.dart';
 
 class VaxPass extends StatefulWidget {
   const VaxPass({Key? key}) : super(key: key);

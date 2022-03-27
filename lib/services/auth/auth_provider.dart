@@ -1,4 +1,4 @@
-import 'auth_user.dart';
+import 'package:vaxpass/services/auth/auth_user.dart';
 
 abstract class AuthProvider {
   Future<void> initialize();

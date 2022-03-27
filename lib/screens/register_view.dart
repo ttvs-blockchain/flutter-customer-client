@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:vaxpass/constants/routes.dart';
 import 'package:vaxpass/services/auth/auth_exceptions.dart';
-
-import '../constants/routes.dart';
-import '../services/auth/auth_service.dart';
-import '../utils/error_dialog.dart';
+import 'package:vaxpass/services/auth/auth_service.dart';
+import 'package:vaxpass/utils/error_dialog.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../constants/routes.dart';
-import '../services/auth/auth_exceptions.dart';
-import '../services/auth/auth_service.dart';
-import '../utils/error_dialog.dart';
+import 'package:vaxpass/constants/routes.dart';
+import 'package:vaxpass/services/auth/auth_exceptions.dart';
+import 'package:vaxpass/services/auth/auth_service.dart';
+import 'package:vaxpass/utils/error_dialog.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
