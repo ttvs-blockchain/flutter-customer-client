@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:vaxpass/constants/routes.dart';
-import 'package:vaxpass/enums/menu_action.dart';
-import 'package:vaxpass/screens/certificate_list_view.dart';
-import 'package:vaxpass/services/auth/auth_service.dart';
-import 'package:vaxpass/services/crud/certificate_service.dart';
-import 'package:vaxpass/utils/dialogs/logout_dialog.dart';
+import '../constants/routes.dart';
+import '../enums/menu_action.dart';
+import 'certificate_list_view.dart';
+import '../services/auth/auth_service.dart';
+import '../services/crud/certificate_service.dart';
+import '../utils/dialogs/logout_dialog.dart';
 
 class MainView extends StatefulWidget {
   const MainView({Key? key}) : super(key: key);

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:vaxpass/services/auth/auth_service.dart';
-import 'package:vaxpass/services/crud/certificate_service.dart';
-import 'package:vaxpass/utils/generics/get_arguments.dart';
+import '../services/auth/auth_service.dart';
+import '../services/crud/certificate_service.dart';
+import '../utils/generics/get_arguments.dart';
 
 class CreateUpdateCertificateView extends StatefulWidget {
   const CreateUpdateCertificateView({Key? key}) : super(key: key);

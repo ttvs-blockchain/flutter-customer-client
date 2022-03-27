@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vaxpass/utils/dialogs/generic_dialog.dart';
+import 'generic_dialog.dart';
 
 Future<bool> showLogOutDialog(BuildContext context) {
   return showGenericDialog(

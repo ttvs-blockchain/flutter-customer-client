@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'dart:developer' show log;
 
 import 'package:flutter/material.dart';
-import 'package:vaxpass/app.dart';
-import 'package:vaxpass/screens/error_page.dart';
+import 'app.dart';
+import 'screens/error_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

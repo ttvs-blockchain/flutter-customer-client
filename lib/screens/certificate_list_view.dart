@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vaxpass/services/crud/certificate_service.dart';
-import 'package:vaxpass/utils/dialogs/delete_dialog.dart';
+import '../services/crud/certificate_service.dart';
+import '../utils/dialogs/delete_dialog.dart';
 
 typedef CertificateCallBack = void Function(DatabaseCertificate certificate);
 
