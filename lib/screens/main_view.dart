@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:vaxpass/constants/routes.dart';
+import 'package:vaxpass/enums/menu_action.dart';
 import 'package:vaxpass/services/auth/auth_service.dart';
 import 'package:vaxpass/services/crud/certificate_service.dart';
-
-import '../constants/routes.dart';
-import '../enums/menu_action.dart';
 
 class MainView extends StatefulWidget {
   const MainView({Key? key}) : super(key: key);
@@ -37,6 +36,12 @@ class _MainViewState extends State<MainView> {
         centerTitle: true,
         title: const Text('VaxPass'),
         actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(newCertificateViewRoute);
+            },
+            icon: const Icon(Icons.add),
+          ),
           PopupMenuButton<MenuAction>(onSelected: (value) async {
             switch (value) {
               case MenuAction.logout:
@@ -66,16 +71,15 @@ class _MainViewState extends State<MainView> {
             switch (snapshot.connectionState) {
               case ConnectionState.done:
                 return StreamBuilder(
-                  stream: _certificateService.allCertificates,
-                  builder: (context, snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.waiting:
-                        return const Text('Waiting for all certificates...');
-                      default:
-                        return const CircularProgressIndicator();
-                    }
-                  }
-                );
+                    stream: _certificateService.allCertificates,
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.waiting:
+                          return const Text('Waiting for all certificates...');
+                        default:
+                          return const CircularProgressIndicator();
+                      }
+                    });
               default:
                 return const CircularProgressIndicator();
             }

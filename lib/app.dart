@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:vaxpass/screens/new_certificate_view.dart';
 
 import 'constants/routes.dart';
 import 'models/models.dart';
@@ -48,6 +49,7 @@ class _VaxPassState extends State<VaxPass> {
         registerViewRoute: (context) => const RegisterView(),
         mainViewRoute: (context) => MainView(),
         verifyEmailRoute: (context) => const VerifyEmailView(),
+        newCertificateViewRoute: (context) => const NewCertificateView(),
       },
     );
   }
