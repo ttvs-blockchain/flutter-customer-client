@@ -15,3 +15,6 @@ class CouldNotDeleteCertificateException implements Exception {}
 class CouldNotFoundCertificateException implements Exception {}
 
 class CouldNotUpdateCertificateException implements Exception {}
+
+class UserShouldBeSetBeforeAccessingAllCertificatesException
+    implements Exception {}

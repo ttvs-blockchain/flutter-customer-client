@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:vaxpass/services/crud/certificate_service.dart';
 import 'package:vaxpass/utils/dialogs/delete_dialog.dart';
 
-typedef DeleteCertificateCallBack = void Function(
-    DatabaseCertificate certificate);
+typedef CertificateCallBack = void Function(DatabaseCertificate certificate);
 
 class CertificateListView extends StatelessWidget {
   final List<DatabaseCertificate> certificates;
-  final DeleteCertificateCallBack onDeleteCertificate;
+  final CertificateCallBack onDeleteCertificate;
+  final CertificateCallBack onTap;
 
   const CertificateListView({
     Key? key,
     required this.certificates,
     required this.onDeleteCertificate,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -22,6 +23,9 @@ class CertificateListView extends StatelessWidget {
       itemBuilder: (context, index) {
         final certificate = certificates[index];
         return ListTile(
+          onTap: () {
+            onTap(certificate);
+          },
           title: Text(
             certificate.text,
             maxLines: 1,

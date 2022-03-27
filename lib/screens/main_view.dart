@@ -40,7 +40,7 @@ class _MainViewState extends State<MainView> {
         actions: <Widget>[
           IconButton(
             onPressed: () {
-              Navigator.of(context).pushNamed(newCertificateViewRoute);
+              Navigator.of(context).pushNamed(createOrUpdateCertificateRoute);
             },
             icon: const Icon(Icons.add),
           ),
@@ -86,6 +86,12 @@ class _MainViewState extends State<MainView> {
                               onDeleteCertificate: (certificate) async {
                                 await _certificateService.deleteCertificate(
                                     id: certificate.id);
+                              },
+                              onTap: (certificate) async {
+                                Navigator.of(context).pushNamed(
+                                  createOrUpdateCertificateRoute,
+                                  arguments: certificate,
+                                );
                               },
                             );
                           }

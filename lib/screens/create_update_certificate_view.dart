@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:vaxpass/services/auth/auth_service.dart';
 import 'package:vaxpass/services/crud/certificate_service.dart';
+import 'package:vaxpass/utils/generics/get_arguments.dart';
 
-class NewCertificateView extends StatefulWidget {
-  const NewCertificateView({Key? key}) : super(key: key);
+class CreateUpdateCertificateView extends StatefulWidget {
+  const CreateUpdateCertificateView({Key? key}) : super(key: key);
 
   @override
-  _NewCertificateViewState createState() => _NewCertificateViewState();
+  _CreateUpdateCertificateViewState createState() =>
+      _CreateUpdateCertificateViewState();
 }
 
-class _NewCertificateViewState extends State<NewCertificateView> {
+class _CreateUpdateCertificateViewState
+    extends State<CreateUpdateCertificateView> {
   DatabaseCertificate? _certificate;
   late final CertificateService _certificateService;
   late final TextEditingController _textController;
@@ -38,7 +41,16 @@ class _NewCertificateViewState extends State<NewCertificateView> {
     _textController.addListener(_textControllerListener);
   }
 
-  Future<DatabaseCertificate> createNewCertificate() async {
+  Future<DatabaseCertificate> createOrGetExistingCertificate(
+      BuildContext context) async {
+    final widgetCertificate = context.getArgument<DatabaseCertificate>();
+
+    if (widgetCertificate != null) {
+      _certificate = widgetCertificate;
+      _textController.text = widgetCertificate.text;
+      return widgetCertificate;
+    }
+
     final existingCertificate = _certificate;
     if (existingCertificate != null) {
       return existingCertificate;
@@ -46,7 +58,10 @@ class _NewCertificateViewState extends State<NewCertificateView> {
     final currentUser = AuthService.fireBase().currentUser!;
     final email = currentUser.email!;
     final owner = await _certificateService.getUser(email: email);
-    return await _certificateService.createCertificate(owner: owner);
+    final newCertificate =
+        await _certificateService.createCertificate(owner: owner);
+    _certificate = newCertificate;
+    return newCertificate;
   }
 
   void _deleteCertificateIfTextIsEmpty() {
@@ -82,7 +97,7 @@ class _NewCertificateViewState extends State<NewCertificateView> {
         title: const Text('New Certificate'),
       ),
       body: FutureBuilder(
-        future: createNewCertificate(),
+        future: createOrGetExistingCertificate(context),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:

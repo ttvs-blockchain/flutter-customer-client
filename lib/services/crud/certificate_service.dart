@@ -5,12 +5,15 @@ import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart'
     show MissingPlatformDirectoryException, getApplicationDocumentsDirectory;
 import 'package:sqflite/sqflite.dart';
+import 'package:vaxpass/extensions/list/filter.dart';
 import 'package:vaxpass/services/crud/crud_exceptions.dart';
 
 class CertificateService {
   Database? _db;
 
   List<DatabaseCertificate> _certificates = [];
+
+  DatabaseUser? _user;
 
   static final CertificateService _shared =
       CertificateService._sharedInstance();
@@ -28,7 +31,14 @@ class CertificateService {
       _certificateStreamController;
 
   Stream<List<DatabaseCertificate>> get allCertificates =>
-      _certificateStreamController.stream;
+      _certificateStreamController.stream.filter((certificate) {
+        final currentUser = _user;
+        if (currentUser != null) {
+          return certificate.userID == currentUser.id;
+        } else {
+          throw UserShouldBeSetBeforeAccessingAllCertificatesException();
+        }
+      });
 
   Future<void> _cacheCertificates() async {
     final allCertificates = await getAllCertificates();
@@ -137,12 +147,21 @@ class CertificateService {
     return DatabaseUser.fromRow(result.first);
   }
 
-  Future<DatabaseUser> getOrCreateUser({required String email}) async {
+  Future<DatabaseUser> getOrCreateUser({
+    required String email,
+    bool setAsCurrentUser = true,
+  }) async {
     try {
       final user = await getUser(email: email);
+      if (setAsCurrentUser) {
+        _user = user;
+      }
       return user;
     } on CouldNotFoundUserException {
       final createdUser = await createUser(email: email);
+      if (setAsCurrentUser) {
+        _user = createdUser;
+      }
       return createdUser;
     } catch (_) {
       rethrow;
@@ -244,10 +263,15 @@ class CertificateService {
     // make sure the certificate exists
     await getCertificate(id: certificate.id);
 
-    final updateCount = await db.update(certificateTableName, {
-      textColumn: text,
-      isSyncedWithCloudColumn: 0,
-    });
+    final updateCount = await db.update(
+      certificateTableName,
+      {
+        textColumn: text,
+        isSyncedWithCloudColumn: 0,
+      },
+      where: 'id = ?',
+      whereArgs: [certificate.id],
+    );
 
     if (updateCount == 0) {
       throw CouldNotUpdateCertificateException();

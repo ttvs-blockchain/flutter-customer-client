@@ -6,7 +6,7 @@ import 'package:vaxpass/screens/certificate.dart';
 import 'package:vaxpass/screens/info.dart';
 import 'package:vaxpass/screens/login_view.dart';
 import 'package:vaxpass/screens/main_view.dart';
-import 'package:vaxpass/screens/new_certificate_view.dart';
+import 'package:vaxpass/screens/create_update_certificate_view.dart';
 import 'package:vaxpass/screens/qr_code.dart';
 import 'package:vaxpass/screens/register_view.dart';
 import 'package:vaxpass/screens/router_page.dart';
@@ -48,7 +48,8 @@ class _VaxPassState extends State<VaxPass> {
         registerViewRoute: (context) => const RegisterView(),
         mainViewRoute: (context) => MainView(),
         verifyEmailRoute: (context) => const VerifyEmailView(),
-        newCertificateViewRoute: (context) => const NewCertificateView(),
+        createOrUpdateCertificateRoute: (context) =>
+            const CreateUpdateCertificateView(),
       },
     );
   }
