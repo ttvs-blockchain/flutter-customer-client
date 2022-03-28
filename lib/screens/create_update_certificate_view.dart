@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:vaxpass/services/cloud/cloud_certificate.dart';
 import 'package:vaxpass/services/cloud/firebase_cloud_storage.dart';
 
 import '../services/auth/auth_service.dart';
+import '../utils/dialogs/cannot_share_empty_cert_dialog.dart';
 import '../utils/generics/get_arguments.dart';
 
 class CreateUpdateCertificateView extends StatefulWidget {
@@ -115,6 +117,19 @@ class _CreateUpdateCertificateViewState
     return Scaffold(
       appBar: AppBar(
         title: const Text('New Certificate'),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () async {
+              final text = _textController.text;
+              if (_certificate == null || text.isEmpty) {
+                await showCannotShareEmptyCertDialog(context);
+              } else {
+                Share.share(text);
+              }
+            },
+            icon: const Icon(Icons.share),
+          ),
+        ],
       ),
       body: FutureBuilder(
         future: createOrGetExistingCertificate(context),

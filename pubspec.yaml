@@ -45,6 +45,7 @@ dependencies:
   firebase_auth: ^3.3.11
   sqflite: ^2.0.2
   cloud_firestore: ^3.1.10
+  share_plus: ^4.0.3
 
 dev_dependencies:
   flutter_test:
