@@ -1,8 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vaxpass/services/auth/bloc/auth_bloc.dart';
+import 'package:vaxpass/services/auth/bloc/auth_event.dart';
 
-import '../services/auth/auth_service.dart';
+import '../services/auth/bloc/auth_state.dart';
 import 'login_view.dart';
 import 'main_view.dart';
 import 'verify_email_view.dart';
@@ -12,24 +13,19 @@ class RouterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: AuthService.fireBase().initialize(),
-      builder: (context, snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.done:
-            final user = AuthService.fireBase().currentUser;
-            log(user.toString());
-            if (user == null) {
-              return const LoginView();
-            }
-            if (user.isEmailVerified) {
-              return const VerifyEmailView();
-            }
-            return MainView();
-          default:
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+    context.read<AuthBloc>().add(const AuthEventInitialize());
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        if (state is AuthStateLoggedIn) {
+          return const MainView();
+        } else if (state is AuthStateNeedsEmailVerification) {
+          return const VerifyEmailView();
+        } else if (state is AuthStateLoggedOut) {
+          return const LoginView();
+        } else {
+          return const Scaffold(
+            body: CircularProgressIndicator(),
+          );
         }
       },
     );

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:vaxpass/services/auth/bloc/auth_bloc.dart';
+import 'package:vaxpass/services/auth/firebase_auth_provider.dart';
 
 import 'constants/routes.dart';
 import 'models/models.dart';
@@ -39,7 +42,10 @@ class _VaxPassState extends State<VaxPass> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'VaxPass',
-      home: const RouterPage(),
+      home: BlocProvider<AuthBloc>(
+        create: (context) => AuthBloc(FirebaseAuthProvider()),
+        child: const RouterPage(),
+      ),
       theme: ThemeData(
         primarySwatch: Colors.indigo,
       ),
@@ -47,7 +53,7 @@ class _VaxPassState extends State<VaxPass> {
       routes: {
         loginViewRoute: (context) => const LoginView(),
         registerViewRoute: (context) => const RegisterView(),
-        mainViewRoute: (context) => MainView(),
+        mainViewRoute: (context) => const MainView(),
         verifyEmailRoute: (context) => const VerifyEmailView(),
         createOrUpdateCertificateRoute: (context) =>
             const CreateUpdateCertificateView(),

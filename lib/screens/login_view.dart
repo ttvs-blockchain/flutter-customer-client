@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vaxpass/services/auth/bloc/auth_event.dart';
 
 import '../constants/routes.dart';
 import '../services/auth/auth_exceptions.dart';
 import '../services/auth/auth_service.dart';
+import '../services/auth/bloc/auth_bloc.dart';
 import '../utils/dialogs/error_dialog.dart';
 
 class LoginView extends StatefulWidget {
@@ -63,25 +66,15 @@ class _LoginViewState extends State<LoginView> {
                 final email = _email.text;
                 final password = _password.text;
                 try {
+                  context.read<AuthBloc>().add(
+                        AuthEventLogIn(
+                          email,
+                          password,
+                        ),
+                      );
                   await AuthService.fireBase().logIn(
                     email: email,
                     password: password,
-                  );
-                  final user = AuthService.fireBase().currentUser;
-                  if (user?.isEmailVerified ?? false) {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      mainViewRoute,
-                      (route) => false,
-                    );
-                  } else {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      registerViewRoute,
-                      (route) => false,
-                    );
-                  }
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    mainViewRoute,
-                    (route) => false,
                   );
                 } on UserNotFoundAuthException {
                   await showErrorDialog(

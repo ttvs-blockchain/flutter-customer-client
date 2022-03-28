@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vaxpass/services/cloud/cloud_certificate.dart';
 import 'package:vaxpass/services/cloud/firebase_cloud_storage.dart';
 
 import '../constants/routes.dart';
 import '../enums/menu_action.dart';
 import '../services/auth/auth_service.dart';
+import '../services/auth/bloc/auth_bloc.dart';
+import '../services/auth/bloc/auth_event.dart';
 import '../utils/dialogs/logout_dialog.dart';
 import 'certificate_list_view.dart';
 
@@ -54,11 +57,9 @@ class _MainViewState extends State<MainView> {
               case MenuAction.logout:
                 final shouldLogout = await showLogOutDialog(context);
                 if (shouldLogout) {
-                  await AuthService.fireBase().logOut();
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    loginViewRoute,
-                    (_) => false,
-                  );
+                  context.read<AuthBloc>().add(
+                        const AuthEventLogOut(),
+                      );
                 }
                 break;
             }
