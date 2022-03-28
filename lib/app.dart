@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
+
 import 'constants/routes.dart';
 import 'models/models.dart';
 import 'screens/certificate.dart';
+import 'screens/create_update_certificate_view.dart';
 import 'screens/info.dart';
 import 'screens/login_view.dart';
 import 'screens/main_view.dart';
-import 'screens/create_update_certificate_view.dart';
 import 'screens/qr_code.dart';
 import 'screens/register_view.dart';
 import 'screens/router_page.dart';

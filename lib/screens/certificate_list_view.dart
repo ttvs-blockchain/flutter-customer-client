@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import '../services/crud/certificate_service.dart';
+import 'package:vaxpass/services/cloud/cloud_certificate.dart';
+
 import '../utils/dialogs/delete_dialog.dart';
 
-typedef CertificateCallBack = void Function(DatabaseCertificate certificate);
+// typedef CertificateCallBack = void Function(DatabaseCertificate certificate);
+typedef CertificateCallBack = void Function(CloudCertificate certificate);
 
 class CertificateListView extends StatelessWidget {
-  final List<DatabaseCertificate> certificates;
+  // final List<DatabaseCertificate> certificates;
+  final Iterable<CloudCertificate> certificates;
   final CertificateCallBack onDeleteCertificate;
   final CertificateCallBack onTap;
 
@@ -21,7 +24,8 @@ class CertificateListView extends StatelessWidget {
     return ListView.builder(
       itemCount: certificates.length,
       itemBuilder: (context, index) {
-        final certificate = certificates[index];
+        // final certificate = certificates[index];
+        final certificate = certificates.elementAt(index);
         return ListTile(
           onTap: () {
             onTap(certificate);

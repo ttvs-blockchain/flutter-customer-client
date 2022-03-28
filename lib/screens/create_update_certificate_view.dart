@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:vaxpass/services/cloud/cloud_certificate.dart';
+import 'package:vaxpass/services/cloud/firebase_cloud_storage.dart';
+
 import '../services/auth/auth_service.dart';
-import '../services/crud/certificate_service.dart';
 import '../utils/generics/get_arguments.dart';
 
 class CreateUpdateCertificateView extends StatefulWidget {
@@ -13,13 +15,17 @@ class CreateUpdateCertificateView extends StatefulWidget {
 
 class _CreateUpdateCertificateViewState
     extends State<CreateUpdateCertificateView> {
-  DatabaseCertificate? _certificate;
-  late final CertificateService _certificateService;
+  // DatabaseCertificate? _certificate;
+  CloudCertificate? _certificate;
+
+  // late final CertificateService _certificateService;
+  late final FirebaseCloudStorage _certificateService;
   late final TextEditingController _textController;
 
   @override
   void initState() {
-    _certificateService = CertificateService();
+    // _certificateService = CertificateService();
+    _certificateService = FirebaseCloudStorage();
     _textController = TextEditingController();
     super.initState();
   }
@@ -30,8 +36,12 @@ class _CreateUpdateCertificateViewState
       return;
     }
     final text = _textController.text;
+    // await _certificateService.updateCertificate(
+    //   certificate: certificate,
+    //   text: text,
+    // );
     await _certificateService.updateCertificate(
-      certificate: certificate,
+      documentID: certificate.documentID,
       text: text,
     );
   }
@@ -41,9 +51,11 @@ class _CreateUpdateCertificateViewState
     _textController.addListener(_textControllerListener);
   }
 
-  Future<DatabaseCertificate> createOrGetExistingCertificate(
+  // Future<DatabaseCertificate> createOrGetExistingCertificate(
+  Future<CloudCertificate> createOrGetExistingCertificate(
       BuildContext context) async {
-    final widgetCertificate = context.getArgument<DatabaseCertificate>();
+    // final widgetCertificate = context.getArgument<DatabaseCertificate>();
+    final widgetCertificate = context.getArgument<CloudCertificate>();
 
     if (widgetCertificate != null) {
       _certificate = widgetCertificate;
@@ -56,10 +68,13 @@ class _CreateUpdateCertificateViewState
       return existingCertificate;
     }
     final currentUser = AuthService.fireBase().currentUser!;
-    final email = currentUser.email!;
-    final owner = await _certificateService.getUser(email: email);
+    // final email = currentUser.email!;
+    // final owner = await _certificateService.getUser(email: email);
+    // final newCertificate =
+    //     await _certificateService.createCertificate(owner: owner);
+    final userID = currentUser.id;
     final newCertificate =
-        await _certificateService.createCertificate(owner: owner);
+        await _certificateService.createNewCertificate(ownerUserID: userID);
     _certificate = newCertificate;
     return newCertificate;
   }
@@ -67,7 +82,8 @@ class _CreateUpdateCertificateViewState
   void _deleteCertificateIfTextIsEmpty() {
     final certificate = _certificate;
     if (_textController.text.isEmpty && certificate != null) {
-      _certificateService.deleteCertificate(id: certificate.id);
+      // _certificateService.deleteCertificate(id: certificate.id);
+      _certificateService.deleteCertificate(documentID: certificate.documentID);
     }
   }
 
@@ -75,8 +91,12 @@ class _CreateUpdateCertificateViewState
     final certificate = _certificate;
     final text = _textController.text;
     if (certificate != null && text.isNotEmpty) {
+      // await _certificateService.updateCertificate(
+      //   certificate: certificate,
+      //   text: text,
+      // );
       await _certificateService.updateCertificate(
-        certificate: certificate,
+        documentID: certificate.documentID,
         text: text,
       );
     }
@@ -101,7 +121,8 @@ class _CreateUpdateCertificateViewState
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
-              _certificate = snapshot.data as DatabaseCertificate;
+              // _certificate = snapshot.data as DatabaseCertificate;
+              _certificate = snapshot.data as CloudCertificate;
               _setupTextControllerListener();
               return TextField(
                   controller: _textController,
