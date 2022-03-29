@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vaxpass/services/auth/bloc/auth_event.dart';
 
-import '../constants/routes.dart';
-import '../services/auth/auth_service.dart';
+import '../services/auth/bloc/auth_bloc.dart';
 
 class VerifyEmailView extends StatefulWidget {
   const VerifyEmailView({Key? key}) : super(key: key);
@@ -28,16 +29,16 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
             TextButton(
               child: const Text('Send email verification'),
               onPressed: () async {
-                await AuthService.fireBase().sendEmailVerification();
+                context.read<AuthBloc>().add(
+                      const AuthEventSendEmailVerification(),
+                    );
               },
             ),
             TextButton(
               onPressed: () async {
-                await AuthService.fireBase().logOut();
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  registerViewRoute,
-                  (route) => false,
-                );
+                context.read<AuthBloc>().add(
+                      const AuthEventLogOut(),
+                    );
               },
               child: const Text('Go back to registration'),
             )

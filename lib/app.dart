@@ -51,10 +51,6 @@ class _VaxPassState extends State<VaxPass> {
       ),
       debugShowCheckedModeBanner: false,
       routes: {
-        loginViewRoute: (context) => const LoginView(),
-        registerViewRoute: (context) => const RegisterView(),
-        mainViewRoute: (context) => const MainView(),
-        verifyEmailRoute: (context) => const VerifyEmailView(),
         createOrUpdateCertificateRoute: (context) =>
             const CreateUpdateCertificateView(),
       },

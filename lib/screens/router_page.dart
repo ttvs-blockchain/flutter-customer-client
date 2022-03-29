@@ -6,6 +6,7 @@ import 'package:vaxpass/services/auth/bloc/auth_event.dart';
 import '../services/auth/bloc/auth_state.dart';
 import 'login_view.dart';
 import 'main_view.dart';
+import 'register_view.dart';
 import 'verify_email_view.dart';
 
 class RouterPage extends StatelessWidget {
@@ -22,6 +23,8 @@ class RouterPage extends StatelessWidget {
           return const VerifyEmailView();
         } else if (state is AuthStateLoggedOut) {
           return const LoginView();
+        } else if (state is AuthStateRegistering) {
+          return const RegisterView();
         } else {
           return const Scaffold(
             body: CircularProgressIndicator(),
