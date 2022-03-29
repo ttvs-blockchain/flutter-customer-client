@@ -41,7 +41,7 @@ class RouterPage extends StatelessWidget {
           return const RegisterView();
         } else {
           return const Scaffold(
-            body: CircularProgressIndicator(),
+            body: Center(child: CircularProgressIndicator()),
           );
         }
       },

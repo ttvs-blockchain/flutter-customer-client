@@ -24,7 +24,7 @@ class _VaxPassState extends State<VaxPass> {
   final listController = BehaviorSubject<List<CertificateModel>>(sync: true);
   final List<Widget> _widgetOptions = <Widget>[
     const QRCodeScene(),
-    CertificateScene(),
+    const CertificateScene(),
     const ProfileScene(),
   ];
 

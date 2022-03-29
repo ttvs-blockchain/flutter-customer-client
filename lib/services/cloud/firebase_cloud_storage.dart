@@ -21,36 +21,40 @@ class FirebaseCloudStorage {
     );
   }
 
-  Future<Iterable<CloudCertificate>> getCertificates(
-      {required String ownerUserID}) async {
-    try {
-      return await certificates
-          .where(
-            ownerUserIDFieldName,
-            isEqualTo: ownerUserID,
-          )
-          .get()
-          .then(
-            (value) => value.docs.map(
-              (doc) {
-                return CloudCertificate(
-                  documentID: doc.id,
-                  ownerUserID: doc.data()[ownerUserIDFieldName] as String,
-                  text: doc.data()[textFieldName] as String,
-                );
-              },
-            ),
-          );
-    } catch (_) {
-      throw CouldNotGetAllCertificatesException();
-    }
-  }
+  // Future<Iterable<CloudCertificate>> getCertificates(
+  //     {required String ownerUserID}) async {
+  //   try {
+  //     return await certificates
+  //         .where(
+  //           ownerUserIDFieldName,
+  //           isEqualTo: ownerUserID,
+  //         )
+  //         .get()
+  //         .then(
+  //           (value) => value.docs.map(
+  //             (doc) {
+  //               return CloudCertificate(
+  //                 documentID: doc.id,
+  //                 ownerUserID: doc.data()[ownerUserIDFieldName] as String,
+  //                 text: doc.data()[textFieldName] as String,
+  //               );
+  //             },
+  //           ),
+  //         );
+  //   } catch (_) {
+  //     throw CouldNotGetAllCertificatesException();
+  //   }
+  // }
 
   Stream<Iterable<CloudCertificate>> allCertificates(
-          {required String ownerUserID}) =>
-      certificates.snapshots().map((event) => event.docs
-          .map((doc) => CloudCertificate.fromSnapshot(doc))
-          .where((cert) => cert.ownerUserID == ownerUserID));
+      {required String ownerUserID}) {
+    final allCertificates = certificates
+        .where(ownerUserIDFieldName, isEqualTo: ownerUserID)
+        .snapshots()
+        .map((event) =>
+            event.docs.map((doc) => CloudCertificate.fromSnapshot(doc)));
+    return allCertificates;
+  }
 
   Future<void> updateCertificate({
     required String documentID,

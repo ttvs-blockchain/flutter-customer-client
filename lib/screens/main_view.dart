@@ -101,9 +101,9 @@ class _MainViewState extends State<MainView> {
                     },
                   );
                 }
-                return const CircularProgressIndicator();
+                return const Center(child: CircularProgressIndicator());
               default:
-                return const CircularProgressIndicator();
+                return const Center(child: CircularProgressIndicator());
             }
           }),
     );

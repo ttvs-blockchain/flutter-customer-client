@@ -6,7 +6,9 @@ import 'loading_screen_controller.dart';
 
 class LoadingScreen {
   static final LoadingScreen _shared = LoadingScreen._sharedInstance();
+
   LoadingScreen._sharedInstance();
+
   factory LoadingScreen() => _shared;
 
   LoadingScreenController? controller;
@@ -63,7 +65,7 @@ class LoadingScreen {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const SizedBox(height: 10),
-                      const CircularProgressIndicator(),
+                      const Center(child: CircularProgressIndicator()),
                       const SizedBox(height: 20),
                       StreamBuilder(
                           stream: _text.stream,

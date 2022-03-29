@@ -147,7 +147,7 @@ class _CreateUpdateCertificateViewState
                     hintText: 'Start typing your content...',
                   ));
             default:
-              return const CircularProgressIndicator();
+              return const Center(child: CircularProgressIndicator());
           }
         },
       ),
