@@ -1,0 +1,146 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:2122829474141889964",
+      "lastPropertyId": "14:3736732643272846664",
+      "name": "CertificateModel",
+      "properties": [
+        {
+          "id": "1:3994513198244962555",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:8058469644929735571",
+          "name": "systemID",
+          "type": 9
+        },
+        {
+          "id": "3:2375724783609647713",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "4:487081139684860008",
+          "name": "issueDate",
+          "type": 10
+        },
+        {
+          "id": "5:6520675132203716903",
+          "name": "status",
+          "type": 6
+        },
+        {
+          "id": "6:5756579743756290115",
+          "name": "type",
+          "type": 6
+        },
+        {
+          "id": "7:7300895618145102122",
+          "name": "payload",
+          "type": 23
+        },
+        {
+          "id": "8:4900121292003285464",
+          "name": "globalChainTxHash",
+          "type": 9
+        },
+        {
+          "id": "9:346921966514242868",
+          "name": "globalChainBlockNum",
+          "type": 6
+        },
+        {
+          "id": "10:4792633548781947588",
+          "name": "globalChainTimeStamp",
+          "type": 10
+        },
+        {
+          "id": "11:5732019648386275147",
+          "name": "localChainID",
+          "type": 9
+        },
+        {
+          "id": "12:8581678797132332843",
+          "name": "localChainTxHash",
+          "type": 9
+        },
+        {
+          "id": "13:4554904876055608716",
+          "name": "localChainBlockNum",
+          "type": 6
+        },
+        {
+          "id": "14:3736732643272846664",
+          "name": "localChainTimeStamp",
+          "type": 10
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:1131084315440854386",
+      "lastPropertyId": "8:657944835329384516",
+      "name": "UserModel",
+      "properties": [
+        {
+          "id": "1:8748180957359334997",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:1533083030035263192",
+          "name": "systemID",
+          "type": 9
+        },
+        {
+          "id": "3:879641671051228445",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "4:827419029080736667",
+          "name": "countryCode",
+          "type": 6
+        },
+        {
+          "id": "5:247458435252568283",
+          "name": "countryID",
+          "type": 9
+        },
+        {
+          "id": "6:6537230587640843732",
+          "name": "gender",
+          "type": 6
+        },
+        {
+          "id": "7:8975200801178930438",
+          "name": "dateOfBirth",
+          "type": 10
+        },
+        {
+          "id": "8:657944835329384516",
+          "name": "payload",
+          "type": 23
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "2:1131084315440854386",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}

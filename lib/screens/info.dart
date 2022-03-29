@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 
-class ProfilePage extends StatefulWidget {
+class ProfileScene extends StatefulWidget {
+  const ProfileScene({Key? key}) : super(key: key);
+
   @override
-  MapScreenState createState() => MapScreenState();
+  _ProfileSceneState createState() => _ProfileSceneState();
 }
 
-class MapScreenState extends State<ProfilePage>
+class _ProfileSceneState extends State<ProfileScene>
     with SingleTickerProviderStateMixin {
   bool _status = true;
   final FocusNode myFocusNode = FocusNode();
