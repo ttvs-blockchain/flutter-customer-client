@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'dart:developer';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-import 'app.dart';
-import 'screens/error_page.dart';
 import 'dart:developer' show log;
 
+import 'package:flutter/material.dart';
+
+import 'app.dart';
+import 'screens/error_page.dart';
+
 Future<void> main() async {
-  GestureBinding.instance?.resamplingEnabled = true;
+  WidgetsFlutterBinding.ensureInitialized();
   runZonedGuarded(() {
     ErrorWidget.builder = (FlutterErrorDetails details) {
       Zone.current.handleUncaughtError(details.exception, details.stack!);

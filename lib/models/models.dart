@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+
 import 'package:intl/intl.dart';
 import 'package:objectbox/objectbox.dart';
 
@@ -43,12 +44,14 @@ class UserModel {
 class CertificateModel {
   // ObjectBox required
   int id = 0;
+
   // certificate basic info
   String systemID;
   String name;
   DateTime issueDate;
   int status;
   int type;
+
   // String issuerID;
   Uint8List? payload;
 

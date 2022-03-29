@@ -20,3 +20,12 @@ Generate ObjectBox Code in Flutter
 ```bash
 flutter pub run build_runner build
 ```
+
+Generate Launcher Icon:
+
+```bash
+flutter_launcher_icons:
+    git:
+      url: https://github.com/Davenchy/flutter_launcher_icons.git
+      ref: fixMinSdkParseFlutter2.8
+```

@@ -43,6 +43,16 @@ dependencies:
   settings_ui: ^2.0.2
   rxdart: ^0.27.3
   firebase_auth: ^3.3.11
+  sqflite: ^2.0.2
+  cloud_firestore: ^3.1.10
+  share_plus: ^4.0.3
+  bloc: ^8.0.3
+  flutter_bloc: ^8.0.1
+  equatable: ^2.0.3
+  flutter_launcher_icons:
+    git:
+      url: https://github.com/Davenchy/flutter_launcher_icons.git
+      ref: fixMinSdkParseFlutter2.8
 
 dev_dependencies:
   flutter_test:
@@ -55,6 +65,7 @@ dev_dependencies:
   flutter_lints: ^1.0.4
   build_runner: ^2.1.8
   objectbox_generator: ^1.4.1
+  test: ^1.19.5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
