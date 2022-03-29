@@ -9,12 +9,8 @@ import 'models/models.dart';
 import 'screens/certificate.dart';
 import 'screens/create_update_certificate_view.dart';
 import 'screens/info.dart';
-import 'screens/login_view.dart';
-import 'screens/main_view.dart';
 import 'screens/qr_code.dart';
-import 'screens/register_view.dart';
 import 'screens/router_page.dart';
-import 'screens/verify_email_view.dart';
 
 class VaxPass extends StatefulWidget {
   const VaxPass({Key? key}) : super(key: key);
