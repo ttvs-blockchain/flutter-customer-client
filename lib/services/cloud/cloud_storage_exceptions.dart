@@ -5,10 +5,10 @@ class CloudStorageException implements Exception {
   const CloudStorageException();
 }
 
-class CouldNotCreateCertificateException implements Exception {}
+class ExceptionCouldNotCreateCertificate implements Exception {}
 
-class CouldNotGetAllCertificatesException implements Exception {}
+class ExceptionCouldNotGetAllCertificates implements Exception {}
 
-class CouldNotUpdateCertificateException implements Exception {}
+class ExceptionCouldNotUpdateCertificate implements Exception {}
 
-class CouldNotDeleteCertificateException implements Exception {}
+class ExceptionCouldNotDeleteCertificate implements Exception {}
