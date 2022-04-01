@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vaxpass/services/auth/bloc/auth_bloc.dart';
 import 'package:vaxpass/services/auth/firebase_auth_provider.dart';
 
-import 'constants/routes.dart';
+import 'constants/constants.dart';
 import 'screens/create_update_certificate_view.dart';
 import 'screens/router_page.dart';
 

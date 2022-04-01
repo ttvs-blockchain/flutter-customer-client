@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vaxpass/services/auth/auth_service.dart';
 import 'package:vaxpass/services/cloud/firebase_cloud_storage.dart';
 
-import '../constants/routes.dart';
+import '../constants/constants.dart';
 import '../services/cloud/cloud_certificate.dart';
 import 'certificate_list_view.dart';
 
@@ -36,7 +36,6 @@ class _CertificateSceneState extends State<CertificateScene>
   // }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 
   @override
