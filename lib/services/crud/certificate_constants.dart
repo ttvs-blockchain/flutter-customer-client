@@ -30,7 +30,7 @@ const columnIsValidated = 'is_validated';
 
 const queryCreateUserTable = '''CREATE TABLE IF NOT EXISTS "user" (
         "id"	INTEGER NOT NULL UNIQUE,
-	      "sys_id"	TEXT NOT NULL UNIQUE,
+	      "system_id"	TEXT NOT NULL UNIQUE,
 	      "name"	TEXT NOT NULL,
 	      "country_code"	TEXT NOT NULL,
 	      "country_id"	TEXT NOT NULL,

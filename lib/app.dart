@@ -25,7 +25,7 @@ class _VaxPassState extends State<VaxPass> {
         primarySwatch: Colors.indigo,
         textTheme: const TextTheme(
           headline1: TextStyle(
-            fontSize: 27,
+            fontSize: 24,
             fontWeight: FontWeight.bold,
             color: Colors.black,
           ),

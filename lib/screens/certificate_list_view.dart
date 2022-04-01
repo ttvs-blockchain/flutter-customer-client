@@ -32,7 +32,7 @@ class CertificateListView extends StatelessWidget {
               ? const Color.fromARGB(139, 152, 255, 233)
               : const Color.fromARGB(138, 255, 56, 30),
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(15, 20, 15, 20),
+            padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
             child: Column(
               children: <Widget>[
                 Row(
@@ -48,12 +48,13 @@ class CertificateListView extends StatelessWidget {
                               certificate.name,
                               style: Theme.of(context).textTheme.headline1,
                             ),
-                            const SizedBox(width: 5),
+                            const SizedBox(width: 4),
                             _getStatusTag(certificate.isValidated),
                           ],
                         ),
+                        const SizedBox(height: 4),
                         Padding(
-                          padding: const EdgeInsets.all(4.0),
+                          padding: const EdgeInsets.all(2.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [

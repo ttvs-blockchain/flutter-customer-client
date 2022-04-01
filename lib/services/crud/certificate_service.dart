@@ -11,16 +11,15 @@ import 'package:vaxpass/services/crud/crud_exceptions.dart';
 import 'certificate_constants.dart';
 import 'dummy_data.dart';
 
-class CertificateService {
+class DatabaseService {
   Database? _db;
 
   List<DatabaseCertificate> _certificates = [];
 
-  DatabaseUser? _user;
+  DatabaseUser? user;
 
-  static final CertificateService _shared =
-      CertificateService._sharedInstance();
-  CertificateService._sharedInstance() {
+  static final DatabaseService _shared = DatabaseService._sharedInstance();
+  DatabaseService._sharedInstance() {
     _certificateStreamController =
         StreamController<List<DatabaseCertificate>>.broadcast(
       onListen: () {
@@ -28,7 +27,7 @@ class CertificateService {
       },
     );
   }
-  factory CertificateService() => _shared;
+  factory DatabaseService() => _shared;
 
   late final StreamController<List<DatabaseCertificate>>
       _certificateStreamController;
@@ -132,6 +131,22 @@ class CertificateService {
     if (deleteCount != 1) {
       throw ExceptionCouldNotDeleteUser();
     }
+  }
+
+  Future<DatabaseUser> getUser() async {
+    await _ensureDBIsOpen();
+    final db = _getDatabaseOrThrow();
+    final results = await db.query(
+      nameUserTable,
+    );
+    if (results.isEmpty) {
+      throw ExceptionCouldNotFoundUser();
+    }
+    if (results.length > 1) {
+      throw ExceptionUserNotUnique();
+    }
+    final user = DatabaseUser.fromRow(results.first);
+    return user;
   }
 
   Future<int> createCertificate(
@@ -265,6 +280,27 @@ class CertificateService {
       log(cert.toString());
     }
   }
+
+  Future<void> insertDummyUser() async {
+    await _ensureDBIsOpen();
+    final db = _getDatabaseOrThrow();
+    final users = await db.query(nameUserTable);
+    if (users.length > 1) {
+      throw ExceptionUserNotUnique();
+    }
+    if (users.isNotEmpty) {
+      return;
+    }
+    await db.insert(nameUserTable, {
+      columnSystemID: dummyDatabaseUser.systemID,
+      columnName: dummyDatabaseUser.name,
+      columnCountryCode: dummyDatabaseUser.countryCode,
+      columnCountryID: dummyDatabaseUser.countryID,
+      columnGender: dummyDatabaseUser.gender,
+      columnDateOfBirth: dummyDatabaseUser.dateOfBirth,
+      columnEmail: dummyDatabaseUser.email,
+    });
+  }
 }
 
 @immutable
@@ -274,7 +310,7 @@ class DatabaseUser {
   final String name;
   final String countryCode;
   final String countryID;
-  final String gender;
+  final int gender;
   final String dateOfBirth;
   final String email;
 
@@ -295,7 +331,7 @@ class DatabaseUser {
         name = map[columnName] as String,
         countryCode = map[columnCountryCode] as String,
         countryID = map[columnCountryID] as String,
-        gender = _intToGenderString(map[columnGender] as int),
+        gender = map[columnGender] as int,
         dateOfBirth = map[columnDateOfBirth] as String,
         email = map[columnEmail] as String;
 
@@ -306,6 +342,7 @@ class DatabaseUser {
       \tcountryID: $countryID, 
       \tgender: $gender';
       \tdateOfBirth: $dateOfBirth,
+      \temail: $email,
       ]''';
 
   @override
@@ -397,14 +434,4 @@ class DatabaseCertificate {
 
   @override
   int get hashCode => id.hashCode;
-}
-
-String _intToGenderString(int intValue) {
-  if (intValue == 0) {
-    return "male";
-  }
-  if (intValue == 1) {
-    return "female";
-  }
-  return "undefined";
 }

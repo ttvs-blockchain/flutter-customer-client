@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vaxpass/screens/forgot_password_view.dart';
 import 'package:vaxpass/services/auth/bloc/auth_bloc.dart';
 import 'package:vaxpass/services/auth/bloc/auth_event.dart';
+import 'package:vaxpass/services/crud/certificate_service.dart';
 
 import '../helpers/loading/loading_screen.dart';
 import '../services/auth/bloc/auth_state.dart';
@@ -11,8 +12,25 @@ import 'main_view.dart';
 import 'register_view.dart';
 import 'verify_email_view.dart';
 
-class RouterPage extends StatelessWidget {
+class RouterPage extends StatefulWidget {
   const RouterPage({Key? key}) : super(key: key);
+
+  @override
+  State<RouterPage> createState() => _RouterPageState();
+}
+
+class _RouterPageState extends State<RouterPage> {
+  @override
+  void initState() {
+    DatabaseService().open();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    DatabaseService().close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

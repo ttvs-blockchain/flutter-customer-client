@@ -18,3 +18,5 @@ class ExceptionCouldNotUpdateCertificate implements Exception {}
 
 class ExceptionUserShouldBeSetBeforeAccessingAllCertificates
     implements Exception {}
+
+class ExceptionUserNotUnique implements Exception {}

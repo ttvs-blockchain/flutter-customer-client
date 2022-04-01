@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../constants/constants.dart';
 import '../enums/menu_action.dart';
 import '../services/auth/bloc/auth_bloc.dart';
 import '../services/auth/bloc/auth_event.dart';
 import '../utils/dialogs/logout_dialog.dart';
 import 'certificate_view.dart';
-import 'info.dart';
+import 'personal_info_view.dart';
 import 'qr_code.dart';
 
 class MainView extends StatefulWidget {
@@ -22,8 +21,8 @@ class _MainViewState extends State<MainView> {
 
   final List<Widget> _widgetOptions = <Widget>[
     const QRCodeScene(),
-    const CertificateScene(),
-    const ProfileScene(),
+    const CertificateView(),
+    const PersonalInfoView(),
   ];
 
   void _onItemTapped(int index) {
@@ -39,12 +38,12 @@ class _MainViewState extends State<MainView> {
         centerTitle: true,
         title: const Text('VaxPass'),
         actions: <Widget>[
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed(createOrUpdateCertificateRoute);
-            },
-            icon: const Icon(Icons.add),
-          ),
+          // IconButton(
+          //   onPressed: () {
+          //     Navigator.of(context).pushNamed(createOrUpdateCertificateRoute);
+          //   },
+          //   icon: const Icon(Icons.add),
+          // ),
           PopupMenuButton<MenuAction>(onSelected: (value) async {
             switch (value) {
               case MenuAction.logout:

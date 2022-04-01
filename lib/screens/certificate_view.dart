@@ -1,40 +1,30 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:vaxpass/services/auth/auth_service.dart';
 
 import '../constants/constants.dart';
 import '../services/crud/certificate_service.dart';
 import 'certificate_list_view.dart';
 
-class CertificateScene extends StatefulWidget {
-  const CertificateScene({Key? key}) : super(key: key);
+class CertificateView extends StatefulWidget {
+  const CertificateView({Key? key}) : super(key: key);
 
   @override
-  _CertificateSceneState createState() => _CertificateSceneState();
+  _CertificateViewState createState() => _CertificateViewState();
 }
 
-class _CertificateSceneState extends State<CertificateScene>
-    with AutomaticKeepAliveClientMixin<CertificateScene> {
-  late final CertificateService _certificateService;
+class _CertificateViewState extends State<CertificateView>
+    with AutomaticKeepAliveClientMixin<CertificateView> {
+  late final DatabaseService _databaseService;
   // late final FirebaseCloudStorage _certificateService;
 
   // String get userEmail => AuthService.fireBase().currentUser!.email!;
-  String get userID => AuthService.fireBase().currentUser!.id;
+  // String get userID => AuthService.fireBase().currentUser!.id;
 
   @override
   void initState() {
-    _certificateService = CertificateService();
+    _databaseService = DatabaseService();
     // _certificateService = FirebaseCloudStorage();
-    _certificateService.open();
-    _certificateService.insertDummyCertificates();
+    _databaseService.insertDummyCertificates();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _certificateService.close();
-    super.dispose();
   }
 
   @override
@@ -44,7 +34,7 @@ class _CertificateSceneState extends State<CertificateScene>
   Widget build(BuildContext context) {
     super.build(context);
     return StreamBuilder(
-      stream: _certificateService.allCertificates,
+      stream: _databaseService.allCertificates,
       // stream: _certificateService.allCertificates(ownerUserID: userID),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
@@ -57,8 +47,7 @@ class _CertificateSceneState extends State<CertificateScene>
               return CertificateListView(
                 certificates: allCertificates,
                 onDeleteCertificate: (certificate) async {
-                  await _certificateService.deleteCertificate(
-                      id: certificate.id!);
+                  await _databaseService.deleteCertificate(id: certificate.id!);
                   // await _certificateService.deleteCertificate(
                   //   documentID: certificate.documentID,
                   // );

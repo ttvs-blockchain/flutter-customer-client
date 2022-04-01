@@ -6,7 +6,7 @@ const dummyDatabaseUser = DatabaseUser(
   name: 'John Doe',
   countryCode: 'HKG',
   countryID: 'M123456(0)',
-  gender: 'male',
+  gender: 0,
   dateOfBirth: '1999-11-23',
   email: 'xtianae@connect.ust.hk',
 );
