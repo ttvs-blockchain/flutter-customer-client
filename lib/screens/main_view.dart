@@ -88,6 +88,22 @@ class _MainViewState extends State<MainView> {
         selectedItemColor: const Color.fromARGB(255, 5, 14, 136),
         onTap: _onItemTapped,
       ),
+      floatingActionButton: Visibility(
+        child: SizedBox(
+          width: 50,
+          height: 50,
+          child: RawMaterialButton(
+            onPressed: () {},
+            fillColor: const Color.fromARGB(68, 63, 81, 181),
+            shape: const CircleBorder(),
+            child: const Icon(
+              Icons.refresh_outlined,
+              size: 30,
+            ),
+          ),
+        ),
+        visible: _selectedIndex == 1,
+      ),
     );
   }
 }

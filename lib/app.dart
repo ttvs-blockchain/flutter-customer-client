@@ -23,6 +23,16 @@ class _VaxPassState extends State<VaxPass> {
       ),
       theme: ThemeData(
         primarySwatch: Colors.indigo,
+        textTheme: const TextTheme(
+          headline1: TextStyle(
+            fontSize: 27,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+          bodyText1: TextStyle(
+            fontSize: 15,
+          ),
+        ),
       ),
       debugShowCheckedModeBanner: false,
       // routes: {
