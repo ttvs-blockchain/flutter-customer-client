@@ -1,5 +1,3 @@
-import 'certificate_service.dart';
-
 const nameDB = 'vaxpass.db';
 const nameUserTable = 'user';
 const nameCertificateTable = 'certificate';
@@ -23,13 +21,12 @@ const columnIssuer = 'issuer';
 const columnRemark = 'remark';
 const columnGlobalChainTxHash = 'global_chain_tx_hash';
 const columnGlobalChainBlockNum = 'global_chain_block_num';
-const columnGlobalChainTimeStamp = 'global_chain_time_stamp';
+const columnGlobalChainTimestamp = 'global_chain_timestamp';
 const columnLocalChainID = 'local_chain_id';
 const columnLocalChainTxHash = 'local_chain_tx_hash';
 const columnLocalChainBlockNum = 'local_chain_block_num';
-const columnLocalChainTimeStamp = 'local_chain_time_stamp';
+const columnLocalChainTimestamp = 'local_chain_timestamp';
 const columnIsValidated = 'is_validated';
-// const columnText = 'text';
 
 const queryCreateUserTable = '''CREATE TABLE IF NOT EXISTS "user" (
         "id"	INTEGER NOT NULL UNIQUE,
@@ -46,7 +43,7 @@ const queryCreateCertificateTable =
     '''CREATE TABLE IF NOT EXISTS "certificate" (
         "id"	INTEGER NOT NULL UNIQUE,
 	      "cert_id"	TEXT NOT NULL UNIQUE,
-	      "person_id"	TEXT NOT NULL UNIQUE,
+	      "person_id"	TEXT NOT NULL,
 	      "name"	TEXT NOT NULL,
 	      "brand"	TEXT NOT NULL,
 	      "num_dose"	INTEGER,
@@ -63,3 +60,4 @@ const queryCreateCertificateTable =
         "is_validated"	INTEGER NOT NULL,
 	      PRIMARY KEY("id" AUTOINCREMENT)
       );''';
+const queryOrderByDESC = ' DESC';

@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vaxpass/services/auth/bloc/auth_bloc.dart';
 import 'package:vaxpass/services/auth/firebase_auth_provider.dart';
 
-import 'constants/constants.dart';
-import 'screens/create_update_certificate_view.dart';
 import 'screens/router_page.dart';
 
 class VaxPass extends StatefulWidget {
@@ -27,10 +25,10 @@ class _VaxPassState extends State<VaxPass> {
         primarySwatch: Colors.indigo,
       ),
       debugShowCheckedModeBanner: false,
-      routes: {
-        createOrUpdateCertificateRoute: (context) =>
-            const CreateUpdateCertificateView(),
-      },
+      // routes: {
+      //   createOrUpdateCertificateRoute: (context) =>
+      //       const CreateUpdateCertificateView(),
+      // },
     );
   }
 }

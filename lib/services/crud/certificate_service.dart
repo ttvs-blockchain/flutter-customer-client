@@ -1,11 +1,11 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart'
     show MissingPlatformDirectoryException, getApplicationDocumentsDirectory;
 import 'package:sqflite/sqflite.dart';
-import 'package:vaxpass/extensions/list/filter.dart';
 import 'package:vaxpass/services/crud/crud_exceptions.dart';
 
 import 'certificate_constants.dart';
@@ -34,14 +34,14 @@ class CertificateService {
       _certificateStreamController;
 
   Stream<List<DatabaseCertificate>> get allCertificates =>
-      _certificateStreamController.stream.filter((certificate) {
-        final currentUser = _user;
-        if (currentUser != null) {
-          return certificate.personID == currentUser.systemID;
-        } else {
-          throw ExceptionUserShouldBeSetBeforeAccessingAllCertificates();
-        }
-      });
+      _certificateStreamController.stream; //.filter((certificate) {
+  //   final currentUser = _user;
+  //   if (currentUser != null) {
+  //     return certificate.personID == currentUser.systemID;
+  //   } else {
+  //     throw ExceptionUserShouldBeSetBeforeAccessingAllCertificates();
+  //   }
+  // });
 
   Future<void> _cacheCertificates() async {
     final allCertificates = await getAllCertificates();
@@ -158,11 +158,11 @@ class CertificateService {
       columnRemark: certificate.remark,
       columnGlobalChainTxHash: certificate.globalChainTxHash,
       columnGlobalChainBlockNum: certificate.globalChainBlockNum,
-      columnGlobalChainTimeStamp: certificate.globalChainTimeStamp,
+      columnGlobalChainTimestamp: certificate.globalChainTimeStamp,
       columnLocalChainID: certificate.localChainID,
       columnLocalChainTxHash: certificate.localChainTxHash,
       columnLocalChainBlockNum: certificate.localChainBlockNum,
-      columnLocalChainTimeStamp: certificate.localChainTimeStamp,
+      columnLocalChainTimestamp: certificate.localChainTimeStamp,
     });
 
     // final certificate = DatabaseCertificate(
@@ -227,16 +227,20 @@ class CertificateService {
     final db = _getDatabaseOrThrow();
     final certificates = await db.query(
       nameCertificateTable,
-      orderBy: columnIssueTime,
+      orderBy: columnIssueTime + queryOrderByDESC,
     );
 
     return certificates
         .map((certificateRow) => DatabaseCertificate.fromRow(certificateRow));
   }
 
-  Future<List<int>> insertDummyCertificate() async {
+  Future<void> insertDummyCertificates() async {
     await _ensureDBIsOpen();
     final db = _getDatabaseOrThrow();
+    final certificates = await db.query(nameCertificateTable);
+    if (certificates.isNotEmpty) {
+      return;
+    }
     final certIDs = <int>[];
     for (var cert in dummyDatabaseCertificates) {
       final certID = await db.insert(nameCertificateTable, {
@@ -250,15 +254,16 @@ class CertificateService {
         columnRemark: cert.remark,
         columnGlobalChainTxHash: cert.globalChainTxHash,
         columnGlobalChainBlockNum: cert.globalChainBlockNum,
-        columnGlobalChainTimeStamp: cert.globalChainTimeStamp,
+        columnGlobalChainTimestamp: cert.globalChainTimeStamp,
         columnLocalChainID: cert.localChainID,
         columnLocalChainTxHash: cert.localChainTxHash,
         columnLocalChainBlockNum: cert.localChainBlockNum,
-        columnLocalChainTimeStamp: cert.localChainTimeStamp,
+        columnLocalChainTimestamp: cert.localChainTimeStamp,
+        columnIsValidated: cert.isValidated,
       });
       certIDs.add(certID);
+      log(cert.toString());
     }
-    return certIDs;
   }
 }
 
@@ -361,11 +366,11 @@ class DatabaseCertificate {
         remark = map[columnRemark] as String,
         globalChainTxHash = map[columnGlobalChainTxHash] as String,
         globalChainBlockNum = map[columnGlobalChainBlockNum] as int,
-        globalChainTimeStamp = map[columnGlobalChainTimeStamp] as String,
+        globalChainTimeStamp = map[columnGlobalChainTimestamp] as String,
         localChainID = map[columnLocalChainID] as String,
         localChainTxHash = map[columnLocalChainTxHash] as String,
         localChainBlockNum = map[columnLocalChainBlockNum] as int,
-        localChainTimeStamp = map[columnLocalChainTimeStamp] as String,
+        localChainTimeStamp = map[columnLocalChainTimestamp] as String,
         isValidated = (map[columnIsValidated] as int) == 1;
 
   @override
