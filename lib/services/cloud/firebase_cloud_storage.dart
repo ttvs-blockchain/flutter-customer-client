@@ -63,7 +63,7 @@ class FirebaseCloudStorage {
     try {
       await certificates.doc(documentID).update({textFieldName: text});
     } catch (_) {
-      throw CouldNotUpdateCertificateException();
+      throw ExceptionCouldNotUpdateCertificate();
     }
   }
 
@@ -71,7 +71,7 @@ class FirebaseCloudStorage {
     try {
       await certificates.doc(documentID).delete();
     } catch (_) {
-      throw CouldNotDeleteCertificateException();
+      throw ExceptionCouldNotDeleteCertificate();
     }
   }
 
