@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vaxpass/screens/forgot_password_view.dart';
-import 'package:vaxpass/services/auth/bloc/auth_bloc.dart';
-import 'package:vaxpass/services/auth/bloc/auth_event.dart';
-import 'package:vaxpass/services/crud/certificate_service.dart';
+import 'forgot_password_view.dart';
+import '../services/auth/bloc/auth_bloc.dart';
+import '../services/auth/bloc/auth_event.dart';
+import '../services/crud/certificate_service.dart';
 
 import '../helpers/loading/loading_screen.dart';
 import '../services/auth/bloc/auth_state.dart';

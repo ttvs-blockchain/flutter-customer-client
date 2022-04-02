@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vaxpass/services/auth/bloc/auth_event.dart';
+import '../services/auth/bloc/auth_event.dart';
 
 import '../services/auth/bloc/auth_bloc.dart';
 
