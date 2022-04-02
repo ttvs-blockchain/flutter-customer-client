@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../constants/constants.dart';
 import '../models/models.dart';
 
-// typedef CertificateCallBack = void Function(DatabaseCertificate certificate);
-// typedef CertificateCallBack = void Function(CloudCertificate certificate);
-
 class CertificateListView extends StatelessWidget {
   final List<DatabaseCertificate> certificates;
-
-  // final Iterable<CloudCertificate> certificates;
 
   const CertificateListView({
     Key? key,
@@ -38,7 +32,6 @@ class CertificateListView extends StatelessWidget {
       itemCount: certificates.length,
       itemBuilder: (context, index) {
         final certificate = certificates[index];
-        // final certificate = certificates.elementAt(index);
         return GestureDetector(
           onTap: () => _onTap(context, certificate),
           child: Card(
@@ -130,8 +123,7 @@ class CertificateListView extends StatelessWidget {
 
 Widget _getIssueTimeTag(BuildContext context, String issueTime) {
   return Text(
-    DateFormat(formatDateTime)
-        .format(DateFormat(formatDatabaseDateTime).parse(issueTime)),
+    issueTime,
     style: Theme.of(context).textTheme.bodyText1,
   );
 }

@@ -14,12 +14,8 @@ class QRCodeView extends StatefulWidget {
   State<QRCodeView> createState() => _QRCodeViewState();
 }
 
-class _QRCodeViewState extends State<QRCodeView>
-    with AutomaticKeepAliveClientMixin<QRCodeView> {
+class _QRCodeViewState extends State<QRCodeView> {
   late final DatabaseService _databaseService;
-
-  @override
-  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -45,7 +41,6 @@ class _QRCodeViewState extends State<QRCodeView>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return FutureBuilder(
       future: _databaseService.getUserAndCertificates(),
       builder: (context, snapshot) {

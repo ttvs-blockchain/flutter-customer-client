@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../constants/constants.dart';
 import '../models/models.dart';
 import '../utils/generics/get_arguments.dart';
 
@@ -49,9 +47,7 @@ class CertificateDetailView extends StatelessWidget {
           ),
           listTile(
             'Issue Time',
-            DateFormat(formatDateTime).format(
-              DateFormat(formatDatabaseDateTime).parse(certificate.issueTime),
-            ),
+            certificate.issueTime,
           ),
           listTile(
             'Issuer',

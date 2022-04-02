@@ -11,32 +11,19 @@ class CertificateView extends StatefulWidget {
   _CertificateViewState createState() => _CertificateViewState();
 }
 
-class _CertificateViewState extends State<CertificateView>
-    with AutomaticKeepAliveClientMixin<CertificateView> {
+class _CertificateViewState extends State<CertificateView> {
   late final DatabaseService _databaseService;
-
-  // late final FirebaseCloudStorage _certificateService;
-
-  // String get userEmail => AuthService.fireBase().currentUser!.email!;
-  // String get userID => AuthService.fireBase().currentUser!.id;
 
   @override
   void initState() {
     _databaseService = DatabaseService();
-    // _certificateService = FirebaseCloudStorage();
-    // _databaseService.insertDummyCertificates();
     super.initState();
   }
 
   @override
-  bool get wantKeepAlive => true;
-
-  @override
   Widget build(BuildContext context) {
-    super.build(context);
     return StreamBuilder(
       stream: _databaseService.allCertificates,
-      // stream: _certificateService.allCertificates(ownerUserID: userID),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
@@ -44,10 +31,19 @@ class _CertificateViewState extends State<CertificateView>
             if (snapshot.hasData) {
               final allCertificates =
                   snapshot.data as List<DatabaseCertificate>;
-              // snapshot.data as Iterable<CloudCertificate>;
-              return CertificateListView(
-                certificates: allCertificates,
-              );
+              return allCertificates.isEmpty
+                  ? const Center(
+                      child: Text(
+                        'No certificates',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    )
+                  : CertificateListView(
+                      certificates: allCertificates,
+                    );
             }
             return const Center(child: CircularProgressIndicator());
           default:

@@ -1,25 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'cloud_certificate.dart';
-import 'cloud_storage_constants.dart';
-import 'cloud_storage_exceptions.dart';
+import '../../constants/constants.dart';
+import '../../models/models.dart';
 
 class FirebaseCloudStorage {
   final certificates = FirebaseFirestore.instance.collection('certificates');
 
-  Future<CloudCertificate> createNewCertificate(
-      {required String ownerUserID}) async {
-    final document = await certificates.add({
-      ownerUserIDFieldName: ownerUserID,
-      textFieldName: '',
-    });
-    final fetchedCertificate = await document.get();
-    return CloudCertificate(
-      documentID: fetchedCertificate.id,
-      ownerUserID: ownerUserID,
-      text: '',
-    );
-  }
+  // Future<CloudCertificate> createNewCertificate(
+  //     {required String ownerUserID}) async {
+  //   final document = await certificates.add({
+  //     fieldNameOwnerUserID: ownerUserID,
+  //     textFieldName: '',
+  //   });
+  //   final fetchedCertificate = await document.get();
+  //   return CloudCertificate(
+  //     documentID: fetchedCertificate.id,
+  //     ownerUserID: ownerUserID,
+  //     text: '',
+  //   );
+  // }
 
   // Future<Iterable<CloudCertificate>> getCertificates(
   //     {required String ownerUserID}) async {
@@ -47,33 +46,43 @@ class FirebaseCloudStorage {
   // }
 
   Stream<Iterable<CloudCertificate>> allCertificates(
-      {required String ownerUserID}) {
+      {required String userSystemID}) {
     final allCertificates = certificates
-        .where(ownerUserIDFieldName, isEqualTo: ownerUserID)
+        .where(fieldNamePersonID, isEqualTo: userSystemID)
         .snapshots()
         .map((event) =>
             event.docs.map((doc) => CloudCertificate.fromSnapshot(doc)));
     return allCertificates;
   }
 
-  Future<void> updateCertificate({
-    required String documentID,
-    required String text,
-  }) async {
-    try {
-      await certificates.doc(documentID).update({textFieldName: text});
-    } catch (_) {
-      throw ExceptionCouldNotUpdateCertificate();
-    }
-  }
+  // Future<Iterable<CloudCertificate>> getAllCertificates(
+  //     {required String userSystemID}) async {
+  //   final allCertificates = await certificates
+  //       .where(fieldNamePersonID, isEqualTo: userSystemID)
+  //       .snapshots()
+  //       .map((event) =>
+  //           event.docs.map((doc) => CloudCertificate.fromSnapshot(doc)));
+  //   return allCertificates;
+  // }
 
-  Future<void> deleteCertificate({required String documentID}) async {
-    try {
-      await certificates.doc(documentID).delete();
-    } catch (_) {
-      throw ExceptionCouldNotDeleteCertificate();
-    }
-  }
+  // Future<void> updateCertificate({
+  //   required String documentID,
+  //   required String text,
+  // }) async {
+  //   try {
+  //     await certificates.doc(documentID).update({textFieldName: text});
+  //   } catch (_) {
+  //     throw ExceptionCouldNotUpdateCertificate();
+  //   }
+  // }
+
+  // Future<void> deleteCertificate({required String documentID}) async {
+  //   try {
+  //     await certificates.doc(documentID).delete();
+  //   } catch (_) {
+  //     throw ExceptionCouldNotDeleteCertificate();
+  //   }
+  // }
 
   static final FirebaseCloudStorage _shared =
       FirebaseCloudStorage._sharedInstance();

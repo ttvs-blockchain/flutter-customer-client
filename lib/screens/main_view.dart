@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vaxpass/services/cloud/firebase_cloud_storage.dart';
+import 'package:vaxpass/services/crud/certificate_service.dart';
 
 import '../enums/menu_action.dart';
 import '../services/auth/bloc/auth_bloc.dart';
@@ -25,10 +27,35 @@ class _MainViewState extends State<MainView> {
     const PersonalInfoView(),
   ];
 
+  late final DatabaseService _databaseService;
+  late final FirebaseCloudStorage _firebaseService;
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  Future<void> _updateCertificatesFromCloud() async {
+    final user = await _databaseService.getUser();
+
+    final cloudCertificates = await _firebaseService
+        .allCertificates(userSystemID: user.systemID)
+        .first;
+
+    _databaseService.deleteAllCertificates();
+
+    for (final cert in cloudCertificates) {
+      await _databaseService.createCertificate(
+          certificate: cert.toDatabaseCertificate());
+    }
+  }
+
+  @override
+  void initState() {
+    _databaseService = DatabaseService();
+    _firebaseService = FirebaseCloudStorage();
+    super.initState();
   }
 
   @override
@@ -38,12 +65,6 @@ class _MainViewState extends State<MainView> {
         centerTitle: true,
         title: const Text('VaxPass'),
         actions: <Widget>[
-          // IconButton(
-          //   onPressed: () {
-          //     Navigator.of(context).pushNamed(createOrUpdateCertificateRoute);
-          //   },
-          //   icon: const Icon(Icons.add),
-          // ),
           PopupMenuButton<MenuAction>(onSelected: (value) async {
             switch (value) {
               case MenuAction.logout:
@@ -92,7 +113,10 @@ class _MainViewState extends State<MainView> {
           width: 50,
           height: 50,
           child: RawMaterialButton(
-            onPressed: () {},
+            onPressed: () {
+              _updateCertificatesFromCloud();
+              _databaseService.cacheCertificates();
+            },
             fillColor: const Color.fromARGB(68, 63, 81, 181),
             shape: const CircleBorder(),
             child: const Icon(

@@ -24,7 +24,7 @@ class _RouterPageState extends State<RouterPage> {
   void initState() {
     DatabaseService().open();
     DatabaseService().insertDummyUser();
-    DatabaseService().insertDummyCertificates();
+    // DatabaseService().insertDummyCertificates();
     super.initState();
   }
 

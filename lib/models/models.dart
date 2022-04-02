@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 import '../constants/constants.dart';
@@ -139,4 +140,85 @@ class DatabaseCertificate {
 
   String toQRCodeInfo() =>
       '"certificate$certID":{"personID":"$personID","name":"$name","brand":"$brand","numDose":$numDose,"issueTime":"$issueTime","issuer":"$issuer","remark":"$remark","globalChainTxHash":"$globalChainTxHash","globalChainBlockNum":$globalChainBlockNum,"globalChainTimeStamp":"$globalChainTimestamp","localChainID":"$localChainID","localChainTxHash":"$localChainTxHash","localChainBlockNum":$localChainBlockNum,"localChainTimeStamp":"$localChainTimeStamp","isValidated":$isValidated}';
+}
+
+@immutable
+class CloudCertificate {
+  final String documentID;
+  final String certID;
+  final String personID;
+  final String name;
+  final String brand;
+  final int numDose;
+  final String issueTime;
+  final String issuer;
+  final String remark;
+  final String globalChainTxHash;
+  final int globalChainBlockNum;
+  final String globalChainTimestamp;
+  final String localChainID;
+  final String localChainTxHash;
+  final int localChainBlockNum;
+  final String localChainTimestamp;
+  final bool isValidated;
+
+  const CloudCertificate({
+    required this.documentID,
+    required this.certID,
+    required this.personID,
+    required this.name,
+    required this.brand,
+    required this.numDose,
+    required this.issueTime,
+    required this.issuer,
+    required this.remark,
+    required this.globalChainTxHash,
+    required this.globalChainBlockNum,
+    required this.globalChainTimestamp,
+    required this.localChainID,
+    required this.localChainTxHash,
+    required this.localChainBlockNum,
+    required this.localChainTimestamp,
+    required this.isValidated,
+  });
+
+  CloudCertificate.fromSnapshot(
+      QueryDocumentSnapshot<Map<String, dynamic>> snapshot)
+      : documentID = snapshot.id,
+        certID = snapshot.data()[fieldNameCertID],
+        personID = snapshot.data()[fieldNamePersonID],
+        name = snapshot.data()[fieldNameName],
+        brand = snapshot.data()[fieldNameBrand],
+        numDose = snapshot.data()[fieldNameNumDose],
+        issueTime = snapshot.data()[fieldNameIssueTime],
+        issuer = snapshot.data()[fieldNameIssuer],
+        remark = snapshot.data()[fieldNameRemark],
+        globalChainTxHash = snapshot.data()[fieldNameGlobalChainTxHash],
+        globalChainBlockNum = snapshot.data()[fieldNameGlobalChainBlockNum],
+        globalChainTimestamp = snapshot.data()[fieldNameGlobalChainTimestamp],
+        localChainID = snapshot.data()[fieldNameLocalChainID],
+        localChainTxHash = snapshot.data()[fieldNameLocalChainTxHash],
+        localChainBlockNum = snapshot.data()[fieldNameLocalChainBlockNum],
+        localChainTimestamp = snapshot.data()[fieldNameLocalChainTimestamp],
+        isValidated = snapshot.data()[fieldNameIsValidated];
+
+  DatabaseCertificate toDatabaseCertificate() => DatabaseCertificate(
+        null,
+        certID: certID,
+        personID: personID,
+        name: name,
+        brand: brand,
+        numDose: numDose,
+        issueTime: issueTime,
+        issuer: issuer,
+        remark: remark,
+        globalChainTxHash: globalChainTxHash,
+        globalChainBlockNum: globalChainBlockNum,
+        globalChainTimestamp: globalChainTimestamp,
+        localChainID: localChainID,
+        localChainTxHash: localChainTxHash,
+        localChainBlockNum: localChainBlockNum,
+        localChainTimeStamp: localChainTimestamp,
+        isValidated: isValidated,
+      );
 }

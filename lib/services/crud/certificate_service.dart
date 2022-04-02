@@ -18,7 +18,7 @@ class DatabaseService {
 
   List<DatabaseCertificate> _certificates = [];
 
-  DatabaseUser? user;
+  DatabaseUser? _user;
 
   static final DatabaseService _shared = DatabaseService._sharedInstance();
 
@@ -37,16 +37,9 @@ class DatabaseService {
       _certificateStreamController;
 
   Stream<List<DatabaseCertificate>> get allCertificates =>
-      _certificateStreamController.stream; //.filter((certificate) {
-  //   final currentUser = _user;
-  //   if (currentUser != null) {
-  //     return certificate.personID == currentUser.systemID;
-  //   } else {
-  //     throw ExceptionUserShouldBeSetBeforeAccessingAllCertificates();
-  //   }
-  // });
+      _certificateStreamController.stream;
 
-  Future<void> _cacheCertificates() async {
+  Future<void> cacheCertificates() async {
     final allCertificates = await getAllCertificates();
     _certificates = allCertificates.toList();
     _certificateStreamController.add(_certificates);
@@ -67,7 +60,7 @@ class DatabaseService {
 
       // create certificate table
       db.execute(queryCreateCertificateTable);
-      await _cacheCertificates();
+      await cacheCertificates();
     } on MissingPlatformDirectoryException {
       throw ExceptionUnableToGetDocumentsDirectory();
     }
@@ -158,14 +151,6 @@ class DatabaseService {
     await _ensureDBIsOpen();
     final db = _getDatabaseOrThrow();
 
-    // make sure the owner exists in the database with the correct id
-    // final dbUser = await getUser(email: owner.email);
-    // if (dbUser != owner) {
-    //   throw ExceptionCouldNotFoundUser();
-    // }
-
-    // const text = '';
-    // create the certificate
     final certificateID = await db.insert(nameCertificateTable, {
       columnCertID: certificate.certID,
       columnPersonID: certificate.personID,
@@ -182,14 +167,8 @@ class DatabaseService {
       columnLocalChainTxHash: certificate.localChainTxHash,
       columnLocalChainBlockNum: certificate.localChainBlockNum,
       columnLocalChainTimestamp: certificate.localChainTimeStamp,
+      columnIsValidated: certificate.isValidated ? 1 : 0,
     });
-
-    // final certificate = DatabaseCertificate(
-    //   id: certificateID,
-    //   userID: owner.id,
-    //   text: text,
-    //   isSyncedWithCloud: true,
-    // );
 
     _certificates.add(certificate);
     _certificateStreamController.add(_certificates);
@@ -221,26 +200,6 @@ class DatabaseService {
     return deleteCount;
   }
 
-  // Future<DatabaseCertificate> getCertificate({required int id}) async {
-  //   await _ensureDBIsOpen();
-  //   final db = _getDatabaseOrThrow();
-  //   final certificates = await db.query(
-  //     nameCertificateTable,
-  //     limit: 1,
-  //     where: 'id = ?',
-  //     whereArgs: [id],
-  //   );
-
-  //   if (certificates.isEmpty) {
-  //     throw ExceptionCouldNotFoundCertificate();
-  //   }
-  //   final certificate = DatabaseCertificate.fromRow(certificates.first);
-  //   _certificates.removeWhere((c) => c.id == id);
-  //   _certificates.add(certificate);
-  //   _certificateStreamController.add(_certificates);
-  //   return certificate;
-  // }
-
   Future<Iterable<DatabaseCertificate>> getAllCertificates() async {
     await _ensureDBIsOpen();
     final db = _getDatabaseOrThrow();
@@ -263,6 +222,9 @@ class DatabaseService {
     if (users.isEmpty) {
       throw ExceptionCouldNotFoundUser();
     }
+    if (users.isEmpty) {
+      return const Tuple2(dummyDatabaseUser, []);
+    }
     if (users.length > 1) {
       throw ExceptionUserNotUnique();
     }
@@ -278,6 +240,7 @@ class DatabaseService {
   }
 
   Future<void> insertDummyCertificates() async {
+    log('Start inserting dummy certificates');
     await _ensureDBIsOpen();
     final db = _getDatabaseOrThrow();
     final certificates = await db.query(nameCertificateTable);
@@ -307,9 +270,11 @@ class DatabaseService {
       certIDs.add(certID);
       log(cert.toString());
     }
+    cacheCertificates();
   }
 
   Future<void> insertDummyUser() async {
+    log('Start to insert dummy user');
     await _ensureDBIsOpen();
     final db = _getDatabaseOrThrow();
     final users = await db.query(nameUserTable);
@@ -328,5 +293,7 @@ class DatabaseService {
       columnDateOfBirth: dummyDatabaseUser.dateOfBirth,
       columnEmail: dummyDatabaseUser.email,
     });
+    _user = dummyDatabaseUser;
+    log(_user.toString());
   }
 }
