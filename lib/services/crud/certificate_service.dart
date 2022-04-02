@@ -1,13 +1,15 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart'
     show MissingPlatformDirectoryException, getApplicationDocumentsDirectory;
 import 'package:sqflite/sqflite.dart';
+import 'package:tuple/tuple.dart';
 import 'package:vaxpass/services/crud/crud_exceptions.dart';
 
+import '../../constants/constants.dart';
+import '../../models/models.dart';
 import 'certificate_constants.dart';
 import 'dummy_data.dart';
 
@@ -19,6 +21,7 @@ class DatabaseService {
   DatabaseUser? user;
 
   static final DatabaseService _shared = DatabaseService._sharedInstance();
+
   DatabaseService._sharedInstance() {
     _certificateStreamController =
         StreamController<List<DatabaseCertificate>>.broadcast(
@@ -27,6 +30,7 @@ class DatabaseService {
       },
     );
   }
+
   factory DatabaseService() => _shared;
 
   late final StreamController<List<DatabaseCertificate>>
@@ -173,7 +177,7 @@ class DatabaseService {
       columnRemark: certificate.remark,
       columnGlobalChainTxHash: certificate.globalChainTxHash,
       columnGlobalChainBlockNum: certificate.globalChainBlockNum,
-      columnGlobalChainTimestamp: certificate.globalChainTimeStamp,
+      columnGlobalChainTimestamp: certificate.globalChainTimestamp,
       columnLocalChainID: certificate.localChainID,
       columnLocalChainTxHash: certificate.localChainTxHash,
       columnLocalChainBlockNum: certificate.localChainBlockNum,
@@ -249,6 +253,30 @@ class DatabaseService {
         .map((certificateRow) => DatabaseCertificate.fromRow(certificateRow));
   }
 
+  Future<Tuple2<DatabaseUser, Iterable<DatabaseCertificate>>>
+      getUserAndCertificates() async {
+    await _ensureDBIsOpen();
+    final db = _getDatabaseOrThrow();
+    final users = await db.query(
+      nameUserTable,
+    );
+    if (users.isEmpty) {
+      throw ExceptionCouldNotFoundUser();
+    }
+    if (users.length > 1) {
+      throw ExceptionUserNotUnique();
+    }
+    final user = DatabaseUser.fromRow(users.first);
+    final certificates = await db.query(
+      nameCertificateTable,
+      orderBy: columnIssueTime + queryOrderByDESC,
+    );
+    final iterableCertificates = certificates
+        .map((certificateRow) => DatabaseCertificate.fromRow(certificateRow));
+    return Tuple2<DatabaseUser, Iterable<DatabaseCertificate>>(
+        user, iterableCertificates);
+  }
+
   Future<void> insertDummyCertificates() async {
     await _ensureDBIsOpen();
     final db = _getDatabaseOrThrow();
@@ -269,7 +297,7 @@ class DatabaseService {
         columnRemark: cert.remark,
         columnGlobalChainTxHash: cert.globalChainTxHash,
         columnGlobalChainBlockNum: cert.globalChainBlockNum,
-        columnGlobalChainTimestamp: cert.globalChainTimeStamp,
+        columnGlobalChainTimestamp: cert.globalChainTimestamp,
         columnLocalChainID: cert.localChainID,
         columnLocalChainTxHash: cert.localChainTxHash,
         columnLocalChainBlockNum: cert.localChainBlockNum,
@@ -301,137 +329,4 @@ class DatabaseService {
       columnEmail: dummyDatabaseUser.email,
     });
   }
-}
-
-@immutable
-class DatabaseUser {
-  final int? id;
-  final String systemID;
-  final String name;
-  final String countryCode;
-  final String countryID;
-  final int gender;
-  final String dateOfBirth;
-  final String email;
-
-  const DatabaseUser(
-    this.id, {
-    required this.systemID,
-    required this.name,
-    required this.countryCode,
-    required this.countryID,
-    required this.gender,
-    required this.dateOfBirth,
-    required this.email,
-  });
-
-  DatabaseUser.fromRow(Map<String, Object?> map)
-      : id = map[columnID] as int,
-        systemID = map[columnSystemID] as String,
-        name = map[columnName] as String,
-        countryCode = map[columnCountryCode] as String,
-        countryID = map[columnCountryID] as String,
-        gender = map[columnGender] as int,
-        dateOfBirth = map[columnDateOfBirth] as String,
-        email = map[columnEmail] as String;
-
-  @override
-  String toString() => '''User($id, $systemID)[
-      \tname: $name, 
-      \tcountryCode: $countryCode,  
-      \tcountryID: $countryID, 
-      \tgender: $gender';
-      \tdateOfBirth: $dateOfBirth,
-      \temail: $email,
-      ]''';
-
-  @override
-  bool operator ==(covariant DatabaseUser other) => id == other.id;
-
-  @override
-  int get hashCode => id.hashCode;
-}
-
-class DatabaseCertificate {
-  final int? id;
-  final String certID;
-  final String personID;
-  final String name;
-  final String brand;
-  final int numDose;
-  final String issueTime;
-  final String issuer;
-  final String remark;
-  final String globalChainTxHash;
-  final int globalChainBlockNum;
-  final String globalChainTimeStamp;
-  final String localChainID;
-  final String localChainTxHash;
-  final int localChainBlockNum;
-  final String localChainTimeStamp;
-  final bool isValidated;
-
-  DatabaseCertificate(
-    this.id, {
-    required this.certID,
-    required this.personID,
-    required this.name,
-    required this.brand,
-    required this.numDose,
-    required this.issueTime,
-    required this.issuer,
-    required this.remark,
-    required this.globalChainTxHash,
-    required this.globalChainBlockNum,
-    required this.globalChainTimeStamp,
-    required this.localChainID,
-    required this.localChainTxHash,
-    required this.localChainBlockNum,
-    required this.localChainTimeStamp,
-    required this.isValidated,
-  });
-
-  DatabaseCertificate.fromRow(Map<String, Object?> map)
-      : id = map[columnID] as int,
-        certID = map[columnCertID] as String,
-        personID = map[columnPersonID] as String,
-        name = map[columnName] as String,
-        brand = map[columnBrand] as String,
-        numDose = map[columnNumDose] as int,
-        issueTime = map[columnIssueTime] as String,
-        issuer = map[columnIssuer] as String,
-        remark = map[columnRemark] as String,
-        globalChainTxHash = map[columnGlobalChainTxHash] as String,
-        globalChainBlockNum = map[columnGlobalChainBlockNum] as int,
-        globalChainTimeStamp = map[columnGlobalChainTimestamp] as String,
-        localChainID = map[columnLocalChainID] as String,
-        localChainTxHash = map[columnLocalChainTxHash] as String,
-        localChainBlockNum = map[columnLocalChainBlockNum] as int,
-        localChainTimeStamp = map[columnLocalChainTimestamp] as String,
-        isValidated = (map[columnIsValidated] as int) == 1;
-
-  @override
-  String toString() => ''''Certificate($id, $certID)[
-    \tperson ID: $personID,
-    \tname: $name,
-    \tbrand: $brand,
-    \tnumDose: $numDose,
-    \tissueTime: $issueTime,
-    \tissuer: $issuer,
-    \tremark: $remark,
-    \tglobalChainTxHash: $globalChainTxHash,
-    \tglobalChainBlockNum: $globalChainBlockNum,
-    \tglobalChainTimeStamp: $globalChainTimeStamp,
-    \tlocalChainID: $localChainID,
-    \tlocalChainTxHash: $localChainTxHash,
-    \tlocalChainBlockNum: $localChainBlockNum,
-    \tlocalChainTimeStamp: $localChainTimeStamp,
-    \tisValidated: $isValidated,
-  ]''';
-
-  @override
-  bool operator ==(covariant DatabaseCertificate other) => id == other.id;
-
-  @override
-  int get hashCode => id.hashCode;
 }

@@ -1,8 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:vaxpass/constants/country_codes.dart';
 
+import '../constants/country_codes.dart';
+import '../models/models.dart';
 import '../services/crud/certificate_service.dart';
 
 class PersonalInfoView extends StatefulWidget {
@@ -19,7 +18,6 @@ class _PersonalInfoViewState extends State<PersonalInfoView>
   @override
   void initState() {
     _databaseService = DatabaseService();
-    _databaseService.insertDummyUser();
     super.initState();
   }
 

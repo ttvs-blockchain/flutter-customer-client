@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../constants/constants.dart';
+import '../models/models.dart';
 import '../services/crud/certificate_service.dart';
 import 'certificate_list_view.dart';
 
@@ -14,6 +14,7 @@ class CertificateView extends StatefulWidget {
 class _CertificateViewState extends State<CertificateView>
     with AutomaticKeepAliveClientMixin<CertificateView> {
   late final DatabaseService _databaseService;
+
   // late final FirebaseCloudStorage _certificateService;
 
   // String get userEmail => AuthService.fireBase().currentUser!.email!;
@@ -23,7 +24,7 @@ class _CertificateViewState extends State<CertificateView>
   void initState() {
     _databaseService = DatabaseService();
     // _certificateService = FirebaseCloudStorage();
-    _databaseService.insertDummyCertificates();
+    // _databaseService.insertDummyCertificates();
     super.initState();
   }
 
@@ -46,18 +47,6 @@ class _CertificateViewState extends State<CertificateView>
               // snapshot.data as Iterable<CloudCertificate>;
               return CertificateListView(
                 certificates: allCertificates,
-                onDeleteCertificate: (certificate) async {
-                  await _databaseService.deleteCertificate(id: certificate.id!);
-                  // await _certificateService.deleteCertificate(
-                  //   documentID: certificate.documentID,
-                  // );
-                },
-                onTap: (certificate) async {
-                  Navigator.of(context).pushNamed(
-                    createOrUpdateCertificateRoute,
-                    arguments: certificate,
-                  );
-                },
               );
             }
             return const Center(child: CircularProgressIndicator());

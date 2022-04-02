@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vaxpass/services/auth/bloc/auth_bloc.dart';
-import 'package:vaxpass/services/auth/firebase_auth_provider.dart';
 
+import 'constants/constants.dart';
+import 'screens/certificate_detail_view.dart';
+import 'screens/certificate_qr_code_view.dart';
 import 'screens/router_page.dart';
+import 'services/auth/bloc/auth_bloc.dart';
+import 'services/auth/firebase_auth_provider.dart';
 
 class VaxPass extends StatefulWidget {
   const VaxPass({Key? key}) : super(key: key);
@@ -35,10 +38,10 @@ class _VaxPassState extends State<VaxPass> {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      // routes: {
-      //   createOrUpdateCertificateRoute: (context) =>
-      //       const CreateUpdateCertificateView(),
-      // },
+      routes: {
+        certificateQRCodeViewRoute: (context) => const CertificateQRCodeView(),
+        certificateDetailViewRoute: (context) => const CertificateDetailView(),
+      },
     );
   }
 }

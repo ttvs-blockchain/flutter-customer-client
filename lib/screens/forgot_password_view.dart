@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vaxpass/services/auth/bloc/auth_bloc.dart';
-import 'package:vaxpass/services/auth/bloc/auth_event.dart';
-import 'package:vaxpass/services/auth/bloc/auth_state.dart';
-import 'package:vaxpass/utils/dialogs/error_dialog.dart';
 
+import '../services/auth/bloc/auth_bloc.dart';
+import '../services/auth/bloc/auth_event.dart';
+import '../services/auth/bloc/auth_state.dart';
+import '../utils/dialogs/error_dialog.dart';
 import '../utils/dialogs/password_reset_email_sent_dialog.dart';
 
 class ForgotPasswordView extends StatefulWidget {

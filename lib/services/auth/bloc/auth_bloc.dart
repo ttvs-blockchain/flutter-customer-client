@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:vaxpass/services/auth/auth_provider.dart';
 
+import '../auth_provider.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 
