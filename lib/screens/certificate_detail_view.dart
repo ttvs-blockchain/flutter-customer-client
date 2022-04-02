@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../constants/constants.dart';
-import '../utils/generics/get_arguments.dart';
 import '../models/models.dart';
+import '../utils/generics/get_arguments.dart';
 
 class CertificateDetailView extends StatelessWidget {
   const CertificateDetailView({Key? key}) : super(key: key);
@@ -16,9 +17,14 @@ class CertificateDetailView extends StatelessWidget {
       return const Center(child: CircularProgressIndicator());
     }
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Certificate Details'),
-      ),
+      appBar: AppBar(title: const Text('Certificate Details'), actions: [
+        IconButton(
+          onPressed: () {
+            Share.share(certificate.toString());
+          },
+          icon: const Icon(Icons.share),
+        ),
+      ]),
       body: ListView(
         children: [
           listTile(

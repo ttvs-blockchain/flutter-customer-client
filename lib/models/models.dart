@@ -50,16 +50,8 @@ class DatabaseUser {
   @override
   int get hashCode => id.hashCode;
 
-  String toQRCodeInfo() => '''
-  "personal_info" : {
-    "system_id" : "$systemID",
-    "name" : "$name",
-    "country_code" : "$countryCode",
-    "country_id" : "$countryID",
-    "gender": "$gender",
-    "dateOfBirth": "$dateOfBirth",
-  }
-  ''';
+  String toQRCodeInfo() =>
+      '"personalInfo":{"sysID":"$systemID","name":"$name","countryCode":"$countryCode","countryID":"$countryID","gender":"$gender","dateOfBirth":"$dateOfBirth"}';
 }
 
 class DatabaseCertificate {
@@ -145,23 +137,6 @@ class DatabaseCertificate {
   @override
   int get hashCode => id.hashCode;
 
-  String toQRCodeInfo() => '''
-    "certificate$certID": {
-      "personID": "$personID",
-      "name": "$name",
-      "brand": "$brand",
-      "numDose": $numDose,
-      "issueTime": "$issueTime",
-      "issuer": "$issuer",
-      "remark": "$remark",
-      "globalChainTxHash": "$globalChainTxHash",
-      "globalChainBlockNum": $globalChainBlockNum,
-      "globalChainTimeStamp": "$globalChainTimestamp",
-      "localChainID": "$localChainID",
-      "localChainTxHash": "$localChainTxHash",
-      "localChainBlockNum": $localChainBlockNum,
-      "localChainTimeStamp": "$localChainTimeStamp",
-      "isValidated": $isValidated,
-    }
-    ''';
+  String toQRCodeInfo() =>
+      '"certificate$certID":{"personID":"$personID","name":"$name","brand":"$brand","numDose":$numDose,"issueTime":"$issueTime","issuer":"$issuer","remark":"$remark","globalChainTxHash":"$globalChainTxHash","globalChainBlockNum":$globalChainBlockNum,"globalChainTimeStamp":"$globalChainTimestamp","localChainID":"$localChainID","localChainTxHash":"$localChainTxHash","localChainBlockNum":$localChainBlockNum,"localChainTimeStamp":"$localChainTimeStamp","isValidated":$isValidated}';
 }

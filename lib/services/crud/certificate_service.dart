@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart'
     show MissingPlatformDirectoryException, getApplicationDocumentsDirectory;
 import 'package:sqflite/sqflite.dart';
+import 'package:tuple/tuple.dart';
 import 'package:vaxpass/services/crud/crud_exceptions.dart';
 
 import '../../constants/constants.dart';
@@ -21,6 +21,7 @@ class DatabaseService {
   DatabaseUser? user;
 
   static final DatabaseService _shared = DatabaseService._sharedInstance();
+
   DatabaseService._sharedInstance() {
     _certificateStreamController =
         StreamController<List<DatabaseCertificate>>.broadcast(
@@ -29,6 +30,7 @@ class DatabaseService {
       },
     );
   }
+
   factory DatabaseService() => _shared;
 
   late final StreamController<List<DatabaseCertificate>>
@@ -249,6 +251,30 @@ class DatabaseService {
 
     return certificates
         .map((certificateRow) => DatabaseCertificate.fromRow(certificateRow));
+  }
+
+  Future<Tuple2<DatabaseUser, Iterable<DatabaseCertificate>>>
+      getUserAndCertificates() async {
+    await _ensureDBIsOpen();
+    final db = _getDatabaseOrThrow();
+    final users = await db.query(
+      nameUserTable,
+    );
+    if (users.isEmpty) {
+      throw ExceptionCouldNotFoundUser();
+    }
+    if (users.length > 1) {
+      throw ExceptionUserNotUnique();
+    }
+    final user = DatabaseUser.fromRow(users.first);
+    final certificates = await db.query(
+      nameCertificateTable,
+      orderBy: columnIssueTime + queryOrderByDESC,
+    );
+    final iterableCertificates = certificates
+        .map((certificateRow) => DatabaseCertificate.fromRow(certificateRow));
+    return Tuple2<DatabaseUser, Iterable<DatabaseCertificate>>(
+        user, iterableCertificates);
   }
 
   Future<void> insertDummyCertificates() async {

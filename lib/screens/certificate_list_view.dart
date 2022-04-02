@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../constants/constants.dart';
 
+import '../constants/constants.dart';
 import '../models/models.dart';
 
 // typedef CertificateCallBack = void Function(DatabaseCertificate certificate);
@@ -9,6 +9,7 @@ import '../models/models.dart';
 
 class CertificateListView extends StatelessWidget {
   final List<DatabaseCertificate> certificates;
+
   // final Iterable<CloudCertificate> certificates;
 
   const CertificateListView({
