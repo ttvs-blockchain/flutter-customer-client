@@ -52,9 +52,12 @@ class _QRCodeViewState extends State<QRCodeView> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  QrImage(
-                      data: _getQRCodeInfo(
-                          userAndCerts.item1, userAndCerts.item2)),
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: QrImage(
+                        data: _getQRCodeInfo(
+                            userAndCerts.item1, userAndCerts.item2)),
+                  ),
                   const Text(
                     'Please present the QR Code to the verifier',
                     style: TextStyle(

@@ -113,9 +113,9 @@ class _MainViewState extends State<MainView> {
           width: 50,
           height: 50,
           child: RawMaterialButton(
-            onPressed: () {
-              _updateCertificatesFromCloud();
-              _databaseService.cacheCertificates();
+            onPressed: () async {
+              await _updateCertificatesFromCloud();
+              await _databaseService.cacheCertificates();
             },
             fillColor: const Color.fromARGB(68, 63, 81, 181),
             shape: const CircleBorder(),

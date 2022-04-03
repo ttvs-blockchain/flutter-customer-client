@@ -207,7 +207,7 @@ class DatabaseService {
       nameCertificateTable,
       orderBy: columnIssueTime + queryOrderByDESC,
     );
-
+    log(certificates.toString());
     return certificates
         .map((certificateRow) => DatabaseCertificate.fromRow(certificateRow));
   }
@@ -220,7 +220,9 @@ class DatabaseService {
       nameUserTable,
     );
     if (users.isEmpty) {
-      throw ExceptionCouldNotFoundUser();
+      // throw ExceptionCouldNotFoundUser();
+      // TODO: change this
+      return const Tuple2(dummyDatabaseUser, []);
     }
     if (users.isEmpty) {
       return const Tuple2(dummyDatabaseUser, []);
