@@ -98,7 +98,7 @@ class DatabaseService {
     final results = await db.query(
       nameUserTable,
       limit: 1,
-      where: 'sys_id = ? or email = ?',
+      where: 'system_id = ? or email = ?',
       whereArgs: [user.systemID, user.email],
     );
     if (results.isNotEmpty) {

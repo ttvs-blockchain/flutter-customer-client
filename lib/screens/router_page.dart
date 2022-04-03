@@ -9,7 +9,6 @@ import '../services/auth/bloc/auth_state.dart';
 import '../services/crud/certificate_service.dart';
 import 'forgot_password_view.dart';
 import 'login_view.dart';
-import 'main_view.dart';
 import 'register_view.dart';
 import 'verify_email_view.dart';
 

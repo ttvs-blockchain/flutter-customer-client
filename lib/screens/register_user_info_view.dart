@@ -60,8 +60,7 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: [
             const Text(
                 'Please input your personal information below. You will be assigned a unique ID in the system.'),
@@ -71,7 +70,7 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
             const SizedBox(height: 5),
             TextField(
               controller: _name,
-              obscureText: true,
+              // obscureText: true,
               enableSuggestions: false,
               autocorrect: false,
               decoration: const InputDecoration(
@@ -82,7 +81,7 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
             const SizedBox(height: 5),
             TextField(
               controller: _countryCode,
-              obscureText: true,
+              // obscureText: true,
               enableSuggestions: false,
               autocorrect: false,
               decoration: const InputDecoration(
@@ -93,18 +92,7 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
             const SizedBox(height: 5),
             TextField(
               controller: _countryID,
-              obscureText: true,
-              enableSuggestions: false,
-              autocorrect: false,
-              decoration: const InputDecoration(
-                labelText: 'Identity Number',
-                helperText: 'ID in your current country',
-              ),
-            ),
-            const SizedBox(height: 5),
-            TextField(
-              controller: _countryID,
-              obscureText: true,
+              // obscureText: true,
               enableSuggestions: false,
               autocorrect: false,
               decoration: const InputDecoration(
@@ -115,7 +103,7 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
             const SizedBox(height: 5),
             TextField(
               controller: _gender,
-              obscureText: true,
+              // obscureText: true,
               enableSuggestions: false,
               autocorrect: false,
               decoration: const InputDecoration(
@@ -126,7 +114,7 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
             const SizedBox(height: 5),
             TextField(
               controller: _dateOfBirth,
-              obscureText: true,
+              // obscureText: true,
               enableSuggestions: false,
               autocorrect: false,
               decoration: const InputDecoration(

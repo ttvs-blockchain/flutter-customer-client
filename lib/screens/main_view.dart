@@ -46,7 +46,6 @@ class _MainViewState extends State<MainView> {
     log(cloudCertificates.length.toString());
     _databaseService.deleteAllCertificates();
 
-
     for (final cert in cloudCertificates) {
       // log(cert.toString());
       await _databaseService.createCertificate(
