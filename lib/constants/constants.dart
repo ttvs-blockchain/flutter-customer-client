@@ -1,5 +1,6 @@
 const certificateQRCodeViewRoute = '/certificate/qr-code-view';
 const certificateDetailViewRoute = '/certificate/detail-view';
+const mainViewRoute = '/main-view';
 
 // const formatDateTime = 'HH:MM, MMM dd, yyyy';
 // const formatDatabaseDateTime = 'yyyy-mm-dd HH:MM:SS';

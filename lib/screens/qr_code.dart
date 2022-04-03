@@ -53,7 +53,7 @@ class _QRCodeViewState extends State<QRCodeView> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.all(4.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: QrImage(
                         data: _getQRCodeInfo(
                             userAndCerts.item1, userAndCerts.item2)),

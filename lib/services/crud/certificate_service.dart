@@ -130,6 +130,12 @@ class DatabaseService {
     }
   }
 
+  Future<void> deleteAllUsers() async {
+    await _ensureDBIsOpen();
+    final db = _getDatabaseOrThrow();
+    await db.delete(nameUserTable);
+  }
+
   Future<DatabaseUser> getUser() async {
     await _ensureDBIsOpen();
     final db = _getDatabaseOrThrow();

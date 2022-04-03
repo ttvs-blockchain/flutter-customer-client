@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vaxpass/services/cloud/firebase_cloud_storage.dart';
@@ -39,13 +41,14 @@ class _MainViewState extends State<MainView> {
   Future<void> _updateCertificatesFromCloud() async {
     final user = await _databaseService.getUser();
 
-    final cloudCertificates = await _firebaseService
-        .allCertificates(userSystemID: user.systemID)
-        .first;
-
+    final cloudCertificates =
+        await _firebaseService.getCertificates(userSystemID: user.systemID);
+    log(cloudCertificates.length.toString());
     _databaseService.deleteAllCertificates();
 
+
     for (final cert in cloudCertificates) {
+      // log(cert.toString());
       await _databaseService.createCertificate(
           certificate: cert.toDatabaseCertificate());
     }
