@@ -42,7 +42,6 @@ class _VaxPassState extends State<VaxPass> {
       routes: {
         certificateQRCodeViewRoute: (context) => const CertificateQRCodeView(),
         certificateDetailViewRoute: (context) => const CertificateDetailView(),
-        mainViewRoute: (context) => const MainView(),
       },
     );
   }

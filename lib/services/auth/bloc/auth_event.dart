@@ -13,6 +13,22 @@ class AuthEventSendEmailVerification extends AuthEvent {
   const AuthEventSendEmailVerification();
 }
 
+class AuthEventRegisterUserInfo extends AuthEvent {
+  final String name;
+  final String countryCode;
+  final String countryID;
+  final String gender;
+  final String dateOfBirth;
+
+  const AuthEventRegisterUserInfo(
+    this.name,
+    this.countryCode,
+    this.countryID,
+    this.gender,
+    this.dateOfBirth,
+  );
+}
+
 class AuthEventLogIn extends AuthEvent {
   final String email;
   final String password;

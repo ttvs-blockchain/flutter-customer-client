@@ -136,6 +136,13 @@ class DatabaseService {
     await db.delete(nameUserTable);
   }
 
+  Future<bool> hasUser() async {
+    await _ensureDBIsOpen();
+    final db = _getDatabaseOrThrow();
+    final users = await db.query(nameUserTable);
+    return users.isNotEmpty;
+  }
+
   Future<DatabaseUser> getUser() async {
     await _ensureDBIsOpen();
     final db = _getDatabaseOrThrow();

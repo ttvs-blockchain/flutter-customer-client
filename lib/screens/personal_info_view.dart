@@ -31,8 +31,10 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
             return Column(
               children: <Widget>[
                 const SizedBox(height: 4),
-                Text('Personal Information',
-                    style: Theme.of(context).textTheme.headline6),
+                Text(
+                  'Personal Information',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
                 ListTile(
                   title: const Text('Name'),
                   subtitle: Text(user.name),
@@ -43,7 +45,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                 ),
                 ListTile(
                   title: const Text('Country/Region'),
-                  subtitle: Text(countryCodeMap[user.countryCode]!),
+                  subtitle: Text(_getCountryName(user.countryCode)),
                 ),
                 ListTile(
                   title: const Text('Identity Number'),
@@ -81,4 +83,12 @@ String _intToGender(int intValue) {
     return 'Female';
   }
   return 'Undefined';
+}
+
+String _getCountryName(String countryCode) {
+  final countryName = countryCodeMap[countryCode];
+  if (countryName == null) {
+    return "Unknown";
+  }
+  return countryName;
 }

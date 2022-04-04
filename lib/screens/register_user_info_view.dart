@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:vaxpass/services/auth/auth_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vaxpass/services/auth/bloc/auth_event.dart';
 import 'package:vaxpass/services/crud/certificate_service.dart';
 
-import '../constants/constants.dart';
-import '../models/models.dart';
+import '../services/auth/bloc/auth_bloc.dart';
 
 class RegisterUserInfoView extends StatefulWidget {
   const RegisterUserInfoView({Key? key}) : super(key: key);
@@ -85,7 +85,7 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
               enableSuggestions: false,
               autocorrect: false,
               decoration: const InputDecoration(
-                labelText: 'Country',
+                labelText: 'Country/Region',
                 helperText: 'In 3-character country code format',
               ),
             ),
@@ -126,26 +126,20 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
               child: TextButton(
                 onPressed: () async {
                   // TODO: to implement
-                  final systemID = "001";
                   final name = _name.text;
                   final countryCode = _countryCode.text;
                   final countryID = _countryID.text;
                   final gender = _gender.text;
                   final dateOfBirth = _dateOfBirth.text;
-                  await _databaseService.deleteAllUsers();
-                  await _databaseService.createUser(
-                      user: DatabaseUser(
-                    null,
-                    systemID: systemID,
-                    name: name,
-                    countryCode: countryCode,
-                    countryID: countryID,
-                    gender: _getGenderNum(gender),
-                    dateOfBirth: dateOfBirth,
-                    email: AuthService.fireBase().currentUser!.email!,
-                  ));
-                  Navigator.of(context)
-                      .pushNamedAndRemoveUntil(mainViewRoute, (route) => true);
+                  context.read<AuthBloc>().add(
+                        AuthEventRegisterUserInfo(
+                          name,
+                          countryCode,
+                          countryID,
+                          gender,
+                          dateOfBirth,
+                        ),
+                      );
                 },
                 child: const Text('Next'),
               ),
