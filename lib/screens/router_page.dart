@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vaxpass/screens/register_user_info_view.dart';
 
 import '../helpers/loading/loading_screen.dart';
 import '../services/auth/bloc/auth_bloc.dart';
@@ -8,7 +9,6 @@ import '../services/auth/bloc/auth_state.dart';
 import '../services/crud/certificate_service.dart';
 import 'forgot_password_view.dart';
 import 'login_view.dart';
-import 'main_view.dart';
 import 'register_view.dart';
 import 'verify_email_view.dart';
 
@@ -24,7 +24,7 @@ class _RouterPageState extends State<RouterPage> {
   void initState() {
     DatabaseService().open();
     DatabaseService().insertDummyUser();
-    DatabaseService().insertDummyCertificates();
+    // DatabaseService().insertDummyCertificates();
     super.initState();
   }
 
@@ -50,7 +50,7 @@ class _RouterPageState extends State<RouterPage> {
       },
       builder: (context, state) {
         if (state is AuthStateLoggedIn) {
-          return const MainView();
+          return const RegisterUserInfoView();
         } else if (state is AuthStateNeedsEmailVerification) {
           return const VerifyEmailView();
         } else if (state is AuthStateLoggedOut) {

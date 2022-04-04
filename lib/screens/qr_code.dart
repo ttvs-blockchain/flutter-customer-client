@@ -14,12 +14,8 @@ class QRCodeView extends StatefulWidget {
   State<QRCodeView> createState() => _QRCodeViewState();
 }
 
-class _QRCodeViewState extends State<QRCodeView>
-    with AutomaticKeepAliveClientMixin<QRCodeView> {
+class _QRCodeViewState extends State<QRCodeView> {
   late final DatabaseService _databaseService;
-
-  @override
-  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -45,7 +41,6 @@ class _QRCodeViewState extends State<QRCodeView>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return FutureBuilder(
       future: _databaseService.getUserAndCertificates(),
       builder: (context, snapshot) {
@@ -57,9 +52,12 @@ class _QRCodeViewState extends State<QRCodeView>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  QrImage(
-                      data: _getQRCodeInfo(
-                          userAndCerts.item1, userAndCerts.item2)),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: QrImage(
+                        data: _getQRCodeInfo(
+                            userAndCerts.item1, userAndCerts.item2)),
+                  ),
                   const Text(
                     'Please present the QR Code to the verifier',
                     style: TextStyle(

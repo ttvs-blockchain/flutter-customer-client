@@ -11,8 +11,7 @@ class PersonalInfoView extends StatefulWidget {
   State<PersonalInfoView> createState() => _PersonalInfoViewState();
 }
 
-class _PersonalInfoViewState extends State<PersonalInfoView>
-    with AutomaticKeepAliveClientMixin<PersonalInfoView> {
+class _PersonalInfoViewState extends State<PersonalInfoView> {
   late final DatabaseService _databaseService;
 
   @override
@@ -22,11 +21,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView>
   }
 
   @override
-  bool get wantKeepAlive => true;
-
-  @override
   Widget build(BuildContext context) {
-    super.build(context);
     return FutureBuilder(
       future: _databaseService.getUser(),
       builder: (context, snapshot) {
