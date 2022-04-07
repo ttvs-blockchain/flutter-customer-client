@@ -52,6 +52,8 @@ dependencies:
       url: https://github.com/Davenchy/flutter_launcher_icons.git
       ref: fixMinSdkParseFlutter2.8
   tuple: ^2.0.0
+  country_code_picker: ^2.0.2
+  date_time_picker: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -106,8 +108,4 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
-  assets:
-    - assets/sample_qr_code.png
-    - assets/profile_pic.png
-
     

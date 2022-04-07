@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
+import 'package:vaxpass/constants/genders.dart';
 
 import '../../../models/models.dart';
 import '../../crud/certificate_service.dart';
@@ -84,13 +83,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     // register user info
     on<AuthEventRegisterUserInfo>((event, emit) async {
       // TODO: to implement
-      final systemID = "001";
+      final systemID = provider.currentUser!.id;
       final name = event.name;
       final countryCode = event.countryCode;
       final countryID = event.countryID;
       final gender = event.gender;
       final dataOfBirth = event.dateOfBirth;
-      log("run here");
       await DatabaseService().deleteAllUsers();
       final user = provider.currentUser;
       if (user == null) {
@@ -108,11 +106,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             name: name,
             countryCode: countryCode,
             countryID: countryID,
-            gender: gender == 'Male'
-                ? 0
-                : gender == 'Female'
-                    ? 1
-                    : -1,
+            gender: _genderToInt(event.gender),
             dateOfBirth: dataOfBirth,
             email: user.email!,
           ),
@@ -230,4 +224,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     });
   }
+}
+
+int _genderToInt(String gender) {
+  if (genderList.contains(gender)) {
+    return genderList.indexOf(gender);
+  }
+  return -1;
 }

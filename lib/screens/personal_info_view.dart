@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../constants/country_codes.dart';
+import '../constants/genders.dart';
 import '../models/models.dart';
 import '../services/crud/certificate_service.dart';
 
@@ -45,7 +46,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                 ),
                 ListTile(
                   title: const Text('Country/Region'),
-                  subtitle: Text(_getCountryName(user.countryCode)),
+                  subtitle: Text(countryCodeToEngName(user.countryCode)),
                 ),
                 ListTile(
                   title: const Text('Identity Number'),
@@ -75,20 +76,9 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
   }
 }
 
-String _intToGender(int intValue) {
-  if (intValue == 0) {
-    return 'Male';
+String _intToGender(int value) {
+  if (value >= genderList.length) {
+    return 'Undefined';
   }
-  if (intValue == 1) {
-    return 'Female';
-  }
-  return 'Undefined';
-}
-
-String _getCountryName(String countryCode) {
-  final countryName = countryCodeMap[countryCode];
-  if (countryName == null) {
-    return "Unknown";
-  }
-  return countryName;
+  return genderList[value];
 }

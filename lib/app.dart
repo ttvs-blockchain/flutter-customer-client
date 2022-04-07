@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vaxpass/screens/main_view.dart';
 
 import 'constants/constants.dart';
 import 'screens/certificate_detail_view.dart';

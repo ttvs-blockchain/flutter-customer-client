@@ -50,19 +50,19 @@ class _RouterPageState extends State<RouterPage> {
         }
       },
       builder: (context, state) {
-    if (state is AuthStateLoggedIn) {
-    return const MainView();
-    } else if (state is AuthStateNeedsEmailVerification) {
-    return const VerifyEmailView();
-    } else if (state is AuthStateLoggedOut) {
-    return const LoginView();
-    } else if (state is AuthStateForgotPassword) {
-    return const ForgotPasswordView();
-    } else if (state is AuthStateRegistering) {
-    return const RegisterView();
-    } else if (state is AuthStateRegisterUserInfo) {
-      return const RegisterUserInfoView();
-    } else {
+        if (state is AuthStateLoggedIn) {
+          return const MainView();
+        } else if (state is AuthStateNeedsEmailVerification) {
+          return const VerifyEmailView();
+        } else if (state is AuthStateLoggedOut) {
+          return const LoginView();
+        } else if (state is AuthStateForgotPassword) {
+          return const ForgotPasswordView();
+        } else if (state is AuthStateRegistering) {
+          return const RegisterView();
+        } else if (state is AuthStateRegisterUserInfo) {
+          return const RegisterUserInfoView();
+        } else {
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );
