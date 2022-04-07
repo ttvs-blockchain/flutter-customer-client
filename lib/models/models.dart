@@ -39,13 +39,13 @@ class DatabaseUser {
 
   @override
   String toString() => '''User($id, $systemID)[
-      \tname: $name, 
-      \tcountryCode: $countryCode,  
-      \tcountryID: $countryID, 
-      \tgender: $gender';
-      \tdateOfBirth: $dateOfBirth,
-      \temail: $email,
-      ]''';
+      name: $name, 
+      countryCode: $countryCode,  
+      countryID: $countryID, 
+      gender: $gender';
+      dateOfBirth: $dateOfBirth,
+      email: $email,
+  ]''';
 
   @override
   bool operator ==(covariant DatabaseUser other) => id == other.id;
@@ -117,21 +117,21 @@ class DatabaseCertificate {
 
   @override
   String toString() => ''''Certificate($id, $certID)[
-    \tperson ID: $personID,
-    \tname: $name,
-    \tbrand: $brand,
-    \tnumDose: $numDose,
-    \tissueTime: $issueTime,
-    \tissuer: $issuer,
-    \tremark: $remark,
-    \tglobalChainTxHash: $globalChainTxHash,
-    \tglobalChainBlockNum: $globalChainBlockNum,
-    \tglobalChainTimeStamp: $globalChainTimestamp,
-    \tlocalChainID: $localChainID,
-    \tlocalChainTxHash: $localChainTxHash,
-    \tlocalChainBlockNum: $localChainBlockNum,
-    \tlocalChainTimeStamp: $localChainTimeStamp,
-    \tisValidated: $isValidated,
+      person ID: $personID,
+      name: $name,
+      brand: $brand,
+      numDose: $numDose,
+      issueTime: $issueTime,
+      issuer: $issuer,
+      remark: $remark,
+      globalChainTxHash: $globalChainTxHash,
+      globalChainBlockNum: $globalChainBlockNum,
+      globalChainTimeStamp: $globalChainTimestamp,
+      localChainID: $localChainID,
+      localChainTxHash: $localChainTxHash,
+      localChainBlockNum: $localChainBlockNum,
+      localChainTimeStamp: $localChainTimeStamp,
+      isValidated: $isValidated,
   ]''';
 
   @override
@@ -139,9 +139,6 @@ class DatabaseCertificate {
 
   @override
   int get hashCode => id.hashCode;
-
-  String toQRCodeInfo() =>
-      '"certificate":{"personID":"$personID","name":"$name","brand":"$brand","numDose":$numDose,"issueTime":"$issueTime","issuer":"$issuer","remark":"$remark","merklePath":["AIZca0LlTpd9yMCQpCji+hcqQoPBVvy10vQGJgLfopQ=","Nn7D3dsGNPI+4+Q4UqLy3Eo4VV+L6adyohnJTJiKzHY=","KBKMHj7Sl0xO8YTzxksqZSv4t1GmBLJ7/Gk2PbXThZw="]}';
 }
 
 @immutable
@@ -225,9 +222,50 @@ class CloudCertificate {
       );
 }
 
-String getCertificatePageQRCodeInfo(
+String getQRCodeInfoQRCodeView(
+    DatabaseUser user, Iterable<DatabaseCertificate> certificates) {
+  /*
+   * pid: person system ID
+   * pn: person name
+   * pcc: person country code
+   * pcid: person country ID
+   * pg: person gender
+   * pbd: person date of birth
+   * certs: certificates
+   * cid: certificate ID
+   * lcid: Local Chain ID
+   */
+  final qrCodeInfo =
+      '{"pid":"${user.systemID}","pn":"${user.name}","pcc":"${user.countryCode}","pcid":"${user.countryID}","pg":${user.gender},"pbd":"${user.dateOfBirth}"';
+  if (certificates.isEmpty) {
+    return '$qrCodeInfo}';
+  }
+  final certificatesInfo = certificates.map((certificate) {
+    return '{"cid":"${certificate.certID}","lcid":"${certificate.localChainID}"}';
+  }).join(',');
+  final qrCodeInfoWithCertificates = '$qrCodeInfo,"certs":[$certificatesInfo]}';
+  log(qrCodeInfoWithCertificates);
+  return qrCodeInfoWithCertificates;
+}
+
+String getQRCodeInfoCertificateListView(
     DatabaseCertificate certificate, DatabaseUser user) {
-  final qrCodeInfo = '{${user.toQRCodeInfo()},${certificate.toQRCodeInfo()}}';
-  log(qrCodeInfo);
-  return qrCodeInfo;
+  /* 
+   * pid: person system ID
+   * pn: person name
+   * pcc: person country code
+   * pcid: person country ID
+   * pg: person gender
+   * pbd: person date of birth
+   * cid: certificate ID
+   * cn: certificate name
+   * cb: certificate brand
+   * cnd: certificate number of dose
+   * cit: certificate issue time
+   * ci: certificate issuer
+   * cr: certificate remark
+   * mp: Merkle Tree path
+   * idx: indexes
+   */
+  return '{"pid":"${user.id}","pn":"${user.name}","pcc":"${user.countryCode}","pcid":"${user.countryID}","pg":${user.gender},"pbd":"${user.dateOfBirth}","cid":"${certificate.certID}","cn":"${certificate.name}","cb":"${certificate.brand}","cnd":"${certificate.numDose}","cit":"${certificate.issueTime}","ci":"${certificate.issuer}","cr":"${certificate.remark}","mp":["AIZca0LlTpd9yMCQpCji+hcqQoPBVvy10vQGJgLfopQ=","Nn7D3dsGNPI+4+Q4UqLy3Eo4VV+L6adyohnJTJiKzHY=","KBKMHj7Sl0xO8YTzxksqZSv4t1GmBLJ7/Gk2PbXThZw="],"idx":[0,1,0]}';
 }

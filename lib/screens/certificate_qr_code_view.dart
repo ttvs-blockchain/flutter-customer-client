@@ -18,7 +18,7 @@ class CertificateQRCodeView extends StatelessWidget {
     }
     final certificate = certificateAndUser.item1;
     final user = certificateAndUser.item2;
-    final qrCodeInfo = getCertificatePageQRCodeInfo(certificate, user);
+    final qrCodeInfo = getQRCodeInfoCertificateListView(certificate, user);
     return Scaffold(
       appBar: AppBar(title: Text(certificate.name), actions: [
         IconButton(
