@@ -11,6 +11,7 @@ class DatabaseUser {
   final String systemID;
   final String name;
   final String countryCode;
+  final int documentType;
   final String countryID;
   final int gender;
   final String dateOfBirth;
@@ -21,6 +22,7 @@ class DatabaseUser {
     required this.systemID,
     required this.name,
     required this.countryCode,
+    required this.documentType,
     required this.countryID,
     required this.gender,
     required this.dateOfBirth,
@@ -32,6 +34,7 @@ class DatabaseUser {
         systemID = map[columnSystemID] as String,
         name = map[columnName] as String,
         countryCode = map[columnCountryCode] as String,
+        documentType = map[columnDocumentType] as int,
         countryID = map[columnCountryID] as String,
         gender = map[columnGender] as int,
         dateOfBirth = map[columnDateOfBirth] as String,

@@ -1495,10 +1495,3 @@ const Map<String, _CountryCode> countryCodeMap = {
     engName: 'Zimbabwe',
   ),
 };
-
-String countryCodeToEngName(String countryCode) {
-  if (countryCodeMap.containsKey(countryCode)) {
-    return countryCodeMap[countryCode]!.engName;
-  }
-  return 'Undefined';
-}

@@ -108,6 +108,7 @@ class DatabaseService {
       columnSystemID: user.systemID,
       columnName: user.name,
       columnCountryCode: user.countryCode,
+      columnDocumentType: user.documentType,
       columnCountryID: user.countryID,
       columnGender: user.gender,
       columnDateOfBirth: user.dateOfBirth,

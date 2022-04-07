@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:vaxpass/constants/genders.dart';
 
+import '../../../constants/document_types.dart';
 import '../../../models/models.dart';
 import '../../crud/certificate_service.dart';
 import '../auth_provider.dart';
@@ -86,6 +87,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final systemID = provider.currentUser!.id;
       final name = event.name;
       final countryCode = event.countryCode;
+      final documentType = event.documentType;
       final countryID = event.countryID;
       final gender = event.gender;
       final dataOfBirth = event.dateOfBirth;
@@ -105,8 +107,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             systemID: systemID,
             name: name,
             countryCode: countryCode,
+            documentType: _documentTypeToInt(documentType),
             countryID: countryID,
-            gender: _genderToInt(event.gender),
+            gender: _genderToInt(gender),
             dateOfBirth: dataOfBirth,
             email: user.email!,
           ),
@@ -229,6 +232,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 int _genderToInt(String gender) {
   if (genderList.contains(gender)) {
     return genderList.indexOf(gender);
+  }
+  return -1;
+}
+
+int _documentTypeToInt(String documentType) {
+  if (documentTypeList.contains(documentType)) {
+    return documentTypeList.indexOf(documentType);
   }
   return -1;
 }

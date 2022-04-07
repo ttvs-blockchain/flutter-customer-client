@@ -16,6 +16,7 @@ class AuthEventSendEmailVerification extends AuthEvent {
 class AuthEventRegisterUserInfo extends AuthEvent {
   final String name;
   final String countryCode;
+  final String documentType;
   final String countryID;
   final String gender;
   final String dateOfBirth;
@@ -23,6 +24,7 @@ class AuthEventRegisterUserInfo extends AuthEvent {
   const AuthEventRegisterUserInfo(
     this.name,
     this.countryCode,
+    this.documentType,
     this.countryID,
     this.gender,
     this.dateOfBirth,

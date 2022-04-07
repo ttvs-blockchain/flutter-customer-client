@@ -7,6 +7,7 @@ const queryCreateUserTable = '''CREATE TABLE IF NOT EXISTS "user" (
 	      "system_id"	TEXT NOT NULL UNIQUE,
 	      "name"	TEXT NOT NULL,
 	      "country_code"	TEXT NOT NULL,
+        "document_type"	INTEGER NOT NULL,
 	      "country_id"	TEXT NOT NULL,
 	      "gender"	INTEGER NOT NULL,
 	      "date_of_birth"	TEXT NOT NULL,

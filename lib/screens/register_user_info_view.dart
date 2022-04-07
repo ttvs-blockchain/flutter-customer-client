@@ -3,6 +3,7 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vaxpass/constants/country_codes.dart';
+import 'package:vaxpass/constants/document_types.dart';
 import 'package:vaxpass/constants/genders.dart';
 import 'package:vaxpass/services/auth/bloc/auth_event.dart';
 
@@ -20,6 +21,7 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
   late final TextEditingController _countryID;
 
   String countryCode = countryCodeMap['HK']!.code;
+  String documentType = documentTypeList[0];
   String gender = genderList[0];
   String dateOfBirth = '2000-01-01';
 
@@ -87,6 +89,29 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
               ],
             ),
             const SizedBox(height: 10),
+            Row(
+              children: [
+                const Text('Select Document Type:'),
+                const SizedBox(width: 10),
+                DropdownButton<String>(
+                  value: documentType,
+                  elevation: 16,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      documentType = newValue!;
+                    });
+                  },
+                  items: documentTypeList
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -124,15 +149,21 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
               ],
             ),
             const SizedBox(height: 10),
-            DateTimePicker(
-              initialValue: '',
-              firstDate: DateTime(1800),
-              lastDate: DateTime(DateTime.now().year + 1),
-              dateLabelText: 'Date of Birth',
-              onChanged: (val) {
-                dateOfBirth = val;
-              },
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Date of Birth'),
+                DateTimePicker(
+                  initialValue: '',
+                  firstDate: DateTime(1800),
+                  lastDate: DateTime(DateTime.now().year + 1),
+                  onChanged: (val) {
+                    dateOfBirth = val;
+                  },
+                ),
+              ],
             ),
+            const SizedBox(height: 10),
             Center(
               child: ElevatedButton(
                 onPressed: () async {
@@ -142,6 +173,7 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
                         AuthEventRegisterUserInfo(
                           name,
                           countryCode,
+                          documentType,
                           countryID,
                           gender,
                           dateOfBirth,

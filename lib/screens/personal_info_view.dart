@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../constants/country_codes.dart';
+import '../constants/document_types.dart';
 import '../constants/genders.dart';
 import '../models/models.dart';
 import '../services/crud/certificate_service.dart';
@@ -46,7 +47,11 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                 ),
                 ListTile(
                   title: const Text('Country/Region'),
-                  subtitle: Text(countryCodeToEngName(user.countryCode)),
+                  subtitle: Text(_countryCodeToEngName(user.countryCode)),
+                ),
+                ListTile(
+                  title: const Text('Document Type'),
+                  subtitle: Text(_intToDocumentType(user.documentType)),
                 ),
                 ListTile(
                   title: const Text('Identity Number'),
@@ -81,4 +86,18 @@ String _intToGender(int value) {
     return 'Undefined';
   }
   return genderList[value];
+}
+
+String _intToDocumentType(int value) {
+  if (value >= documentTypeList.length) {
+    return 'Undefined';
+  }
+  return documentTypeList[value];
+}
+
+String _countryCodeToEngName(String countryCode) {
+  if (countryCodeMap.containsKey(countryCode)) {
+    return countryCodeMap[countryCode]!.engName;
+  }
+  return 'Undefined';
 }
