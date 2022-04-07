@@ -89,7 +89,6 @@ class CertificateDetailView extends StatelessWidget {
             'Local Chain Timestamp',
             certificate.localChainTimeStamp,
           ),
-          QrImage(data: certificate.toQRCodeInfo()),
         ],
       ),
     );

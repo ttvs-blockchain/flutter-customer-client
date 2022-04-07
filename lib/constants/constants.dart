@@ -9,6 +9,7 @@ const columnID = 'id';
 const columnSystemID = 'system_id';
 const columnName = 'name';
 const columnCountryCode = 'country_code';
+const columnDocumentType = 'document_type';
 const columnCountryID = 'country_id';
 const columnGender = 'gender';
 const columnDateOfBirth = 'date_of_birth';

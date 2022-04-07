@@ -22,33 +22,45 @@ class _CertificateViewState extends State<CertificateView> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: _databaseService.allCertificates,
+    return FutureBuilder(
+      future: _databaseService.getUser(),
       builder: (context, snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.waiting:
-          case ConnectionState.active:
-            if (snapshot.hasData) {
-              final allCertificates =
-                  snapshot.data as List<DatabaseCertificate>;
-              return allCertificates.isEmpty
-                  ? const Center(
-                      child: Text(
-                        'No certificates',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    )
-                  : CertificateListView(
-                      certificates: allCertificates,
-                    );
-            }
-            return const Center(child: CircularProgressIndicator());
-          default:
-            return const Center(child: CircularProgressIndicator());
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasData) {
+            final user = snapshot.data as DatabaseUser;
+            return StreamBuilder(
+              stream: _databaseService.allCertificates,
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.waiting:
+                  case ConnectionState.active:
+                    if (snapshot.hasData) {
+                      final allCertificates =
+                          snapshot.data as List<DatabaseCertificate>;
+                      return allCertificates.isEmpty
+                          ? const Center(
+                              child: Text(
+                                'No certificates',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            )
+                          : CertificateListView(
+                              certificates: allCertificates,
+                              user: user,
+                            );
+                    }
+                    return const Center(child: CircularProgressIndicator());
+                  default:
+                    return const Center(child: CircularProgressIndicator());
+                }
+              },
+            );
+          }
         }
+        return const Center(child: CircularProgressIndicator());
       },
     );
   }

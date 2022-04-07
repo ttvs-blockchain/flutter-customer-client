@@ -11,7 +11,7 @@ import '../services/auth/bloc/auth_event.dart';
 import '../utils/dialogs/logout_dialog.dart';
 import 'certificate_view.dart';
 import 'personal_info_view.dart';
-import 'qr_code.dart';
+import 'qr_code_view.dart';
 
 class MainView extends StatefulWidget {
   const MainView({Key? key}) : super(key: key);

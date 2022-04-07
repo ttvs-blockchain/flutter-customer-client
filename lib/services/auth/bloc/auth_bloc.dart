@@ -1,5 +1,9 @@
 import 'package:bloc/bloc.dart';
+import 'package:vaxpass/constants/genders.dart';
 
+import '../../../constants/document_types.dart';
+import '../../../models/models.dart';
+import '../../crud/certificate_service.dart';
 import '../auth_provider.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
@@ -77,10 +81,51 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     });
 
+    // register user info
+    on<AuthEventRegisterUserInfo>((event, emit) async {
+      // TODO: to implement
+      final systemID = provider.currentUser!.id;
+      final name = event.name;
+      final countryCode = event.countryCode;
+      final documentType = event.documentType;
+      final countryID = event.countryID;
+      final gender = event.gender;
+      final dataOfBirth = event.dateOfBirth;
+      await DatabaseService().deleteAllUsers();
+      final user = provider.currentUser;
+      if (user == null) {
+        emit(
+          const AuthStateLoggedOut(
+            exception: null,
+            isLoading: false,
+          ),
+        );
+      } else {
+        await DatabaseService().createUser(
+          user: DatabaseUser(
+            null,
+            systemID: systemID,
+            name: name,
+            countryCode: countryCode,
+            documentType: _documentTypeToInt(documentType),
+            countryID: countryID,
+            gender: _genderToInt(gender),
+            dateOfBirth: dataOfBirth,
+            email: user.email!,
+          ),
+        );
+        emit(AuthStateLoggedIn(
+          user: user,
+          isLoading: false,
+        ));
+      }
+    });
+
     // initialize
     on<AuthEventInitialize>((event, emit) async {
       await provider.initialize();
       final user = provider.currentUser;
+      final _hasUser = await DatabaseService().hasUser();
       if (user == null) {
         emit(
           const AuthStateLoggedOut(
@@ -90,6 +135,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
       } else if (!user.isEmailVerified) {
         emit(const AuthStateNeedsEmailVerification(isLoading: false));
+      } else if (!_hasUser) {
+        emit(AuthStateRegisterUserInfo(
+          user: user,
+          isLoading: false,
+        ));
       } else {
         emit(AuthStateLoggedIn(
           user: user,
@@ -108,6 +158,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
       final email = event.email;
       final password = event.password;
+      final _hasUser = await DatabaseService().hasUser();
       try {
         final user = await provider.logIn(
           email: email,
@@ -121,7 +172,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             ),
           );
           emit(const AuthStateNeedsEmailVerification(isLoading: false));
+        } else if (!_hasUser) {
+          emit(AuthStateRegisterUserInfo(
+            user: user,
+            isLoading: false,
+          ));
         } else {
+          emit(
+            const AuthStateLoggedOut(
+              exception: null,
+              isLoading: false,
+            ),
+          );
           emit(
             const AuthStateLoggedOut(
               exception: null,
@@ -146,6 +208,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     // log out
     on<AuthEventLogOut>((event, emit) async {
       try {
+        await DatabaseService().deleteAllUsers();
         await provider.logOut();
         emit(
           const AuthStateLoggedOut(
@@ -164,4 +227,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     });
   }
+}
+
+int _genderToInt(String gender) {
+  if (genderList.contains(gender)) {
+    return genderList.indexOf(gender);
+  }
+  return -1;
+}
+
+int _documentTypeToInt(String documentType) {
+  if (documentTypeList.contains(documentType)) {
+    return documentTypeList.indexOf(documentType);
+  }
+  return -1;
 }

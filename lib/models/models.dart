@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
@@ -9,6 +11,7 @@ class DatabaseUser {
   final String systemID;
   final String name;
   final String countryCode;
+  final int documentType;
   final String countryID;
   final int gender;
   final String dateOfBirth;
@@ -19,6 +22,7 @@ class DatabaseUser {
     required this.systemID,
     required this.name,
     required this.countryCode,
+    required this.documentType,
     required this.countryID,
     required this.gender,
     required this.dateOfBirth,
@@ -30,6 +34,7 @@ class DatabaseUser {
         systemID = map[columnSystemID] as String,
         name = map[columnName] as String,
         countryCode = map[columnCountryCode] as String,
+        documentType = map[columnDocumentType] as int,
         countryID = map[columnCountryID] as String,
         gender = map[columnGender] as int,
         dateOfBirth = map[columnDateOfBirth] as String,
@@ -37,13 +42,13 @@ class DatabaseUser {
 
   @override
   String toString() => '''User($id, $systemID)[
-      \tname: $name, 
-      \tcountryCode: $countryCode,  
-      \tcountryID: $countryID, 
-      \tgender: $gender';
-      \tdateOfBirth: $dateOfBirth,
-      \temail: $email,
-      ]''';
+      name: $name, 
+      countryCode: $countryCode,  
+      countryID: $countryID, 
+      gender: $gender';
+      dateOfBirth: $dateOfBirth,
+      email: $email,
+  ]''';
 
   @override
   bool operator ==(covariant DatabaseUser other) => id == other.id;
@@ -115,21 +120,21 @@ class DatabaseCertificate {
 
   @override
   String toString() => ''''Certificate($id, $certID)[
-    \tperson ID: $personID,
-    \tname: $name,
-    \tbrand: $brand,
-    \tnumDose: $numDose,
-    \tissueTime: $issueTime,
-    \tissuer: $issuer,
-    \tremark: $remark,
-    \tglobalChainTxHash: $globalChainTxHash,
-    \tglobalChainBlockNum: $globalChainBlockNum,
-    \tglobalChainTimeStamp: $globalChainTimestamp,
-    \tlocalChainID: $localChainID,
-    \tlocalChainTxHash: $localChainTxHash,
-    \tlocalChainBlockNum: $localChainBlockNum,
-    \tlocalChainTimeStamp: $localChainTimeStamp,
-    \tisValidated: $isValidated,
+      person ID: $personID,
+      name: $name,
+      brand: $brand,
+      numDose: $numDose,
+      issueTime: $issueTime,
+      issuer: $issuer,
+      remark: $remark,
+      globalChainTxHash: $globalChainTxHash,
+      globalChainBlockNum: $globalChainBlockNum,
+      globalChainTimeStamp: $globalChainTimestamp,
+      localChainID: $localChainID,
+      localChainTxHash: $localChainTxHash,
+      localChainBlockNum: $localChainBlockNum,
+      localChainTimeStamp: $localChainTimeStamp,
+      isValidated: $isValidated,
   ]''';
 
   @override
@@ -137,9 +142,6 @@ class DatabaseCertificate {
 
   @override
   int get hashCode => id.hashCode;
-
-  String toQRCodeInfo() =>
-      '"certificate$certID":{"personID":"$personID","name":"$name","brand":"$brand","numDose":$numDose,"issueTime":"$issueTime","issuer":"$issuer","remark":"$remark","globalChainTxHash":"$globalChainTxHash","globalChainBlockNum":$globalChainBlockNum,"globalChainTimeStamp":"$globalChainTimestamp","localChainID":"$localChainID","localChainTxHash":"$localChainTxHash","localChainBlockNum":$localChainBlockNum,"localChainTimeStamp":"$localChainTimeStamp","isValidated":$isValidated}';
 }
 
 @immutable
@@ -221,4 +223,52 @@ class CloudCertificate {
         localChainTimeStamp: localChainTimestamp,
         isValidated: isValidated,
       );
+}
+
+String getQRCodeInfoQRCodeView(
+    DatabaseUser user, Iterable<DatabaseCertificate> certificates) {
+  /*
+   * pid: person system ID
+   * pn: person name
+   * pcc: person country code
+   * pcid: person country ID
+   * pg: person gender
+   * pbd: person date of birth
+   * certs: certificates
+   * cid: certificate ID
+   * lcid: Local Chain ID
+   */
+  final qrCodeInfo =
+      '{"pid":"${user.systemID}","pn":"${user.name}","pcc":"${user.countryCode}","pcid":"${user.countryID}","pg":${user.gender},"pbd":"${user.dateOfBirth}"';
+  if (certificates.isEmpty) {
+    return '$qrCodeInfo}';
+  }
+  final certificatesInfo = certificates.map((certificate) {
+    return '{"cid":"${certificate.certID}","lcid":"${certificate.localChainID}"}';
+  }).join(',');
+  final qrCodeInfoWithCertificates = '$qrCodeInfo,"certs":[$certificatesInfo]}';
+  log(qrCodeInfoWithCertificates);
+  return qrCodeInfoWithCertificates;
+}
+
+String getQRCodeInfoCertificateListView(
+    DatabaseCertificate certificate, DatabaseUser user) {
+  /* 
+   * pid: person system ID
+   * pn: person name
+   * pcc: person country code
+   * pcid: person country ID
+   * pg: person gender
+   * pbd: person date of birth
+   * cid: certificate ID
+   * cn: certificate name
+   * cb: certificate brand
+   * cnd: certificate number of dose
+   * cit: certificate issue time
+   * ci: certificate issuer
+   * cr: certificate remark
+   * mp: Merkle Tree path
+   * idx: indexes
+   */
+  return '{"pid":"${user.id}","pn":"${user.name}","pcc":"${user.countryCode}","pcid":"${user.countryID}","pg":${user.gender},"pbd":"${user.dateOfBirth}","cid":"${certificate.certID}","cn":"${certificate.name}","cb":"${certificate.brand}","cnd":"${certificate.numDose}","cit":"${certificate.issueTime}","ci":"${certificate.issuer}","cr":"${certificate.remark}","mp":["AIZca0LlTpd9yMCQpCji+hcqQoPBVvy10vQGJgLfopQ=","Nn7D3dsGNPI+4+Q4UqLy3Eo4VV+L6adyohnJTJiKzHY=","KBKMHj7Sl0xO8YTzxksqZSv4t1GmBLJ7/Gk2PbXThZw="],"idx":[0,1,0]}';
 }

@@ -11,7 +11,6 @@ import 'package:vaxpass/services/crud/crud_exceptions.dart';
 import '../../constants/constants.dart';
 import '../../models/models.dart';
 import 'certificate_constants.dart';
-import 'dummy_data.dart';
 
 class DatabaseService {
   Database? _db;
@@ -109,6 +108,7 @@ class DatabaseService {
       columnSystemID: user.systemID,
       columnName: user.name,
       columnCountryCode: user.countryCode,
+      columnDocumentType: user.documentType,
       columnCountryID: user.countryID,
       columnGender: user.gender,
       columnDateOfBirth: user.dateOfBirth,
@@ -134,6 +134,13 @@ class DatabaseService {
     await _ensureDBIsOpen();
     final db = _getDatabaseOrThrow();
     await db.delete(nameUserTable);
+  }
+
+  Future<bool> hasUser() async {
+    await _ensureDBIsOpen();
+    final db = _getDatabaseOrThrow();
+    final users = await db.query(nameUserTable);
+    return users.isNotEmpty;
   }
 
   Future<DatabaseUser> getUser() async {
@@ -213,7 +220,6 @@ class DatabaseService {
       nameCertificateTable,
       orderBy: columnIssueTime + queryOrderByDESC,
     );
-    log(certificates.toString());
     return certificates
         .map((certificateRow) => DatabaseCertificate.fromRow(certificateRow));
   }
@@ -226,12 +232,7 @@ class DatabaseService {
       nameUserTable,
     );
     if (users.isEmpty) {
-      // throw ExceptionCouldNotFoundUser();
-      // TODO: change this
-      return const Tuple2(dummyDatabaseUser, []);
-    }
-    if (users.isEmpty) {
-      return const Tuple2(dummyDatabaseUser, []);
+      throw ExceptionCouldNotFoundUser();
     }
     if (users.length > 1) {
       throw ExceptionUserNotUnique();
@@ -245,63 +246,5 @@ class DatabaseService {
         .map((certificateRow) => DatabaseCertificate.fromRow(certificateRow));
     return Tuple2<DatabaseUser, Iterable<DatabaseCertificate>>(
         user, iterableCertificates);
-  }
-
-  Future<void> insertDummyCertificates() async {
-    log('Start inserting dummy certificates');
-    await _ensureDBIsOpen();
-    final db = _getDatabaseOrThrow();
-    final certificates = await db.query(nameCertificateTable);
-    if (certificates.isNotEmpty) {
-      return;
-    }
-    final certIDs = <int>[];
-    for (var cert in dummyDatabaseCertificates) {
-      final certID = await db.insert(nameCertificateTable, {
-        columnCertID: cert.certID,
-        columnPersonID: cert.personID,
-        columnName: cert.name,
-        columnBrand: cert.brand,
-        columnNumDose: cert.numDose,
-        columnIssueTime: cert.issueTime,
-        columnIssuer: cert.issuer,
-        columnRemark: cert.remark,
-        columnGlobalChainTxHash: cert.globalChainTxHash,
-        columnGlobalChainBlockNum: cert.globalChainBlockNum,
-        columnGlobalChainTimestamp: cert.globalChainTimestamp,
-        columnLocalChainID: cert.localChainID,
-        columnLocalChainTxHash: cert.localChainTxHash,
-        columnLocalChainBlockNum: cert.localChainBlockNum,
-        columnLocalChainTimestamp: cert.localChainTimeStamp,
-        columnIsValidated: cert.isValidated,
-      });
-      certIDs.add(certID);
-      log(cert.toString());
-    }
-    cacheCertificates();
-  }
-
-  Future<void> insertDummyUser() async {
-    log('Start to insert dummy user');
-    await _ensureDBIsOpen();
-    final db = _getDatabaseOrThrow();
-    final users = await db.query(nameUserTable);
-    if (users.length > 1) {
-      throw ExceptionUserNotUnique();
-    }
-    if (users.isNotEmpty) {
-      return;
-    }
-    await db.insert(nameUserTable, {
-      columnSystemID: dummyDatabaseUser.systemID,
-      columnName: dummyDatabaseUser.name,
-      columnCountryCode: dummyDatabaseUser.countryCode,
-      columnCountryID: dummyDatabaseUser.countryID,
-      columnGender: dummyDatabaseUser.gender,
-      columnDateOfBirth: dummyDatabaseUser.dateOfBirth,
-      columnEmail: dummyDatabaseUser.email,
-    });
-    _user = dummyDatabaseUser;
-    log(_user.toString());
   }
 }

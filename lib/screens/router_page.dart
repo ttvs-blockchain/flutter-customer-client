@@ -9,6 +9,7 @@ import '../services/auth/bloc/auth_state.dart';
 import '../services/crud/certificate_service.dart';
 import 'forgot_password_view.dart';
 import 'login_view.dart';
+import 'main_view.dart';
 import 'register_view.dart';
 import 'verify_email_view.dart';
 
@@ -23,7 +24,7 @@ class _RouterPageState extends State<RouterPage> {
   @override
   void initState() {
     DatabaseService().open();
-    DatabaseService().insertDummyUser();
+    // DatabaseService().insertDummyUser();
     // DatabaseService().insertDummyCertificates();
     super.initState();
   }
@@ -50,7 +51,7 @@ class _RouterPageState extends State<RouterPage> {
       },
       builder: (context, state) {
         if (state is AuthStateLoggedIn) {
-          return const RegisterUserInfoView();
+          return const MainView();
         } else if (state is AuthStateNeedsEmailVerification) {
           return const VerifyEmailView();
         } else if (state is AuthStateLoggedOut) {
@@ -59,6 +60,8 @@ class _RouterPageState extends State<RouterPage> {
           return const ForgotPasswordView();
         } else if (state is AuthStateRegistering) {
           return const RegisterView();
+        } else if (state is AuthStateRegisterUserInfo) {
+          return const RegisterUserInfoView();
         } else {
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),

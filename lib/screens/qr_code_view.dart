@@ -23,22 +23,6 @@ class _QRCodeViewState extends State<QRCodeView> {
     super.initState();
   }
 
-  String _getQRCodeInfo(
-      DatabaseUser user, Iterable<DatabaseCertificate> certificates) {
-    if (certificates.isEmpty) {
-      final qrCodeInfo = '{${user.toQRCodeInfo()}}';
-      log(qrCodeInfo);
-      return qrCodeInfo;
-    }
-    final qrCodeInfo = '{${user.toQRCodeInfo()},"certificates":[';
-    final certificatesInfo = certificates.map((certificate) {
-      return '{"certID":"${certificate.certID}","localChainID":"${certificate.localChainID}"}';
-    }).join(',');
-    final qrCodeInfoWithCertificates = '$qrCodeInfo$certificatesInfo]}';
-    log(qrCodeInfoWithCertificates);
-    return qrCodeInfoWithCertificates;
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -55,7 +39,7 @@ class _QRCodeViewState extends State<QRCodeView> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: QrImage(
-                        data: _getQRCodeInfo(
+                        data: getQRCodeInfoQRCodeView(
                             userAndCerts.item1, userAndCerts.item2)),
                   ),
                   const Text(
