@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
@@ -139,7 +141,7 @@ class DatabaseCertificate {
   int get hashCode => id.hashCode;
 
   String toQRCodeInfo() =>
-      '"certificate$certID":{"personID":"$personID","name":"$name","brand":"$brand","numDose":$numDose,"issueTime":"$issueTime","issuer":"$issuer","remark":"$remark","globalChainTxHash":"$globalChainTxHash","globalChainBlockNum":$globalChainBlockNum,"globalChainTimeStamp":"$globalChainTimestamp","localChainID":"$localChainID","localChainTxHash":"$localChainTxHash","localChainBlockNum":$localChainBlockNum,"localChainTimeStamp":"$localChainTimeStamp","isValidated":$isValidated}';
+      '"certificate":{"personID":"$personID","name":"$name","brand":"$brand","numDose":$numDose,"issueTime":"$issueTime","issuer":"$issuer","remark":"$remark","merklePath":["AIZca0LlTpd9yMCQpCji+hcqQoPBVvy10vQGJgLfopQ=","Nn7D3dsGNPI+4+Q4UqLy3Eo4VV+L6adyohnJTJiKzHY=","KBKMHj7Sl0xO8YTzxksqZSv4t1GmBLJ7/Gk2PbXThZw="]}';
 }
 
 @immutable
@@ -221,4 +223,11 @@ class CloudCertificate {
         localChainTimeStamp: localChainTimestamp,
         isValidated: isValidated,
       );
+}
+
+String getCertificatePageQRCodeInfo(
+    DatabaseCertificate certificate, DatabaseUser user) {
+  final qrCodeInfo = '{${user.toQRCodeInfo()},${certificate.toQRCodeInfo()}}';
+  log(qrCodeInfo);
+  return qrCodeInfo;
 }

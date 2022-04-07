@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
@@ -113,7 +111,6 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
                   onChanged: (String? newValue) {
                     setState(() {
                       gender = newValue!;
-                      log(newValue);
                     });
                   },
                   items:

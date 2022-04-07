@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:tuple/tuple.dart';
 
 import '../constants/constants.dart';
 import '../models/models.dart';
 
 class CertificateListView extends StatelessWidget {
   final List<DatabaseCertificate> certificates;
+  final DatabaseUser user;
 
   const CertificateListView({
     Key? key,
     required this.certificates,
+    required this.user,
   }) : super(key: key);
 
   void _createQRCodeView(
-      BuildContext context, DatabaseCertificate certificate) {
+    BuildContext context,
+    DatabaseCertificate certificate,
+    DatabaseUser user,
+  ) {
     Navigator.of(context).pushNamed(
       certificateQRCodeViewRoute,
-      arguments: certificate,
+      arguments: Tuple2<DatabaseCertificate, DatabaseUser>(certificate, user),
     );
   }
 
@@ -78,7 +84,7 @@ class CertificateListView extends StatelessWidget {
                       ),
                       IconButton(
                         onPressed: () {
-                          _createQRCodeView(context, certificate);
+                          _createQRCodeView(context, certificate, user);
                         },
                         icon: const Icon(
                           Icons.qr_code_rounded,
