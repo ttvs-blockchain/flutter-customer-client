@@ -14,6 +14,7 @@ on:
 env:
   FIREBASE_OPTION_CONTENT : ${{ secrets.FIREBASE_OPTION_CONTENT }}
   GENERATED_PLUGIN_REGISTRANT_CONTENT : ${{ secrets.GENERATED_PLUGIN_REGISTRANT_CONTENT }}
+  TEST_ENV_VAL: "hello world"
 
 jobs:
   build:
@@ -30,7 +31,7 @@ jobs:
       - name: Write generated_plugin_registrant.dart
         run: |
           touch lib/generated_plugin_registrant.dart
-          echo $GENERATED_PLUGIN_REGISTRANT_CONTENT >> lib/generated_plugin_registrant.dart
+          echo $TEST_ENV_VAL >> lib/generated_plugin_registrant.dart
           cd lib
           ls -a
           cd ..
