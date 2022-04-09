@@ -20,14 +20,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-
-      # Note: This workflow uses the latest stable version of the Dart SDK.
-      # You can specify other versions if desired, see documentation here:
-      # https://github.com/dart-lang/setup-dart/blob/main/README.md
-      # - uses: dart-lang/setup-dart@v1
-      - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
-      
       - name: Write firebase_options.dart
         run: |
           touch lib/firebase_options.dart
@@ -35,7 +27,7 @@ jobs:
           cd lib
           ls -a
           cd ..
-        
+
       - name: Write generated_plugin_registrant.dart
         run: |
           touch lib/generated_plugin_registrant.dart
@@ -43,6 +35,13 @@ jobs:
           cd lib
           ls -a
           cd ..
+      - uses: actions/checkout@v2
+
+      # Note: This workflow uses the latest stable version of the Dart SDK.
+      # You can specify other versions if desired, see documentation here:
+      # https://github.com/dart-lang/setup-dart/blob/main/README.md
+      # - uses: dart-lang/setup-dart@v1
+      - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
       
       - name: Flutter action
         # You may pin to the exact commit or the version.
