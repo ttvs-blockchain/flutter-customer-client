@@ -32,11 +32,17 @@ jobs:
         run: |
           touch lib/firebase_options.dart
           echo $FIREBASE_OPTION_CONTENT >> lib/firebase_options.dart
+          cd lib
+          ls -a
+          cd ..
         
       - name: Write generated_plugin_registrant.dart
         run: |
           touch lib/generated_plugin_registrant.dart
           echo $GENERATED_PLUGIN_REGISTRANT_CONTENT >> lib/generated_plugin_registrant.dart
+          cd lib
+          ls -a
+          cd ..
       
       - name: Flutter action
         # You may pin to the exact commit or the version.
