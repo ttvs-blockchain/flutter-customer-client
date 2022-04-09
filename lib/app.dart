@@ -7,6 +7,7 @@ import 'screens/certificate_qr_code_view.dart';
 import 'screens/router_page.dart';
 import 'services/auth/bloc/auth_bloc.dart';
 import 'services/auth/firebase_auth_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class VaxPass extends StatefulWidget {
   const VaxPass({Key? key}) : super(key: key);
@@ -19,6 +20,8 @@ class _VaxPassState extends State<VaxPass> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
       title: 'VaxPass',
       home: BlocProvider<AuthBloc>(
         create: (context) => AuthBloc(FirebaseAuthProvider()),

@@ -30,20 +30,18 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasData) {
             final user = snapshot.data as DatabaseUser;
-            return Column(
+            return ListView(
               children: <Widget>[
                 const SizedBox(height: 4),
-                Text(
-                  'Personal Information',
-                  style: Theme.of(context).textTheme.headline6,
+                Center(
+                  child: Text(
+                    'Personal Information',
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
                 ),
                 ListTile(
                   title: const Text('Name'),
                   subtitle: Text(user.name),
-                ),
-                ListTile(
-                  title: const Text('System ID'),
-                  subtitle: Text(user.systemID),
                 ),
                 ListTile(
                   title: const Text('Country/Region'),

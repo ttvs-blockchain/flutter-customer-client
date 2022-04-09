@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart'
@@ -16,8 +15,6 @@ class DatabaseService {
   Database? _db;
 
   List<DatabaseCertificate> _certificates = [];
-
-  DatabaseUser? _user;
 
   static final DatabaseService _shared = DatabaseService._sharedInstance();
 

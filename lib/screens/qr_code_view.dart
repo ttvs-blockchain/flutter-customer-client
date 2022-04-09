@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tuple/tuple.dart';
@@ -42,10 +40,14 @@ class _QRCodeViewState extends State<QRCodeView> {
                         data: getQRCodeInfoQRCodeView(
                             userAndCerts.item1, userAndCerts.item2)),
                   ),
-                  const Text(
-                    'Please present the QR Code to the verifier',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      'Please present this QR code while issuing or verifying',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],
