@@ -25,12 +25,13 @@ jobs:
       - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
       
       - name: Write firebase_options.dart
-        run: echo '{{ secrets.FIREBASE_OPTIONS_CONTENT }}' > lib/firebase_options.dart
+        run: echo '{{ secrets.FIREBASE_OPTIONS_CONTENT }}' >> lib/firebase_options.dart
         
       - name: Write generated_plugin_registrant.dart
         run: |
           touch lib/generated_plugin_registrant.dart
-          echo '{{ secrets.GENERATED_PLUGIN_REGISTRANT_CONTENT }}' > lib/generated_plugin_registrant.dart
+          echo '{{ secrets.GENERATED_PLUGIN_REGISTRANT_CONTENT }}' >> lib/generated_plugin_registrant.dart
+          echo 'hello world' >> lib/generated_plugin_registrant.dart
           cat lib/generated_plugin_registrant.dart
       
       - name: Flutter action
