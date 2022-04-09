@@ -20,6 +20,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v2
+      
       - name: Write firebase_options.dart
         run: |
           touch lib/firebase_options.dart
@@ -35,7 +37,6 @@ jobs:
           cd lib
           ls -a
           cd ..
-      - uses: actions/checkout@v2
 
       # Note: This workflow uses the latest stable version of the Dart SDK.
       # You can specify other versions if desired, see documentation here:
