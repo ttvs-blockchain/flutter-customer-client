@@ -11,6 +11,10 @@ on:
   pull_request:
     branches: [ main ]
 
+env:
+  FIREBASE_OPTION_CONTENT : ${{ secrets.FIREBASE_OPTION_CONTENT }}
+  GENERATED_PLUGIN_REGISTRANT_CONTENT : ${{ secrets.GENERATED_PLUGIN_REGISTRANT_CONTENT }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -30,8 +34,7 @@ jobs:
       - name: Write generated_plugin_registrant.dart
         run: |
           touch lib/generated_plugin_registrant.dart
-          echo '{{ secrets.GENERATED_PLUGIN_REGISTRANT_CONTENT }}' >> lib/generated_plugin_registrant.dart
-          echo 'hello world' >> lib/generated_plugin_registrant.dart
+          echo $GENERATED_PLUGIN_REGISTRANT_CONTENT >> lib/generated_plugin_registrant.dart
           cat lib/generated_plugin_registrant.dart
       
       - name: Flutter action
