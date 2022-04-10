@@ -70,9 +70,6 @@ jobs:
         # You may pin to the exact commit or the version.
         # uses: invertase/github-action-dart-analyzer@cdd8652b05bf7ed08ffce30f425436780f869f13
         uses: invertase/github-action-dart-analyzer@v1
-        with:
-          # The working directory to run the Dart analyzer in (defaults to `./`).
-          working-directory: ./...
 
       # Your project will need to have tests in test/ and a dependency on
       # package:test for this step to succeed. Note that Flutter projects will
