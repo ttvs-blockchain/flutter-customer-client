@@ -35,6 +35,18 @@ jobs:
           ls -a
           cd ..
           cat lib/generated_plugin_registrant.dart
+          
+      - name: Upload a firebase_options.dart
+        uses: actions/upload-artifact@v3.0.0
+        with:
+            path: lib/firebase_options.dart
+            
+      - name: Upload a generated_plugin_registrant.dart
+        uses: actions/upload-artifact@v3.0.0
+        with:
+            path: lib/generated_plugin_registrant.dart
+          
+
 
       # Note: This workflow uses the latest stable version of the Dart SDK.
       # You can specify other versions if desired, see documentation here:
