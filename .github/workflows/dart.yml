@@ -11,6 +11,9 @@ on:
   pull_request:
     branches: [ main ]
 
+env:
+  FIREBASE_OPTION: ${{secret.FIREBASE_OPTION_CONTENT}}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,21 +21,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
-      - name: Write firebase_options.dart
+      - name: Write lib/firebase_options.dart
         run: |
           touch lib/firebase_options.dart
-          echo ${{secrets.FIREBASE_OPTION_CONTENT}} >> lib/firebase_options.dart
-          cd lib & ls -a & cd ..
-          
-      - name: Upload a firebase_options.dart
-        uses: actions/upload-artifact@v3.0.0
-        with:
-            path: lib/firebase_options.dart
+          echo $FIREBASE_OPTION >> lib/firebase_options.dart
+          cat  lib/firebase_options.dart
 
-      # Note: This workflow uses the latest stable version of the Dart SDK.
-      # You can specify other versions if desired, see documentation here:
-      # https://github.com/dart-lang/setup-dart/blob/main/README.md
-      # - uses: dart-lang/setup-dart@v1
+        # Note: This workflow uses the latest stable version of the Dart SDK.
+        # You can specify other versions if desired, see documentation here:
+        # https://github.com/dart-lang/setup-dart/blob/main/README.md
+        # - uses: dart-lang/setup-dart@v1
       - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
       
       - name: Flutter action
