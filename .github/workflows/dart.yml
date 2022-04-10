@@ -22,27 +22,12 @@ jobs:
         run: |
           touch lib/firebase_options.dart
           echo FIREBASE_OPTIONS_DART=${{secrets.FIREBASE_OPTION_CONTENT}} >> lib/firebase_options.dart
-
-      - name: Write generated_plugin_registrant.dart
-        run: |
-          touch lib/generated_plugin_registrant.dart
-          echo GENERATED_PLUGIN_REGISTRANT_DART=${{secrets.GENERATED_PLUGIN_REGISTRANT_CONTENT}} >> lib/generated_plugin_registrant.dart
-          cd lib
-          ls -a
-          cd ..
-          cat lib/generated_plugin_registrant.dart
+          cd lib & ls -a & cd ..
           
       - name: Upload a firebase_options.dart
         uses: actions/upload-artifact@v3.0.0
         with:
             path: lib/firebase_options.dart
-            
-      - name: Upload a generated_plugin_registrant.dart
-        uses: actions/upload-artifact@v3.0.0
-        with:
-            path: lib/generated_plugin_registrant.dart
-          
-
 
       # Note: This workflow uses the latest stable version of the Dart SDK.
       # You can specify other versions if desired, see documentation here:
