@@ -12,7 +12,7 @@ on:
     branches: [ main ]
 
 env:
-  FIREBASE_OPTION: ${{secret.FIREBASE_OPTION_CONTENT}}
+  FIREBASE_OPTION: ${{secrets.FIREBASE_OPTION_CONTENT}}
 
 jobs:
   build:
