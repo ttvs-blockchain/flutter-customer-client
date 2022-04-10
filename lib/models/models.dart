@@ -55,9 +55,6 @@ class DatabaseUser {
 
   @override
   int get hashCode => id.hashCode;
-
-  String toQRCodeInfo() =>
-      '"personalInfo":{"sysID":"$systemID","name":"$name","countryCode":"$countryCode","countryID":"$countryID","gender":"$gender","dateOfBirth":"$dateOfBirth"}';
 }
 
 class DatabaseCertificate {
@@ -231,7 +228,7 @@ String getQRCodeInfoQRCodeView(
    * pid: person system ID
    * pn: person name
    * pcc: person country code
-   * pcid: person country ID
+   * pcid: document type:person country ID
    * pg: person gender
    * pbd: person date of birth
    * certs: certificates
@@ -239,7 +236,7 @@ String getQRCodeInfoQRCodeView(
    * lcid: Local Chain ID
    */
   final qrCodeInfo =
-      '{"pid":"${user.systemID}","pn":"${user.name}","pcc":"${user.countryCode}","pcid":"${user.countryID}","pg":${user.gender},"pbd":"${user.dateOfBirth}"';
+      '{"pid":"${user.systemID}","pn":"${user.name}","pcc":"${user.countryCode}","pcid":"${user.documentType}:${user.countryID}","pg":${user.gender},"pbd":"${user.dateOfBirth}"';
   if (certificates.isEmpty) {
     return '$qrCodeInfo}';
   }
@@ -257,7 +254,7 @@ String getQRCodeInfoCertificateListView(
    * pid: person system ID
    * pn: person name
    * pcc: person country code
-   * pcid: person country ID
+   * pcid: document type:person country ID
    * pg: person gender
    * pbd: person date of birth
    * cid: certificate ID
@@ -270,5 +267,5 @@ String getQRCodeInfoCertificateListView(
    * mp: Merkle Tree path
    * idx: indexes
    */
-  return '{"pid":"${user.id}","pn":"${user.name}","pcc":"${user.countryCode}","pcid":"${user.countryID}","pg":${user.gender},"pbd":"${user.dateOfBirth}","cid":"${certificate.certID}","cn":"${certificate.name}","cb":"${certificate.brand}","cnd":"${certificate.numDose}","cit":"${certificate.issueTime}","ci":"${certificate.issuer}","cr":"${certificate.remark}","mp":["AIZca0LlTpd9yMCQpCji+hcqQoPBVvy10vQGJgLfopQ=","Nn7D3dsGNPI+4+Q4UqLy3Eo4VV+L6adyohnJTJiKzHY=","KBKMHj7Sl0xO8YTzxksqZSv4t1GmBLJ7/Gk2PbXThZw="],"idx":[0,1,0]}';
+  return '{"pid":"${user.id}","pn":"${user.name}","pcc":"${user.countryCode}","pcid":"${user.documentType}:${user.countryID}","pg":${user.gender},"pbd":"${user.dateOfBirth}","cid":"${certificate.certID}","cn":"${certificate.name}","cb":"${certificate.brand}","cnd":"${certificate.numDose}","cit":"${certificate.issueTime}","ci":"${certificate.issuer}","cr":"${certificate.remark}","mp":["AIZca0LlTpd9yMCQpCji+hcqQoPBVvy10vQGJgLfopQ=","Nn7D3dsGNPI+4+Q4UqLy3Eo4VV+L6adyohnJTJiKzHY=","KBKMHj7Sl0xO8YTzxksqZSv4t1GmBLJ7/Gk2PbXThZw="],"idx":[0,1,0]}';
 }

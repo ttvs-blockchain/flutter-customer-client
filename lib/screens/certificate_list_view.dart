@@ -1,10 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 
 import '../constants/constants.dart';
 import '../models/models.dart';
+import '../services/cloud/firebase_cloud_storage.dart';
+import '../services/crud/certificate_service.dart';
 
-class CertificateListView extends StatelessWidget {
+class CertificateListView extends StatefulWidget {
   final List<DatabaseCertificate> certificates;
   final DatabaseUser user;
 
@@ -13,6 +17,14 @@ class CertificateListView extends StatelessWidget {
     required this.certificates,
     required this.user,
   }) : super(key: key);
+
+  @override
+  State<CertificateListView> createState() => _CertificateListViewState();
+}
+
+class _CertificateListViewState extends State<CertificateListView> {
+  late final DatabaseService _databaseService;
+  late final FirebaseCloudStorage _firebaseCloudStorage;
 
   void _createQRCodeView(
     BuildContext context,
@@ -32,74 +44,118 @@ class CertificateListView extends StatelessWidget {
     );
   }
 
+  Future<void> _updateCertificatesFromCloud() async {
+    final user = await _databaseService.getUser();
+
+    final cloudCertificates = await _firebaseCloudStorage.getCertificates(
+        userSystemID: user.systemID);
+    log(cloudCertificates.length.toString());
+    _databaseService.deleteAllCertificates();
+
+    for (final cert in cloudCertificates) {
+      await _databaseService.createCertificate(
+          certificate: cert.toDatabaseCertificate());
+    }
+  }
+
+  @override
+  void initState() {
+    _databaseService = DatabaseService();
+    _firebaseCloudStorage = FirebaseCloudStorage();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: certificates.length,
-      itemBuilder: (context, index) {
-        final certificate = certificates[index];
-        return GestureDetector(
-          onTap: () => _onTap(context, certificate),
-          child: Card(
-            color: certificates[index].isValidated
-                ? const Color.fromARGB(139, 152, 255, 233)
-                : const Color.fromARGB(138, 255, 56, 30),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                certificate.name,
-                                style: Theme.of(context).textTheme.headline1,
-                              ),
-                              const SizedBox(width: 4),
-                              _getStatusTag(certificate.isValidated),
-                            ],
-                          ),
-                          const SizedBox(height: 4),
-                          Padding(
-                            padding: const EdgeInsets.all(2.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+    return RefreshIndicator(
+      onRefresh: () async {
+        await _updateCertificatesFromCloud();
+        await DatabaseService().cacheCertificates();
+      },
+      child: ListView.builder(
+        itemCount: widget.certificates.length + 1,
+        itemBuilder: (context, index) {
+          if (index == widget.certificates.length) {
+            return const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Pull down to refresh',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            );
+          }
+          final certificate = widget.certificates[index];
+          return GestureDetector(
+            onTap: () => _onTap(context, certificate),
+            child: Card(
+              color: widget.certificates[index].isValidated
+                  ? const Color.fromARGB(139, 152, 255, 233)
+                  : const Color.fromARGB(138, 255, 56, 30),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                _getIssueTimeTag(
-                                    context, certificate.issueTime),
                                 Text(
-                                  'Number of Dose: ${certificate.numDose}',
-                                  style: Theme.of(context).textTheme.bodyText1,
+                                  certificate.name,
+                                  style: Theme.of(context).textTheme.headline1,
                                 ),
+                                const SizedBox(width: 4),
+                                _getStatusTag(certificate.isValidated),
                               ],
                             ),
-                          ),
-                        ],
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          _createQRCodeView(context, certificate, user);
-                        },
-                        icon: const Icon(
-                          Icons.qr_code_rounded,
-                          color: Colors.indigoAccent,
-                          size: 40,
+                            const SizedBox(height: 4),
+                            Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  _getIssueTimeTag(
+                                      context, certificate.issueTime),
+                                  Text(
+                                    'Number of Dose: ${certificate.numDose}',
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                        IconButton(
+                          onPressed: () {
+                            _createQRCodeView(
+                                context, certificate, widget.user);
+                          },
+                          icon: const Icon(
+                            Icons.qr_code_rounded,
+                            color: Colors.indigoAccent,
+                            size: 40,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 

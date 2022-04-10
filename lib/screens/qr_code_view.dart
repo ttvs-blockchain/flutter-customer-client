@@ -32,10 +32,16 @@ class _QRCodeViewState extends State<QRCodeView> {
                 as Tuple2<DatabaseUser, Iterable<DatabaseCertificate>>;
             return Center(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
+                    child: Text(
+                      'Your QR Code',
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                     child: QrImage(
                         data: getQRCodeInfoQRCodeView(
                             userAndCerts.item1, userAndCerts.item2)),

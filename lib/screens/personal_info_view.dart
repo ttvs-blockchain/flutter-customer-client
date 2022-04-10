@@ -34,9 +34,12 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
               children: <Widget>[
                 const SizedBox(height: 4),
                 Center(
-                  child: Text(
-                    'Personal Information',
-                    style: Theme.of(context).textTheme.headline6,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Personal Information',
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
                   ),
                 ),
                 ListTile(

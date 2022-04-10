@@ -30,10 +30,26 @@ class CertificateQRCodeView extends StatelessWidget {
       ]),
       body: Column(
         children: [
-          QrImage(data: qrCodeInfo),
-          Text(
-            'QR Code',
-            style: Theme.of(context).textTheme.headline6,
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+            child: Text(
+              'Certificate QR Code',
+              style: Theme.of(context).textTheme.headline6,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+            child: QrImage(data: qrCodeInfo),
+          ),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              'Please present this QR code while verifying',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       ),
