@@ -21,7 +21,7 @@ jobs:
       - name: Write firebase_options.dart
         run: |
           touch lib/firebase_options.dart
-          echo FIREBASE_OPTIONS_DART=${{secrets.FIREBASE_OPTION_CONTENT}} >> lib/firebase_options.dart
+          echo ${{secrets.FIREBASE_OPTION_CONTENT}} >> lib/firebase_options.dart
           cd lib & ls -a & cd ..
           
       - name: Upload a firebase_options.dart
