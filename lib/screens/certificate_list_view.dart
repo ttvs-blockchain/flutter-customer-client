@@ -4,7 +4,7 @@ import 'package:tuple/tuple.dart';
 import '../constants/constants.dart';
 import '../models/models.dart';
 
-class CertificateListView extends StatelessWidget {
+class CertificateListView extends StatefulWidget {
   final List<DatabaseCertificate> certificates;
   final DatabaseUser user;
 
@@ -14,6 +14,11 @@ class CertificateListView extends StatelessWidget {
     required this.user,
   }) : super(key: key);
 
+  @override
+  State<CertificateListView> createState() => _CertificateListViewState();
+}
+
+class _CertificateListViewState extends State<CertificateListView> {
   void _createQRCodeView(
     BuildContext context,
     DatabaseCertificate certificate,
@@ -33,15 +38,35 @@ class CertificateListView extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: certificates.length,
+      itemCount: widget.certificates.length + 1,
       itemBuilder: (context, index) {
-        final certificate = certificates[index];
+        if (index == widget.certificates.length) {
+          return const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Center(
+              child: Text(
+                'Pull down to refresh',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          );
+        }
+        final certificate = widget.certificates[index];
         return GestureDetector(
           onTap: () => _onTap(context, certificate),
           child: Card(
-            color: certificates[index].isValidated
+            color: widget.certificates[index].isValidated
                 ? const Color.fromARGB(139, 152, 255, 233)
                 : const Color.fromARGB(138, 255, 56, 30),
             child: Padding(
@@ -84,7 +109,7 @@ class CertificateListView extends StatelessWidget {
                       ),
                       IconButton(
                         onPressed: () {
-                          _createQRCodeView(context, certificate, user);
+                          _createQRCodeView(context, certificate, widget.user);
                         },
                         icon: const Icon(
                           Icons.qr_code_rounded,

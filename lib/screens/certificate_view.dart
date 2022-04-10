@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import '../models/models.dart';
+import '../services/cloud/firebase_cloud_storage.dart';
 import '../services/crud/certificate_service.dart';
 import 'certificate_list_view.dart';
 
@@ -13,11 +16,28 @@ class CertificateView extends StatefulWidget {
 
 class _CertificateViewState extends State<CertificateView> {
   late final DatabaseService _databaseService;
+  late final FirebaseCloudStorage _firebaseService;
 
   @override
   void initState() {
     _databaseService = DatabaseService();
+    _firebaseService = FirebaseCloudStorage();
     super.initState();
+  }
+
+  Future<void> _updateCertificatesFromCloud() async {
+    final user = await _databaseService.getUser();
+
+    final cloudCertificates =
+        await _firebaseService.getCertificates(userSystemID: user.systemID);
+    log(cloudCertificates.length.toString());
+    _databaseService.deleteAllCertificates();
+
+    for (final cert in cloudCertificates) {
+      await _databaseService.createCertificate(
+          certificate: cert.toDatabaseCertificate());
+    }
+    _databaseService.cacheCertificates();
   }
 
   @override
@@ -37,20 +57,44 @@ class _CertificateViewState extends State<CertificateView> {
                     if (snapshot.hasData) {
                       final allCertificates =
                           snapshot.data as List<DatabaseCertificate>;
-                      return allCertificates.isEmpty
-                          ? const Center(
-                              child: Text(
+                      if (allCertificates.isEmpty) {
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
                                 'No certificates',
                                 style: TextStyle(
                                   fontSize: 16,
                                   color: Colors.grey,
                                 ),
                               ),
-                            )
-                          : CertificateListView(
-                              certificates: allCertificates,
-                              user: user,
-                            );
+                              ElevatedButton(
+                                onPressed: () async {
+                                  await _updateCertificatesFromCloud();
+                                },
+                                child: const Text(
+                                  'Refresh',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                      return RefreshIndicator(
+                        onRefresh: () async {
+                          await _updateCertificatesFromCloud();
+                        },
+                        child: CertificateListView(
+                          certificates: allCertificates,
+                          user: user,
+                        ),
+                      );
                     }
                     return const Center(child: CircularProgressIndicator());
                   default:
