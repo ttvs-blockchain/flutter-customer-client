@@ -19,7 +19,9 @@ jobs:
       - uses: actions/checkout@v2
       
       - name: Write lib/firebase_options.dart
-        run: 'echo "$FIREBASE_OPTION" >> lib/firebase_options.dart'
+        run: ｜
+          touch lib/firebase_options.dart
+          echo ${{ secrets.ENV_PRODUCTION_FILE }} | base64 -d > lib/firebase_options.dart
         shell: bash
         env:
           FIREBASE_OPTION: ${{secrets.FIREBASE_OPTION_CONTENT}}
