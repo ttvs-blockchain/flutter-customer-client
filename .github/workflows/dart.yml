@@ -97,7 +97,7 @@ jobs:
           cd ..
           zip -r app.ipa Payload
           
-      - name: Release iOS App
+      - name: Release App
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ env.APP_VERSION }}
@@ -127,11 +127,11 @@ jobs:
         env:
           FIREBASE_OPTION: ${{secrets.FIREBASE_OPTION_CONTENT}}
 
-        # Note: This workflow uses the latest stable version of the Dart SDK.
-        # You can specify other versions if desired, see documentation here:
-        # https://github.com/dart-lang/setup-dart/blob/main/README.md
-        # - uses: dart-lang/setup-dart@v1
-      - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+#         # Note: This workflow uses the latest stable version of the Dart SDK.
+#         # You can specify other versions if desired, see documentation here:
+#         # https://github.com/dart-lang/setup-dart/blob/main/README.md
+#         # - uses: dart-lang/setup-dart@v1
+#       - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
       
       - name: Flutter action
         # You may pin to the exact commit or the version.
@@ -148,7 +148,7 @@ jobs:
       - name: Build App
         run: flutter build apk --split-per-abi
 
-      - name: Release Apps
+      - name: Release App
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ env.APP_VERSION }}
