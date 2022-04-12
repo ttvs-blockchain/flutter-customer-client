@@ -53,15 +53,69 @@ jobs:
           flutter analyze
           flutter test --no-sound-null-safety
           
-  build:
-    name: Build Apps
+  build_ios:
+    name: Build IOS App
+    needs: test
+    runs-on: self-hosted
+    steps:
+      - name: Export Release Timestamp
+        run: echo "APP_VERSION=v$(date +'%Y.%m.%d.%H.%M.%S')" >> $GITHUB_ENV
+        
+      - name: Checkout repository
+        uses: actions/checkout@v2
+          
+      - name: Write lib/firebase_options.dart
+        run: echo $FIREBASE_OPTION | base64 -d > lib/firebase_options.dart
+        env:
+          FIREBASE_OPTION: ${{secrets.FIREBASE_OPTION_CONTENT}}
+
+        # Note: This workflow uses the latest stable version of the Dart SDK.
+        # You can specify other versions if desired, see documentation here:
+        # https://github.com/dart-lang/setup-dart/blob/main/README.md
+        # - uses: dart-lang/setup-dart@v1
+      - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+      
+      - name: Flutter action
+        # You may pin to the exact commit or the version.
+        # uses: subosito/flutter-action@5e1529bc12adae5b26f30f0a4046ac743d6f0c5d
+        uses: subosito/flutter-action@v2.3.0
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # Uncomment this step to verify the use of 'dart format' on each commit.
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed .
+        
+      - name: Build App
+        run: |
+          flutter build ios --no-codesign
+          cd build/ios/iphoneos
+          mkdir Payload
+          cd Payload
+          ln -s ../Runner.app
+          cd ..
+          zip -r app.ipa Payload
+          
+      - name: Release iOS App
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ env.APP_VERSION }}
+          name: ${{ env.APP_VERSION }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: 'build/ios/iphoneos/app.ipa'
+
+  build_android:
+    name: Build Android App
     needs: test
     runs-on: macos-latest
     steps:
       - name: Export Release Timestamp
         run: echo "APP_VERSION=v$(date +'%Y.%m.%d.%H.%M.%S')" >> $GITHUB_ENV
+        
       - name: Checkout repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
+        
       - name: Set up Java
         uses: actions/setup-java@v2
         with:
@@ -91,22 +145,13 @@ jobs:
       - name: Verify formatting
         run: dart format --output=none --set-exit-if-changed .
         
-      - name: Build Android App
+      - name: Build App
         run: flutter build apk --split-per-abi
-      - name: Build iOS App
-        run: |
-          flutter build ios --no-codesign
-          cd build/ios/iphoneos
-          mkdir Payload
-          cd Payload
-          ln -s ../Runner.app
-          cd ..
-          zip -r app.ipa Payload
+
       - name: Release Apps
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ env.APP_VERSION }}
           name: ${{ env.APP_VERSION }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: 'build/app/outputs/apk/release/*.apk,build/ios/iphoneos/app.ipa'
-
+          artifacts: 'build/ios/iphoneos/app.ipa'
