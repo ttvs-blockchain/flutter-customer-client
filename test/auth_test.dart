@@ -1,3 +1,4 @@
+@Tags(['auth_service'])
 import 'package:test/test.dart';
 import 'package:vaxpass/services/auth/auth_exceptions.dart';
 import 'package:vaxpass/services/auth/auth_provider.dart';
