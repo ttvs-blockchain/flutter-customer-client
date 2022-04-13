@@ -1,8 +1,15 @@
 const nameDB = 'vaxpass.db';
-const nameUserTable = 'user';
-const nameCertificateTable = 'certificate';
+const nameUserTable = 'user$dbVersion';
+const nameCertificateTable = 'certificate$dbVersion';
+const nameSQLiteSequenceTable = 'sqlite_sequence';
+const notRemoveTableNames = <String>[
+  nameUserTable,
+  nameCertificateTable,
+  nameSQLiteSequenceTable
+];
+const dbVersion = 1;
 
-const queryCreateUserTable = '''CREATE TABLE IF NOT EXISTS "user" (
+const queryCreateUserTable = '''CREATE TABLE IF NOT EXISTS "$nameUserTable" (
         "id"	INTEGER NOT NULL UNIQUE,
 	      "system_id"	TEXT NOT NULL UNIQUE,
 	      "name"	TEXT NOT NULL,
@@ -15,7 +22,7 @@ const queryCreateUserTable = '''CREATE TABLE IF NOT EXISTS "user" (
 	      PRIMARY KEY("id")
       );''';
 const queryCreateCertificateTable =
-    '''CREATE TABLE IF NOT EXISTS "certificate" (
+    '''CREATE TABLE IF NOT EXISTS "$nameCertificateTable" (
         "id"	INTEGER NOT NULL UNIQUE,
 	      "cert_id"	TEXT NOT NULL UNIQUE,
 	      "person_id"	TEXT NOT NULL,
@@ -35,4 +42,8 @@ const queryCreateCertificateTable =
         "is_validated"	INTEGER NOT NULL,
 	      PRIMARY KEY("id" AUTOINCREMENT)
       );''';
+const queryAllTableNames =
+    '''SELECT name FROM sqlite_master WHERE type = "table"''';
+const queryDropTableByName = 'DROP TABLE IF EXISTS ';
+
 const queryOrderByDESC = ' DESC';

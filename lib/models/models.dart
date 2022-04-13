@@ -264,8 +264,9 @@ String getQRCodeInfoCertificateListView(
    * cit: certificate issue time
    * ci: certificate issuer
    * cr: certificate remark
+   * grid: global root ID
    * mp: Merkle Tree path
    * idx: indexes
    */
-  return '{"pid":"${user.id}","pn":"${user.name}","pcc":"${user.countryCode}","pcid":"${user.documentType}:${user.countryID}","pg":${user.gender},"pbd":"${user.dateOfBirth}","cid":"${certificate.certID}","cn":"${certificate.name}","cb":"${certificate.brand}","cnd":"${certificate.numDose}","cit":"${certificate.issueTime}","ci":"${certificate.issuer}","cr":"${certificate.remark}","mp":["AIZca0LlTpd9yMCQpCji+hcqQoPBVvy10vQGJgLfopQ=","Nn7D3dsGNPI+4+Q4UqLy3Eo4VV+L6adyohnJTJiKzHY=","KBKMHj7Sl0xO8YTzxksqZSv4t1GmBLJ7/Gk2PbXThZw="],"idx":[0,1,0]}';
+  return '{"pid":"${user.id}","pn":"${user.name}","pcc":"${user.countryCode}","pcid":"${user.documentType}:${user.countryID}","pg":${user.gender},"pbd":"${user.dateOfBirth}","cid":"${certificate.certID}","cn":"${certificate.name}","cb":"${certificate.brand}","cnd":"${certificate.numDose}","cit":"${certificate.issueTime}","ci":"${certificate.issuer}","cr":"${certificate.remark}","grid":"955b658e-b3b1-4b7e-a9f4-e4b4059ed7a7","mp":["AIZca0LlTpd9yMCQpCji+hcqQoPBVvy10vQGJgLfopQ=","Nn7D3dsGNPI+4+Q4UqLy3Eo4VV+L6adyohnJTJiKzHY=","KBKMHj7Sl0xO8YTzxksqZSv4t1GmBLJ7/Gk2PbXThZw="],"idx":[0,1,0]}';
 }

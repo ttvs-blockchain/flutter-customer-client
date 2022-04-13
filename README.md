@@ -1,19 +1,16 @@
-# VaxPass Client
+# VaxPass Mobile App
 
-A new Flutter project.
+Mobile App client for VaxPass: Decentralized Two-Tier Verifiable Blockchain Platform for COVID-19 Certificate Verification
 
-## Getting Started
+## Abstract
 
-This project is a starting point for a Flutter application.
+Many countries around the globe have adopted the COVID- 19 vaccine passport system to fight against Corona Virus and protect public health. In VaxPass, we introduce the design and implementation of VaxPass, an end-to-end decentralized blockchain-based vaccine passport verification system that provides a secure and reliable way for certificate storage, issuing, and verification. VaxPass utilizes a two-tier verifiable blockchain architecture for better scalability and maintainability. The first tier is the Global Chain, a Hyperledger Fabric permissioned blockchain whose nodes are maintained by the authorities in different countries. It only stores the membership proof of certificates to keep lightweight so that it is convenient to share data across the globe. The second tier is the Local Chains, which contains many blockchains held by different groups of institutions such as vaccine producers, hospitals, etc. Local Chains store detailed information on the certificates. Periodically, a certificate issuer generates a membership proof of all the certificates issued within the period and records it on the Global Chain. Then the certificate verifier can verify a certificate according to the proof on the Global Chain and the detailed information on the corresponding Local Chain.
 
-Here are a few resources to get you started if this is your first Flutter project:
+## Demo
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+![Running on Different Devices](doc/image/app_demo.jpeg)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a complete API reference.
+## Commands
 
 Generate Launcher Icon:
 

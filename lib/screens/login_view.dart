@@ -83,7 +83,41 @@ class _LoginViewState extends State<LoginView> {
                       labelText: 'Password',
                     ),
                   ),
-                  TextButton(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          context.read<AuthBloc>().add(
+                                const AuthEventShouldRegister(),
+                              );
+                        },
+                        child: const SizedBox(
+                          width: 150,
+                          child: Text(
+                            'Register a account',
+                            textAlign: TextAlign.end,
+                          ),
+                        ),
+                      ),
+                      const Text('|'),
+                      TextButton(
+                        onPressed: () {
+                          context.read<AuthBloc>().add(
+                                const AuthEventForgotPassword(),
+                              );
+                        },
+                        child: const SizedBox(
+                          width: 150,
+                          child: Text(
+                            'Forgot password',
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  ElevatedButton(
                     onPressed: () async {
                       final email = _email.text.trim();
                       final password = _password.text.trim();
@@ -95,22 +129,6 @@ class _LoginViewState extends State<LoginView> {
                           );
                     },
                     child: const Text('Login'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      context.read<AuthBloc>().add(
-                            const AuthEventForgotPassword(),
-                          );
-                    },
-                    child: const Text('I forgot my password'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      context.read<AuthBloc>().add(
-                            const AuthEventShouldRegister(),
-                          );
-                    },
-                    child: const Text('Not register yet? Register here!'),
                   ),
                 ],
               ),

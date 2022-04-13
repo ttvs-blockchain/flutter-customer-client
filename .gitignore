@@ -47,3 +47,7 @@ app.*.map.json
 
 # firebase
 *firebase_options.dart
+
+# unit test result
+test-result.json
+reports/
