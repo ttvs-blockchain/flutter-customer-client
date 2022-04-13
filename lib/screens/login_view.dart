@@ -61,6 +61,10 @@ class _LoginViewState extends State<LoginView> {
               Column(
                 children: [
                   TextField(
+                    onEditingComplete: () {
+                      _email.text = _email.text.trim();
+                      _password.text = _password.text.trim();
+                    },
                     controller: _email,
                     enableSuggestions: false,
                     autocorrect: false,
@@ -81,8 +85,8 @@ class _LoginViewState extends State<LoginView> {
                   ),
                   TextButton(
                     onPressed: () async {
-                      final email = _email.text;
-                      final password = _password.text;
+                      final email = _email.text.trim();
+                      final password = _password.text.trim();
                       context.read<AuthBloc>().add(
                             AuthEventLogIn(
                               email,
