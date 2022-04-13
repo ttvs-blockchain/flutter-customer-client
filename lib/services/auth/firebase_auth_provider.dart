@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart'
     show FirebaseAuth, FirebaseAuthException;
 import 'package:firebase_core/firebase_core.dart';
+import 'package:vaxpass/constants/regex.dart';
+
 import '../../firebase_options.dart';
 import 'auth_exceptions.dart';
 import 'auth_provider.dart';
@@ -19,6 +21,11 @@ class FirebaseAuthProvider implements AuthProvider {
     required String email,
     required String password,
   }) async {
+    // check the password with regex
+    final validPassWordRegex = RegExp(passwordFormatRegex);
+    if (!validPassWordRegex.hasMatch(password)) {
+      throw WeakPasswordAuthException();
+    }
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
