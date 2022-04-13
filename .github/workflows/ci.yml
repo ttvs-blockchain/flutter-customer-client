@@ -51,13 +51,31 @@ jobs:
     needs: test
     runs-on: self-hosted
     steps:
-    - uses: phoenix-actions/test-reporting@v3
-      id: test-report                     # Set ID reference for step
-      with:
-        artifact: test-results            # artifact name
-        name: JEST Tests                  # Name of the check run which will be created
-        path: 'reports/tests.json'                     # Path to test results (inside artifact .zip)
-        reporter: flutter-json              # Format of test results          # Format of test results
+      - uses: actions/checkout@v2
+      
+      - name: Write lib/firebase_options.dart
+        run: echo $FIREBASE_OPTION | base64 -d > lib/firebase_options.dart
+        env:
+          FIREBASE_OPTION: ${{secrets.FIREBASE_OPTION_CONTENT}}
+      
+      - name: Flutter action
+        # You may pin to the exact commit or the version.
+        # uses: subosito/flutter-action@5e1529bc12adae5b26f30f0a4046ac743d6f0c5d
+        uses: subosito/flutter-action@v2.3.0
+
+      - name: Install dependencies
+        run: flutter pub get
+        
+      - name: Run Flutter Tests
+        run: flutter test
+        
+      - uses: phoenix-actions/test-reporting@v3
+        id: test-report                     # Set ID reference for step
+        with:
+          artifact: test-results            # artifact name
+          name: Flutter Unit Tests                  # Name of the check run which will be created
+          path: 'reports/tests.json'                     # Path to test results (inside artifact .zip)
+          reporter: flutter-json              # Format of test results          # Format of test results
           
   build:
     name: Build Android and iOS Apps
