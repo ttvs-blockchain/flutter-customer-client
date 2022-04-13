@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tuple/tuple.dart';
-import 'package:vaxpass/services/crud/certificate_service.dart';
 
+import '../services/crud/certificate_service.dart';
 import '../models/models.dart';
 
 class QRCodeView extends StatefulWidget {

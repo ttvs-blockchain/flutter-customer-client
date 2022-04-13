@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart'
     show FirebaseAuth, FirebaseAuthException;
 import 'package:firebase_core/firebase_core.dart';
-import 'package:vaxpass/constants/regex.dart';
 
+import '../../constants/regex.dart';
 import '../../firebase_options.dart';
 import 'auth_exceptions.dart';
 import 'auth_provider.dart';

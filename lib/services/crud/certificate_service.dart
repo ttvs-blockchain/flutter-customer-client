@@ -5,8 +5,8 @@ import 'package:path_provider/path_provider.dart'
     show MissingPlatformDirectoryException, getApplicationDocumentsDirectory;
 import 'package:sqflite/sqflite.dart';
 import 'package:tuple/tuple.dart';
-import 'package:vaxpass/services/crud/crud_exceptions.dart';
 
+import 'crud_exceptions.dart';
 import '../../constants/constants.dart';
 import '../../models/models.dart';
 import 'certificate_constants.dart';
@@ -50,6 +50,7 @@ class DatabaseService {
       final dbPath = join(docsPath.path, nameDB);
       final db = await openDatabase(dbPath);
       _db = db;
+      _deleteDeprecatedTables(_db!);
 
       // create user table
       await db.execute(queryCreateUserTable);
@@ -243,5 +244,16 @@ class DatabaseService {
         .map((certificateRow) => DatabaseCertificate.fromRow(certificateRow));
     return Tuple2<DatabaseUser, Iterable<DatabaseCertificate>>(
         user, iterableCertificates);
+  }
+
+  Future<void> _deleteDeprecatedTables(Database db) async {
+    final tables = await db.rawQuery(queryAllTableNames);
+    final tableNames = tables.map((table) => table['name'] as String).toList();
+    final deprecatedTableNames = tableNames
+        .where((name) => !notRemoveTableNames.contains(name))
+        .toList();
+    for (final tableName in deprecatedTableNames) {
+      await db.execute(queryDropTableByName + tableName);
+    }
   }
 }

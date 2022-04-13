@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:vaxpass/constants/genders.dart';
 
+import '../../../constants/genders.dart';
 import '../../../constants/document_types.dart';
 import '../../../models/models.dart';
 import '../../crud/certificate_service.dart';

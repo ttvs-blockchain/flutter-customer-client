@@ -2,11 +2,11 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vaxpass/constants/country_codes.dart';
-import 'package:vaxpass/constants/document_types.dart';
-import 'package:vaxpass/constants/genders.dart';
-import 'package:vaxpass/services/auth/bloc/auth_event.dart';
 
+import '../constants/country_codes.dart';
+import '../constants/document_types.dart';
+import '../constants/genders.dart';
+import '../services/auth/bloc/auth_event.dart';
 import '../services/auth/bloc/auth_bloc.dart';
 
 class RegisterUserInfoView extends StatefulWidget {

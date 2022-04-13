@@ -83,6 +83,14 @@ class _RegisterViewState extends State<RegisterView> {
                     ),
                   ),
                   TextButton(
+                    onPressed: () {
+                      context.read<AuthBloc>().add(
+                            const AuthEventLogOut(),
+                          );
+                    },
+                    child: const Text('Already registered? Login here!'),
+                  ),
+                  ElevatedButton(
                     onPressed: () async {
                       final email = _email.text;
                       final password = _password.text;
@@ -94,14 +102,6 @@ class _RegisterViewState extends State<RegisterView> {
                           );
                     },
                     child: const Text('Register'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      context.read<AuthBloc>().add(
-                            const AuthEventLogOut(),
-                          );
-                    },
-                    child: const Text('Already registered? Login here!'),
                   ),
                 ],
               ),
