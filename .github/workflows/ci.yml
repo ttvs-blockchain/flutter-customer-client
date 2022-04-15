@@ -92,7 +92,9 @@ jobs:
         with:
           packages: |
             pyyaml
-      - run: echo "APP_VERSION=$(python get_app_version.py)" >> $GITHUB_ENV
+      - run: |
+          echo "APP_VERSION=$(python get_app_version.py)" >> $GITHUB_ENV
+          echo ${{ env.APP_VERSION }}
         
       - name: Checkout repository
         uses: actions/checkout@v2
