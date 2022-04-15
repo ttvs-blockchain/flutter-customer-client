@@ -77,7 +77,7 @@ jobs:
           
   build:
     name: Build Android and iOS Apps
-    if: ${{ github.ref == 'refs/heads/master' }}
+    if: ${{ github.ref == 'refs/heads/main' }}
     needs: test
     runs-on: macos-latest
     steps:
