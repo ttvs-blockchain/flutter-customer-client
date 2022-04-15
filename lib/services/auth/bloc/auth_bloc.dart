@@ -209,6 +209,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthEventLogOut>((event, emit) async {
       try {
         await DatabaseService().deleteAllUsers();
+        await DatabaseService().deleteAllCertificates();
         await provider.logOut();
         emit(
           const AuthStateLoggedOut(
