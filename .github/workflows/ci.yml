@@ -88,7 +88,7 @@ jobs:
         uses: BSFishy/pip-action@v1
         with:
           packages: |
-            yaml
+            pyyaml
       - run: echo "APP_VERSION=$(python get_app_version.py)" >> $GITHUB_ENV
         
       - name: Checkout repository
