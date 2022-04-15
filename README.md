@@ -14,9 +14,17 @@ Many countries around the globe have adopted the COVID- 19 vaccine passport syst
 
 Generate Launcher Icon:
 
-```bash
+In flutter_customer_client.yaml
+
+```yaml
 flutter_launcher_icons:
     git:
       url: https://github.com/Davenchy/flutter_launcher_icons.git
       ref: fixMinSdkParseFlutter2.8
+```
+
+Command:
+
+```bash
+flutter pub run flutter_launcher_icons:main
 ```

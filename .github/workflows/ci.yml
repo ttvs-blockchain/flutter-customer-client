@@ -81,8 +81,16 @@ jobs:
     needs: test
     runs-on: macos-latest
     steps:
-      - name: Export Release Timestamp
-        run: echo "APP_VERSION=v$(date +'%Y.%m.%d.%H.%M.%S')" >> $GITHUB_ENV
+      - name: Set up Python
+        uses: actions/setup-python@v1
+
+      - name: Get App version
+        uses: BSFishy/pip-action@v1
+        with:
+          packages: |
+            package1
+            package2
+      - run: echo "APP_VERSION=$(python get_app_version.py)" >> $GITHUB_ENV
         
       - name: Checkout repository
         uses: actions/checkout@v2
