@@ -7,9 +7,15 @@ on:
 jobs:
   build:
     name: Build Android and iOS Apps
-    needs: test
     runs-on: macos-latest
     steps:
+      - name: Wait for tests to succeed
+        uses: lewagon/wait-on-check-action@v1.0.0
+        with:
+          ref: ${{ github.ref }}
+          check-name: 'Automated Tests'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 10
       - name: Set up Python
         uses: actions/setup-python@v1
 
