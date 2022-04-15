@@ -45,8 +45,9 @@ jobs:
         run: |
           flutter analyze
           flutter test --no-sound-null-safety
+
   report:
-    name: Genrate Test Report
+    name: Generate Test Report
     needs: test
     runs-on: self-hosted
     steps:
@@ -84,9 +85,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         
-      - name: Test GitHub Event
-        if: ${{ github.event_name == 'push' }}
-        run: echo "Github event push -- Test GitHub Event successful!"
       - name: Set up Python
         uses: actions/setup-python@v1
 
@@ -97,7 +95,7 @@ jobs:
             pyyaml
       - run: |
           echo "APP_VERSION=$(python get_app_version.py)" >> $GITHUB_ENV
-          echo ${{ env.APP_VERSION }}
+          echo "APP_VERSION=$(python get_app_version.py)"
           
       - name: Write lib/firebase_options.dart
         run: echo $FIREBASE_OPTION | base64 -d > lib/firebase_options.dart
