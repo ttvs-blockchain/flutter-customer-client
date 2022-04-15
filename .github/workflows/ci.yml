@@ -81,6 +81,9 @@ jobs:
     needs: test
     runs-on: macos-latest
     steps:
+      - name: Test GitHub Event
+        if: ${{ github.event_name == 'push' }}
+        run: echo "Github event push -- Test GitHub Event successful!"
       - name: Set up Python
         uses: actions/setup-python@v1
 
