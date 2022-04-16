@@ -28,3 +28,9 @@ Command:
 ```bash
 flutter pub run flutter_launcher_icons:main
 ```
+
+Use FlutterGen:
+
+```bash
+flutter packages pub run build_runner build
+```

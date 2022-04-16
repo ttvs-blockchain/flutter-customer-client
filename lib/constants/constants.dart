@@ -2,6 +2,8 @@ const certificateQRCodeViewRoute = '/certificate/qr-code-view';
 const certificateDetailViewRoute = '/certificate/detail-view';
 const mainViewRoute = '/main-view';
 
+const userNameMaxLength = 100;
+const userCountryIDMaxLength = 30;
 // const formatDateTime = 'HH:MM, MMM dd, yyyy';
 // const formatDatabaseDateTime = 'yyyy-mm-dd HH:MM:SS';
 
