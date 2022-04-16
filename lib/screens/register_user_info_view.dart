@@ -6,8 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../constants/country_codes.dart';
 import '../constants/document_types.dart';
 import '../constants/genders.dart';
-import '../services/auth/bloc/auth_event.dart';
 import '../services/auth/bloc/auth_bloc.dart';
+import '../services/auth/bloc/auth_event.dart';
 
 class RegisterUserInfoView extends StatefulWidget {
   const RegisterUserInfoView({Key? key}) : super(key: key);

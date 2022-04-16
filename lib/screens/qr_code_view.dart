@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tuple/tuple.dart';
 
-import '../services/crud/certificate_service.dart';
 import '../models/models.dart';
+import '../services/crud/certificate_service.dart';
 
 class QRCodeView extends StatefulWidget {
   const QRCodeView({Key? key}) : super(key: key);

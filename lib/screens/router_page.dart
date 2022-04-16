@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'register_user_info_view.dart';
 import '../helpers/loading/loading_screen.dart';
 import '../services/auth/bloc/auth_bloc.dart';
 import '../services/auth/bloc/auth_event.dart';
@@ -10,6 +9,7 @@ import '../services/crud/certificate_service.dart';
 import 'forgot_password_view.dart';
 import 'login_view.dart';
 import 'main_view.dart';
+import 'register_user_info_view.dart';
 import 'register_view.dart';
 import 'verify_email_view.dart';
 
@@ -23,9 +23,6 @@ class RouterPage extends StatefulWidget {
 class _RouterPageState extends State<RouterPage> {
   @override
   void initState() {
-    DatabaseService().open();
-    // DatabaseService().insertDummyUser();
-    // DatabaseService().insertDummyCertificates();
     super.initState();
   }
 

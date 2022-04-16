@@ -7,7 +7,7 @@ const notRemoveTableNames = <String>[
   nameCertificateTable,
   nameSQLiteSequenceTable
 ];
-const dbVersion = 1;
+const dbVersion = 2;
 
 const queryCreateUserTable = '''CREATE TABLE IF NOT EXISTS "$nameUserTable" (
         "id"	INTEGER NOT NULL UNIQUE,

@@ -1,7 +1,13 @@
-import 'package:bloc/bloc.dart';
+import 'dart:convert';
+import 'dart:developer';
 
-import '../../../constants/genders.dart';
+import 'package:bloc/bloc.dart';
+import 'package:crypto/crypto.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:vaxpass/services/crud/crud_exceptions.dart';
+
 import '../../../constants/document_types.dart';
+import '../../../constants/genders.dart';
 import '../../../models/models.dart';
 import '../../crud/certificate_service.dart';
 import '../auth_provider.dart';
@@ -13,12 +19,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       : super(const AuthStateUninitialized(isLoading: true)) {
     // send email verification
     on<AuthEventSendEmailVerification>((event, emit) async {
+      log('AuthEventSendEmailVerification');
       await provider.sendEmailVerification();
       emit(state);
     });
 
     // should register
     on<AuthEventShouldRegister>((event, emit) {
+      log('AuthEventShouldRegister');
       emit(const AuthStateRegistering(
         exception: null,
         isLoading: false,
@@ -27,6 +35,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     // forgot password
     on<AuthEventForgotPassword>((event, emit) async {
+      log('AuthEventForgotPassword');
       emit(const AuthStateForgotPassword(
         exception: null,
         hasSentEmail: false,
@@ -64,6 +73,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     // register
     on<AuthEventRegister>((event, emit) async {
+      log('AuthEventRegister');
       final email = event.email;
       final password = event.password;
       try {
@@ -83,7 +93,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     // register user info
     on<AuthEventRegisterUserInfo>((event, emit) async {
-      // TODO: to implement
+      log('AuthEventRegisterUserInfo');
       final systemID = provider.currentUser!.id;
       final name = event.name;
       final countryCode = event.countryCode;
@@ -91,7 +101,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final countryID = event.countryID;
       final gender = event.gender;
       final dataOfBirth = event.dateOfBirth;
-      await DatabaseService().deleteAllUsers();
       final user = provider.currentUser;
       if (user == null) {
         emit(
@@ -123,9 +132,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     // initialize
     on<AuthEventInitialize>((event, emit) async {
+      log('AuthEventInitialize');
       await provider.initialize();
       final user = provider.currentUser;
-      final _hasUser = await DatabaseService().hasUser();
       if (user == null) {
         emit(
           const AuthStateLoggedOut(
@@ -135,16 +144,27 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
       } else if (!user.isEmailVerified) {
         emit(const AuthStateNeedsEmailVerification(isLoading: false));
-      } else if (!_hasUser) {
-        emit(AuthStateRegisterUserInfo(
-          user: user,
-          isLoading: false,
-        ));
       } else {
-        emit(AuthStateLoggedIn(
-          user: user,
-          isLoading: false,
-        ));
+        // open the database
+        await DatabaseService().open();
+        // check if user information exists
+        try {
+          await DatabaseService().getUser();
+          emit(
+            AuthStateLoggedIn(
+              user: user,
+              isLoading: false,
+            ),
+          );
+        } on ExceptionCouldNotFoundUser {
+          log('state 2');
+          emit(
+            AuthStateRegisterUserInfo(
+              user: user,
+              isLoading: false,
+            ),
+          );
+        }
       }
     });
 
@@ -158,12 +178,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
       final email = event.email;
       final password = event.password;
-      final _hasUser = await DatabaseService().hasUser();
       try {
         final user = await provider.logIn(
           email: email,
           password: password,
         );
+
+        final userID = provider.currentUser!.id;
+        final secureKey = 'pw:$email:$userID';
+        const secureStorage = FlutterSecureStorage();
+        final secureValue = await secureStorage.read(key: secureKey);
+        if (secureValue == null) {
+          final pwBytes = utf8.encode(password);
+          final pwHash = sha256.convert(pwBytes).toString();
+          log(pwHash);
+          await secureStorage.write(key: secureKey, value: pwHash);
+        }
+
         if (!user.isEmailVerified) {
           emit(
             const AuthStateLoggedOut(
@@ -172,24 +203,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             ),
           );
           emit(const AuthStateNeedsEmailVerification(isLoading: false));
-        } else if (!_hasUser) {
-          emit(AuthStateRegisterUserInfo(
-            user: user,
-            isLoading: false,
-          ));
         } else {
-          emit(
-            const AuthStateLoggedOut(
-              exception: null,
-              isLoading: false,
-            ),
-          );
-          emit(
-            const AuthStateLoggedOut(
-              exception: null,
-              isLoading: false,
-            ),
-          );
+          // emit(
+          //   const AuthStateLoggedOut(
+          //     exception: null,
+          //     isLoading: false,
+          //   ),
+          // );
+          // emit(
+          //   const AuthStateLoggedOut(
+          //     exception: null,
+          //     isLoading: false,
+          //   ),
+          // );
           emit(AuthStateLoggedIn(
             user: user,
             isLoading: false,
@@ -207,9 +233,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     // log out
     on<AuthEventLogOut>((event, emit) async {
+      log('AuthEventLogOut');
       try {
-        await DatabaseService().deleteAllUsers();
-        await DatabaseService().deleteAllCertificates();
         await provider.logOut();
         emit(
           const AuthStateLoggedOut(

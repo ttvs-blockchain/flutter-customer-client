@@ -39,7 +39,7 @@ class _RegisterViewState extends State<RegisterView> {
         if (state is AuthStateRegistering) {
           if (state.exception is WeakPasswordAuthException) {
             await showErrorDialog(context,
-                'Weak password!\nPlease make sure that the password has at least 8 characters, 1 number, 1 lowercase letter, 1 uppercase letter, 1 special character, and no whitespaces.');
+                'Weak password!\nPlease make sure that the password should contain 8 to 32 characters, 1 number, 1 lowercase letter, 1 uppercase letter, 1 special character, and no whitespace.');
           } else if (state.exception is EmailAlreadyInUseAuthException) {
             await showErrorDialog(context, 'Email is already in use!');
           } else if (state.exception is InvalidEmailAuthException) {

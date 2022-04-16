@@ -1,15 +1,17 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart'
     show MissingPlatformDirectoryException, getApplicationDocumentsDirectory;
-import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_sqlcipher/sqflite.dart';
 import 'package:tuple/tuple.dart';
 
-import 'crud_exceptions.dart';
 import '../../constants/constants.dart';
 import '../../models/models.dart';
+import '../auth/firebase_auth_provider.dart';
 import 'certificate_constants.dart';
+import 'crud_exceptions.dart';
 
 class DatabaseService {
   Database? _db;
@@ -41,26 +43,52 @@ class DatabaseService {
     _certificateStreamController.add(_certificates);
   }
 
+  final authProvider = FirebaseAuthProvider();
+
   Future<void> open() async {
     if (_db != null) {
       throw ExceptionDatabaseAlreadyOpen();
     }
+    final user = authProvider.currentUser;
+    // user not logged in
+    if (user == null) {
+      throw ExceptionUserNotLoggedIn();
+    }
+    String dbPath;
     try {
       final docsPath = await getApplicationDocumentsDirectory();
-      final dbPath = join(docsPath.path, nameDB);
-      final db = await openDatabase(dbPath);
-      _db = db;
-      _deleteDeprecatedTables(_db!);
-
-      // create user table
-      await db.execute(queryCreateUserTable);
-
-      // create certificate table
-      db.execute(queryCreateCertificateTable);
-      await cacheCertificates();
+      dbPath = join(docsPath.path, nameDB);
     } on MissingPlatformDirectoryException {
       throw ExceptionUnableToGetDocumentsDirectory();
     }
+    try {
+      // use password and version to open sql_cipher
+      final db = await openDatabase(
+        dbPath,
+        password: "other",
+        version: dbVersion,
+      );
+      _db = db;
+    } on DatabaseException {
+      // if sql_cipher cannot be opened， try deleting the db path and create a new db
+      // then open the db with new password
+      Directory(dbPath).delete(recursive: true);
+      final db = await openDatabase(
+        dbPath,
+        password: user.id,
+        version: dbVersion,
+      );
+      _db = db;
+    }
+
+    _deleteDeprecatedTables(_db!);
+
+    // create user table
+    await _db!.execute(queryCreateUserTable);
+
+    // create certificate table
+    _db!.execute(queryCreateCertificateTable);
+    await cacheCertificates();
   }
 
   Future<void> close() async {
@@ -95,7 +123,7 @@ class DatabaseService {
     final results = await db.query(
       nameUserTable,
       limit: 1,
-      where: 'system_id = ? or email = ?',
+      where: 'system_id = ?',
       whereArgs: [user.systemID, user.email],
     );
     if (results.isNotEmpty) {
@@ -144,8 +172,11 @@ class DatabaseService {
   Future<DatabaseUser> getUser() async {
     await _ensureDBIsOpen();
     final db = _getDatabaseOrThrow();
+    final userID = FirebaseAuthProvider().currentUser!.id;
     final results = await db.query(
       nameUserTable,
+      where: 'system_id = ?',
+      whereArgs: [userID],
     );
     if (results.isEmpty) {
       throw ExceptionCouldNotFoundUser();
@@ -214,8 +245,11 @@ class DatabaseService {
   Future<Iterable<DatabaseCertificate>> getAllCertificates() async {
     await _ensureDBIsOpen();
     final db = _getDatabaseOrThrow();
+    final userID = FirebaseAuthProvider().currentUser!.id;
     final certificates = await db.query(
       nameCertificateTable,
+      where: "person_id = ?",
+      whereArgs: [userID],
       orderBy: columnIssueTime + queryOrderByDESC,
     );
     return certificates
@@ -248,6 +282,7 @@ class DatabaseService {
 
   Future<void> _deleteDeprecatedTables(Database db) async {
     final tables = await db.rawQuery(queryAllTableNames);
+    // table['name'] refers to the table name
     final tableNames = tables.map((table) => table['name'] as String).toList();
     final deprecatedTableNames = tableNames
         .where((name) => !notRemoveTableNames.contains(name))
