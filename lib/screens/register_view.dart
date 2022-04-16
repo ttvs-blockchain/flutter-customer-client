@@ -72,6 +72,9 @@ class _RegisterViewState extends State<RegisterView> {
                     decoration: const InputDecoration(
                       labelText: 'Email',
                     ),
+                    onEditingComplete: () {
+                      _email.text = _email.text.trim();
+                    },
                   ),
                   TextField(
                     controller: _password,
@@ -81,6 +84,9 @@ class _RegisterViewState extends State<RegisterView> {
                     decoration: const InputDecoration(
                       labelText: 'Password',
                     ),
+                    onEditingComplete: () {
+                      _password.text = _password.text.trim();
+                    },
                   ),
                   TextButton(
                     onPressed: () {
@@ -92,8 +98,8 @@ class _RegisterViewState extends State<RegisterView> {
                   ),
                   ElevatedButton(
                     onPressed: () async {
-                      final email = _email.text;
-                      final password = _password.text;
+                      final email = _email.text.trim();
+                      final password = _password.text.trim();
                       context.read<AuthBloc>().add(
                             AuthEventRegister(
                               email,

@@ -2,6 +2,8 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vaxpass/constants/constants.dart';
+import 'package:vaxpass/constants/regex.dart';
 
 import '../constants/country_codes.dart';
 import '../constants/document_types.dart';
@@ -17,8 +19,8 @@ class RegisterUserInfoView extends StatefulWidget {
 }
 
 class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
-  late final TextEditingController _name;
-  late final TextEditingController _countryID;
+  String _name = '';
+  String _countryID = '';
 
   String countryCode = countryCodeMap['HK']!.code;
   String documentType = documentTypeList[0];
@@ -27,15 +29,11 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
 
   @override
   void initState() {
-    _name = TextEditingController();
-    _countryID = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
-    _name.dispose();
-    _countryID.dispose();
     super.dispose();
   }
 
@@ -59,12 +57,27 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text('Full Name'),
-                TextField(
-                  controller: _name,
+                TextFormField(
                   enableSuggestions: false,
                   autocorrect: false,
+                  validator: (text) {
+                    if (text!.isEmpty ||
+                        text.length > userNameMaxLength ||
+                        !RegExp(
+                          nameFormatRegex,
+                          unicode: true,
+                        ).hasMatch(text)) {
+                      //allow upper and lower case alphabets and space
+                      return 'Invalid Name!';
+                    } else {
+                      return null;
+                    }
+                  },
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  onChanged: (text) => setState(() => _name = text.trim()),
                   decoration: const InputDecoration(
-                      hintText: 'Identical to your official ID document'),
+                    hintText: 'Identical to your official ID document',
+                  ),
                 ),
               ],
             ),
@@ -116,10 +129,20 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text('Identity Number'),
-                TextField(
-                  controller: _countryID,
+                TextFormField(
                   enableSuggestions: false,
                   autocorrect: false,
+                  validator: (text) {
+                    if (text!.isEmpty ||
+                        text.length > userCountryIDMaxLength ||
+                        !RegExp(countryIDFormatRegex).hasMatch(text)) {
+                      return 'Invalid ID!';
+                    } else {
+                      return null;
+                    }
+                  },
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  onChanged: (text) => setState(() => _countryID = text.trim()),
                   decoration: const InputDecoration(
                       hintText: 'Identical to your ID on the passport'),
                 ),
@@ -156,7 +179,7 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
                 DateTimePicker(
                   initialValue: '',
                   firstDate: DateTime(1800),
-                  lastDate: DateTime(DateTime.now().year + 1),
+                  lastDate: DateTime.now(),
                   onChanged: (val) {
                     dateOfBirth = val;
                   },
@@ -167,14 +190,14 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
             Center(
               child: ElevatedButton(
                 onPressed: () async {
-                  final name = _name.text;
-                  final countryID = _countryID.text;
+                  // final name = _name.text;
+                  // final countryID = _countryID.text;
                   context.read<AuthBloc>().add(
                         AuthEventRegisterUserInfo(
-                          name,
+                          _name,
                           countryCode,
                           documentType,
-                          countryID,
+                          _countryID,
                           gender,
                           dateOfBirth,
                         ),

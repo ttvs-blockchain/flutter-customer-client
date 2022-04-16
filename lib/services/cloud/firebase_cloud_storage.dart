@@ -7,20 +7,6 @@ import 'cloud_storage_exceptions.dart';
 class FirebaseCloudStorage {
   final certificates = FirebaseFirestore.instance.collection('certificates');
 
-  // Future<CloudCertificate> createNewCertificate(
-  //     {required String ownerUserID}) async {
-  //   final document = await certificates.add({
-  //     fieldNameOwnerUserID: ownerUserID,
-  //     textFieldName: '',
-  //   });
-  //   final fetchedCertificate = await document.get();
-  //   return CloudCertificate(
-  //     documentID: fetchedCertificate.id,
-  //     ownerUserID: ownerUserID,
-  //     text: '',
-  //   );
-  // }
-
   Future<Iterable<CloudCertificate>> getCertificates(
       {required String userSystemID}) async {
     try {

@@ -10,3 +10,5 @@
  */
 const passwordFormatRegex =
     r'^(?!.* )(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,32}$';
+const nameFormatRegex = r'^[\p{Letter}\p{Number} ]+$';
+const countryIDFormatRegex = r'^[a-zA-Z0-9_.-\[\]\(\)]*$';

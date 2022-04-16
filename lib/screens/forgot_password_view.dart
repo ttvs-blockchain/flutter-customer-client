@@ -59,13 +59,16 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                 autocorrect: false,
                 autofocus: true,
                 controller: _controller,
+                onEditingComplete: () {
+                  _controller.text = _controller.text.trim();
+                },
                 decoration: const InputDecoration(
                   hintText: 'Your email address...',
                 ),
               ),
               TextButton(
                 onPressed: () {
-                  final email = _controller.text;
+                  final email = _controller.text.trim();
                   context.read<AuthBloc>().add(
                         AuthEventForgotPassword(email: email),
                       );
