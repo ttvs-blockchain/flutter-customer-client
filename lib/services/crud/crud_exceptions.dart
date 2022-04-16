@@ -2,6 +2,8 @@ class ExceptionDatabaseAlreadyOpen implements Exception {}
 
 class ExceptionCouldNotOpenDatabase implements Exception {}
 
+class ExceptionCouldNotObtainDatabasePassword implements Exception {}
+
 class ExceptionUserNotLoggedIn implements Exception {}
 
 class ExceptionUnableToGetDocumentsDirectory implements Exception {}

@@ -149,7 +149,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await DatabaseService().open();
         // check if user information exists
         try {
+          log('state 1');
           await DatabaseService().getUser();
+          log('state 2');
           emit(
             AuthStateLoggedIn(
               user: user,
@@ -157,7 +159,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             ),
           );
         } on ExceptionCouldNotFoundUser {
-          log('state 2');
+          log('state 3');
           emit(
             AuthStateRegisterUserInfo(
               user: user,

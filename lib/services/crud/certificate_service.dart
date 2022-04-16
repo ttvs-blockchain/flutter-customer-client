@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart'
     show MissingPlatformDirectoryException, getApplicationDocumentsDirectory;
@@ -62,10 +63,15 @@ class DatabaseService {
       throw ExceptionUnableToGetDocumentsDirectory();
     }
     try {
+      final secureKey = 'pw:${user.email}:${user.id}';
+      final pwHash = await const FlutterSecureStorage().read(key: secureKey);
+      if (pwHash == null) {
+        throw ExceptionCouldNotObtainDatabasePassword();
+      }
       // use password and version to open sql_cipher
       final db = await openDatabase(
         dbPath,
-        password: "other",
+        password: pwHash,
         version: dbVersion,
       );
       _db = db;
