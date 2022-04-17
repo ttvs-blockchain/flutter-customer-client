@@ -75,6 +75,9 @@ class DatabaseCertificate {
   final int localChainBlockNum;
   final String localChainTimeStamp;
   final bool isValidated;
+  final String merkleTreePath;
+  final String merkleTreeIndexes;
+  final String globalRootID;
 
   DatabaseCertificate(
     this.id, {
@@ -94,6 +97,9 @@ class DatabaseCertificate {
     required this.localChainBlockNum,
     required this.localChainTimeStamp,
     required this.isValidated,
+    required this.merkleTreePath,
+    required this.merkleTreeIndexes,
+    required this.globalRootID,
   });
 
   DatabaseCertificate.fromRow(Map<String, Object?> map)
@@ -113,7 +119,10 @@ class DatabaseCertificate {
         localChainTxHash = map[columnLocalChainTxHash] as String,
         localChainBlockNum = map[columnLocalChainBlockNum] as int,
         localChainTimeStamp = map[columnLocalChainTimestamp] as String,
-        isValidated = (map[columnIsValidated] as int) == 1;
+        isValidated = (map[columnIsValidated] as int) == 1,
+        merkleTreePath = (map[columnMerkleTreePath] as String),
+        merkleTreeIndexes = (map[columnMerkleTreeIndexes] as String),
+        globalRootID = (map[columnGlobalRootID] as String);
 
   @override
   String toString() => ''''Certificate($id, $certID)[
@@ -160,6 +169,9 @@ class CloudCertificate {
   final int localChainBlockNum;
   final String localChainTimestamp;
   final bool isValidated;
+  final String merkleTreePath;
+  final String merkleTreeIndexes;
+  final String globalRootID;
 
   const CloudCertificate({
     required this.documentID,
@@ -179,6 +191,9 @@ class CloudCertificate {
     required this.localChainBlockNum,
     required this.localChainTimestamp,
     required this.isValidated,
+    required this.merkleTreePath,
+    required this.merkleTreeIndexes,
+    required this.globalRootID,
   });
 
   CloudCertificate.fromSnapshot(
@@ -199,7 +214,10 @@ class CloudCertificate {
         localChainTxHash = snapshot.data()[fieldNameLocalChainTxHash],
         localChainBlockNum = snapshot.data()[fieldNameLocalChainBlockNum],
         localChainTimestamp = snapshot.data()[fieldNameLocalChainTimestamp],
-        isValidated = snapshot.data()[fieldNameIsValidated];
+        isValidated = snapshot.data()[fieldNameIsValidated],
+        merkleTreePath = snapshot.data()[fieldNameMerkleTreePath],
+        merkleTreeIndexes = snapshot.data()[fieldNameMerkleTreeIndexes],
+        globalRootID = snapshot.data()[fieldNameGlobalRootID];
 
   DatabaseCertificate toDatabaseCertificate() => DatabaseCertificate(
         null,
@@ -219,6 +237,9 @@ class CloudCertificate {
         localChainBlockNum: localChainBlockNum,
         localChainTimeStamp: localChainTimestamp,
         isValidated: isValidated,
+        merkleTreePath: merkleTreePath,
+        merkleTreeIndexes: merkleTreeIndexes,
+        globalRootID: globalRootID,
       );
 }
 
@@ -250,7 +271,7 @@ String getQRCodeInfoQRCodeView(
 
 String getQRCodeInfoCertificateListView(
     DatabaseCertificate certificate, DatabaseUser user) {
-  /* 
+  /*
    * pid: person system ID
    * pn: person name
    * pcc: person country code
@@ -268,5 +289,5 @@ String getQRCodeInfoCertificateListView(
    * mp: Merkle Tree path
    * idx: indexes
    */
-  return '{"pid":"${user.id}","pn":"${user.name}","pcc":"${user.countryCode}","pcid":"${user.documentType}:${user.countryID}","pg":${user.gender},"pbd":"${user.dateOfBirth}","cid":"${certificate.certID}","cn":"${certificate.name}","cb":"${certificate.brand}","cnd":"${certificate.numDose}","cit":"${certificate.issueTime}","ci":"${certificate.issuer}","cr":"${certificate.remark}","grid":"955b658e-b3b1-4b7e-a9f4-e4b4059ed7a7","mp":["AIZca0LlTpd9yMCQpCji+hcqQoPBVvy10vQGJgLfopQ=","Nn7D3dsGNPI+4+Q4UqLy3Eo4VV+L6adyohnJTJiKzHY=","KBKMHj7Sl0xO8YTzxksqZSv4t1GmBLJ7/Gk2PbXThZw="],"idx":[0,1,0]}';
+  return '{"pid":"${user.id}","pn":"${user.name}","pcc":"${user.countryCode}","pcid":"${user.documentType}:${user.countryID}","pg":${user.gender},"pbd":"${user.dateOfBirth}","cid":"${certificate.certID}","cn":"${certificate.name}","cb":"${certificate.brand}","cnd":"${certificate.numDose}","cit":"${certificate.issueTime}","ci":"${certificate.issuer}","cr":"${certificate.remark}","grid":"${certificate.globalRootID}","mp":${certificate.merkleTreePath},"idx":${certificate.merkleTreeIndexes}';
 }

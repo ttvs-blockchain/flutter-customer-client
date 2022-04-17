@@ -145,27 +145,31 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } else if (!user.isEmailVerified) {
         emit(const AuthStateNeedsEmailVerification(isLoading: false));
       } else {
-        // open the database
-        await DatabaseService().open();
-        // check if user information exists
         try {
-          log('state 1');
-          await DatabaseService().getUser();
-          log('state 2');
-          emit(
-            AuthStateLoggedIn(
-              user: user,
-              isLoading: false,
-            ),
-          );
-        } on ExceptionCouldNotFoundUser {
-          log('state 3');
-          emit(
-            AuthStateRegisterUserInfo(
-              user: user,
-              isLoading: false,
-            ),
-          );
+          // open the database
+          await DatabaseService().open();
+          // check if user information exists
+          try {
+            await DatabaseService().getUser();
+            emit(
+              AuthStateLoggedIn(
+                user: user,
+                isLoading: false,
+              ),
+            );
+          } on ExceptionCouldNotFoundUser {
+            emit(
+              AuthStateRegisterUserInfo(
+                user: user,
+                isLoading: false,
+              ),
+            );
+          }
+        } on ExceptionCouldNotObtainDatabasePassword {
+          emit( AuthStateLoggedOut(
+            exception: ExceptionCouldNotObtainDatabasePassword(),
+            isLoading: false,
+          ));
         }
       }
     });
@@ -189,6 +193,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final userID = provider.currentUser!.id;
         final secureKey = 'pw:$email:$userID';
         const secureStorage = FlutterSecureStorage();
+        // if there is no password hash in the Flutter Secure Storage,
+        // generate one and store it
         final secureValue = await secureStorage.read(key: secureKey);
         if (secureValue == null) {
           final pwBytes = utf8.encode(password);

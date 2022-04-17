@@ -216,6 +216,9 @@ class DatabaseService {
       columnLocalChainBlockNum: certificate.localChainBlockNum,
       columnLocalChainTimestamp: certificate.localChainTimeStamp,
       columnIsValidated: certificate.isValidated ? 1 : 0,
+      columnMerkleTreePath: certificate.merkleTreePath,
+      columnMerkleTreeIndexes: certificate.merkleTreeIndexes,
+      columnGlobalRootID: certificate.globalRootID,
     });
 
     _certificates.add(certificate);

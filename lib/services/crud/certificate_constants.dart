@@ -7,7 +7,7 @@ const notRemoveTableNames = <String>[
   nameCertificateTable,
   nameSQLiteSequenceTable
 ];
-const dbVersion = 2;
+const dbVersion = 3;
 
 const queryCreateUserTable = '''CREATE TABLE IF NOT EXISTS "$nameUserTable" (
         "id"	INTEGER NOT NULL UNIQUE,
@@ -40,6 +40,9 @@ const queryCreateCertificateTable =
 	      "local_chain_block_num"	INTEGER NOT NULL,
 	      "local_chain_timestamp"	TEXT NOT NULL,
         "is_validated"	INTEGER NOT NULL,
+        "merkle_tree_path" TEXT NOT NULL,
+        "merkle_tree_indexes" TEXT NOT NULL,
+        "global_root_id" TEXT NOT NULL,
 	      PRIMARY KEY("id" AUTOINCREMENT)
       );''';
 const queryAllTableNames =
