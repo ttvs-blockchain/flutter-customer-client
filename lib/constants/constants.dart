@@ -37,7 +37,6 @@ const columnMerkleTreePath = 'merkle_tree_path';
 const columnMerkleTreeIndexes = 'merkle_tree_indexes';
 const columnGlobalRootID = 'global_root_id';
 
-
 const fieldNameOwnerUserID = 'user_id';
 const fieldNameCertID = 'cert_id';
 const fieldNamePersonID = 'person_id';

@@ -166,7 +166,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             );
           }
         } on ExceptionCouldNotObtainDatabasePassword {
-          emit( AuthStateLoggedOut(
+          emit(AuthStateLoggedOut(
             exception: ExceptionCouldNotObtainDatabasePassword(),
             isLoading: false,
           ));
