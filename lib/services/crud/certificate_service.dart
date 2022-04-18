@@ -128,9 +128,8 @@ class DatabaseService {
     final db = _getDatabaseOrThrow();
     final results = await db.query(
       nameUserTable,
-      limit: 1,
       where: 'system_id = ?',
-      whereArgs: [user.systemID, user.email],
+      whereArgs: [user.systemID],
     );
     if (results.isNotEmpty) {
       throw ExceptionUserAlreadyExists();
