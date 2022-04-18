@@ -88,6 +88,18 @@ class CertificateDetailView extends StatelessWidget {
             'Local Chain Timestamp',
             certificate.localChainTimeStamp,
           ),
+          listTile(
+            'Global Root ID',
+            certificate.globalRootID,
+          ),
+          listTile(
+            'Merkle Tree Path',
+            certificate.merkleTreePath,
+          ),
+          listTile(
+            'Merkle Tree Path Indexes',
+            certificate.merkleTreeIndexes,
+          )
         ],
       ),
     );

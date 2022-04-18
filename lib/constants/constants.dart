@@ -33,6 +33,9 @@ const columnLocalChainTxHash = 'local_chain_tx_hash';
 const columnLocalChainBlockNum = 'local_chain_block_num';
 const columnLocalChainTimestamp = 'local_chain_timestamp';
 const columnIsValidated = 'is_validated';
+const columnMerkleTreePath = 'merkle_tree_path';
+const columnMerkleTreeIndexes = 'merkle_tree_indexes';
+const columnGlobalRootID = 'global_root_id';
 
 const fieldNameOwnerUserID = 'user_id';
 const fieldNameCertID = 'cert_id';
@@ -51,3 +54,6 @@ const fieldNameLocalChainTxHash = 'local_chain_tx_hash';
 const fieldNameLocalChainBlockNum = 'local_chain_block_num';
 const fieldNameLocalChainTimestamp = 'local_chain_timestamp';
 const fieldNameIsValidated = 'is_validated';
+const fieldNameMerkleTreePath = 'merkle_tree_path';
+const fieldNameMerkleTreeIndexes = 'merkle_tree_indexes';
+const fieldNameGlobalRootID = 'global_root_id';
