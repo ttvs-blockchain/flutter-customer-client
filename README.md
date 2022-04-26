@@ -34,3 +34,27 @@ Use FlutterGen:
 ```bash
 flutter packages pub run build_runner build
 ```
+
+Using the Dart intl tools:
+
+Rebuilding l10n/xxx.dart requires two steps.
+
+1\. WIth the app's root directory as the current directory, generate l10n/xxx.arb from lib/main.dart.
+
+```bash
+flutter pub run intel_translation.extract_to_arb --output-dir=lib/l10n lib/main.dart
+```
+
+2\. With the app's root directory as the current directory, generate intl_messages_\<locale\>.dart for each intl_\<locale\>.arb file and intl_messages_all.dart, which imports all of hte messages files.
+
+```bash
+flutter pub run intl_translation:generate_from_arb \
+    --output-dir=lib/l10n --no-use-deferred-loading \
+    lib/main.dart lib/l10n/intl_\*.arb
+```
+
+Generate translate file
+
+```bash
+flutter gen-l10n
+```

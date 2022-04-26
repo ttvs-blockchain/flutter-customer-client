@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tuple/tuple.dart';
+import 'package:vaxpass/extensions/buildcontext/loc.dart';
 
 import '../models/models.dart';
 import '../services/crud/certificate_service.dart';
@@ -46,12 +47,12 @@ class _QRCodeViewState extends State<QRCodeView> {
                         data: getQRCodeInfoQRCodeView(
                             userAndCerts.item1, userAndCerts.item2)),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Please present this QR code while issuing or verifying',
+                      context.loc.qr_code_view_guide_info,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
