@@ -289,5 +289,8 @@ String getQRCodeInfoCertificateListView(
    * mp: Merkle Tree path
    * idx: indexes
    */
-  return '{"pid":"${user.id}","pn":"${user.name}","pcc":"${user.countryCode}","pcid":"${user.documentType}:${user.countryID}","pg":${user.gender},"pbd":"${user.dateOfBirth}","cid":"${certificate.certID}","cn":"${certificate.name}","cb":"${certificate.brand}","cnd":"${certificate.numDose}","cit":"${certificate.issueTime}","ci":"${certificate.issuer}","cr":"${certificate.remark}","grid":"${certificate.globalRootID}","mp":${certificate.merkleTreePath},"idx":${certificate.merkleTreeIndexes}';
+  final qrCodeInfo =
+      '{"pid":"${user.systemID}","pn":"${user.name}","pcc":"${user.countryCode}","pcid":"${user.documentType}:${user.countryID}","pg":${user.gender},"pbd":"${user.dateOfBirth}","cid":"${certificate.certID}","cn":"${certificate.name}","cb":"${certificate.brand}","cnd":"${certificate.numDose}","cit":"${certificate.issueTime}","ci":"${certificate.issuer}","cr":"${certificate.remark}","grid":"${certificate.globalRootID}","mp":${certificate.merkleTreePath},"idx":${certificate.merkleTreeIndexes}}';
+  log(qrCodeInfo);
+  return qrCodeInfo;
 }
