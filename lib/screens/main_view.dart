@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vaxpass/extensions/buildcontext/loc.dart';
 
 import '../enums/menu_action.dart';
 import '../services/auth/bloc/auth_bloc.dart';
 import '../services/auth/bloc/auth_event.dart';
+import '../services/crud/certificate_service.dart';
 import '../utils/dialogs/logout_dialog.dart';
 import 'certificate_view.dart';
 import 'personal_info_view.dart';
@@ -40,6 +42,17 @@ class _MainViewState extends State<MainView> {
         actions: <Widget>[
           PopupMenuButton<MenuAction>(onSelected: (value) async {
             switch (value) {
+              case MenuAction.clearData:
+                await DatabaseService().deleteAllUsers();
+                await DatabaseService().deleteAllCertificates();
+                await DatabaseService().close();
+                context.read<AuthBloc>().add(
+                      const AuthEventLogOut(),
+                    );
+                context.read<AuthBloc>().add(
+                      const AuthEventInitialize(),
+                    );
+                break;
               case MenuAction.logout:
                 final shouldLogout = await showLogOutDialog(context);
                 if (shouldLogout) {
@@ -52,6 +65,10 @@ class _MainViewState extends State<MainView> {
           }, itemBuilder: (context) {
             return const [
               PopupMenuItem<MenuAction>(
+                value: MenuAction.clearData,
+                child: Text('Clear Data'),
+              ),
+              PopupMenuItem<MenuAction>(
                 value: MenuAction.logout,
                 child: Text('Logout'),
               ),
@@ -63,18 +80,18 @@ class _MainViewState extends State<MainView> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items:  <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.qr_code_2_rounded),
-            label: 'Code',
+            icon: const Icon(Icons.qr_code_2_rounded),
+            label: context.loc.navigation_bar_qr_code,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.library_books),
-            label: 'Certificate',
+            icon: const Icon(Icons.library_books),
+            label: context.loc.navigation_bar_certificate,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Info',
+            icon: const Icon(Icons.person),
+            label: context.loc.navigation_bar_info,
           ),
         ],
         currentIndex: _selectedIndex,

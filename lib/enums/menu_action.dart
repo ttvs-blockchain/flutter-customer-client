@@ -1,1 +1,4 @@
-enum MenuAction { logout }
+enum MenuAction {
+  clearData,
+  logout,
+}

@@ -1,8 +1,7 @@
 {
-  "@_QR_CODE_VIEW": {
-    "heading": "Your QR Code",
-    "guide_info": "Please present this QR code while issuing or verifying"
-  },
   "qr_code_view_heading": "Your QR Code",
-  "qr_code_view_guide_info": "Please present this QR code while issuing or verifying"
+  "qr_code_view_guide_info": "Please present this QR code while issuing or verifying",
+  "navigation_bar_qr_code": "Code",
+  "navigation_bar_certificate": "Certificate",
+  "navigation_bar_info": "Info"
 }

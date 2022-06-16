@@ -37,7 +37,7 @@ class _QRCodeViewState extends State<QRCodeView> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
                     child: Text(
-                      'Your QR Code',
+                      context.loc.qr_code_view_heading,
                       style: Theme.of(context).textTheme.headline6,
                     ),
                   ),

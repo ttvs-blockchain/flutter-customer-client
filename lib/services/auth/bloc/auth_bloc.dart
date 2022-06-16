@@ -193,15 +193,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final userID = provider.currentUser!.id;
         final secureKey = 'pw:$email:$userID';
         const secureStorage = FlutterSecureStorage();
-        // if there is no password hash in the Flutter Secure Storage,
-        // generate one and store it
-        final secureValue = await secureStorage.read(key: secureKey);
-        if (secureValue == null) {
-          final pwBytes = utf8.encode(password);
-          final pwHash = sha256.convert(pwBytes).toString();
-          log(pwHash);
-          await secureStorage.write(key: secureKey, value: pwHash);
-        }
+        final pwBytes = utf8.encode(password);
+        final pwHash = sha256.convert(pwBytes).toString();
+        log(pwHash);
+        await secureStorage.write(key: secureKey, value: pwHash);
 
         if (!user.isEmailVerified) {
           emit(
@@ -212,18 +207,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           );
           emit(const AuthStateNeedsEmailVerification(isLoading: false));
         } else {
-          // emit(
-          //   const AuthStateLoggedOut(
-          //     exception: null,
-          //     isLoading: false,
-          //   ),
-          // );
-          // emit(
-          //   const AuthStateLoggedOut(
-          //     exception: null,
-          //     isLoading: false,
-          //   ),
-          // );
+          emit(
+            const AuthStateLoggedOut(
+              exception: null,
+              isLoading: false,
+            ),
+          );
           emit(AuthStateLoggedIn(
             user: user,
             isLoading: false,
